@@ -10,11 +10,11 @@ export class CtrlAlerta
 {
     constructor(mensaje: string, icono: Icono = null)
     {
-        var alert: string = '';
+        var alerta: string = '';
         
-        alert += (icono != null) ? '<i class="material-icons">'+icono.icono+'</i> ' : '';
-        alert += mensaje;
+        alerta += (icono != null) ? '<i class="material-icons icon-'+icono.color+'">'+icono.icono+'</i> ' : '';
+        alerta += mensaje;
 
-        M.toast({html: mensaje});
+        M.toast({html: alerta});
     }
 }

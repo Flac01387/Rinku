@@ -96,7 +96,7 @@ export class CpteFiltrosEmpleados {
         self.inicializarControles();
       }
       else
-        new CtrlAlerta(respuesta.Mensaje);
+        new CtrlAlerta(respuesta.Mensaje, new Icono(EnumIconos.Advertencia, EnumColores.Amarillo));
     })
     .catch(error => {
       new CtrlAlerta(EnumMensajes.ErrorAPI);

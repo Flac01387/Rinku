@@ -56,10 +56,10 @@ define('controles/ctrl-alerta',["require", "exports", "./icono"], function (requ
     var CtrlAlerta = (function () {
         function CtrlAlerta(mensaje, icono) {
             if (icono === void 0) { icono = null; }
-            var alert = '';
-            alert += (icono != null) ? '<i class="material-icons">' + icono.icono + '</i> ' : '';
-            alert += mensaje;
-            M.toast({ html: mensaje });
+            var alerta = '';
+            alerta += (icono != null) ? '<i class="material-icons icon-' + icono.color + '">' + icono.icono + '</i> ' : '';
+            alerta += mensaje;
+            M.toast({ html: alerta });
         }
         return CtrlAlerta;
     }());
@@ -600,7 +600,7 @@ define('modulos/empleados/cpte-filtros-empleados',["require", "exports", "aureli
                     self.inicializarControles();
                 }
                 else
-                    new ctrl_alerta_1.CtrlAlerta(respuesta.Mensaje);
+                    new ctrl_alerta_1.CtrlAlerta(respuesta.Mensaje, new icono_1.Icono(enum_iconos_1.EnumIconos.Advertencia, enum_colores_1.EnumColores.Amarillo));
             })
                 .catch(function (error) {
                 new ctrl_alerta_1.CtrlAlerta(enum_mensajes_1.EnumMensajes.ErrorAPI);
