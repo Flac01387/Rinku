@@ -1,0 +1,13 @@
+<template>
+  <div class="ren">
+    <div class="col c12">
+      <div class="input-field col s12">
+        <select value.bind="configCombo.Seleccionado">
+          <option if.bind="configCombo.ValorDefault != null" model.bind="configCombo.ValorDefault" selected>${configCombo.TextoDefualt}</option>
+          <option repeat.for="item of configCombo.JsonDatos" model.bind="item">${item.Nombre}</option>
+        </select>
+        <label>${configCombo.Label}</label>
+      </div>
+    </div>
+  </div>
+</template>

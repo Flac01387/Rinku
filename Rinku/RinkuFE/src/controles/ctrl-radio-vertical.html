@@ -1,0 +1,12 @@
+<template>
+  <div class="ren">
+    <div class="col c12">
+      <p repeat.for="radio of configRadio.Opciones">
+        <label>
+          <input class="with-gap" type="radio" name="${configRadio.Grupo}" id="" model.bind="radio" checked.bind="configRadio.Seleccionado" />
+          <span>${radio.Nombre}</span>
+        </label>
+      </p>
+    </div>
+  </div>
+</template>

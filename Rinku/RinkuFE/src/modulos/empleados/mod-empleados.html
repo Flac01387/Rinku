@@ -1,0 +1,20 @@
+<template>
+  <require from="../../controles/ctrl-titulo"></require>
+  <require from="../../controles/ctrl-migas"></require>
+  <require from="../../modulos/empleados/cpte-filtros-empleados"></require>
+
+  <div class="ren">
+    <div class="col c12">
+      <ctrl-migas migas.bind="migas"></ctrl-migas>
+    </div>
+  </div>
+  <div class="ren">
+    <div class="col c12">
+      <ctrl-titulo titulo.bind="tituloEmpleados"></ctrl-titulo>
+    </div>
+  </div>
+  <div class="ren">
+    <div class="col c12"></div>
+      <cpte-filtros-empleados></cpte-filtros-empleados>
+  </div>
+</template>
