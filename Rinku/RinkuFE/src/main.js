@@ -5,6 +5,7 @@ define(["require", "exports", "aurelia-framework", "./environment", "materialize
         aurelia.use
             .standardConfiguration()
             .feature('resources')
+            .plugin('aurelia-validation')
             .plugin(aurelia_framework_1.PLATFORM.moduleName("aurelia-validation"))
             .plugin(aurelia_framework_1.PLATFORM.moduleName('aurelia-materialize-bridge'), function (b) { return b.useAll(); });
         aurelia.use.developmentLogging(environment_1.default.debug ? 'debug' : 'warn');

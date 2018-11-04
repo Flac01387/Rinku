@@ -41,7 +41,7 @@ define('app',["require", "exports", "aurelia-framework", "aurelia-event-aggregat
 
 
 
-define('text!app.html',[],function(){return "<template><require from=\"materialize-css/dist/css/materialize.css\"></require><div class=\"ren\"><div class=\"col c12\"><compose view.bind=\"Vistas\" view-model.bind=\"VistasModelos\"></compose></div></div></template>";});
+define('text!app.html',[],function(){return "<template><require from=\"materialize-css/dist/css/materialize.css\"></require><div class=\"row\"><div class=\"col s12\"><compose view.bind=\"Vistas\" view-model.bind=\"VistasModelos\"></compose></div></div></template>";});
 define('controles/ctrl-alerta',["require", "exports", "./icono"], function (require, exports, icono_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -87,6 +87,7 @@ define('controles/ctrl-boton',["require", "exports", "aurelia-framework", "./ico
             this.Nombre = '';
             this.Texto = '';
             this.Deshabilitado = false;
+            this.Mostrar = true;
             this.Funcion = '';
             this.Padre = null;
         }
@@ -114,8 +115,8 @@ define('controles/ctrl-boton',["require", "exports", "aurelia-framework", "./ico
 
 
 
-define('text!controles/ctrl-boton.html',[],function(){return "<template><div class=\"ren\"><div class=\"col c12\"><a class=\"waves-effect waves-light btn\" click.delegate=\"configBoton.Funcion()\"><i if.bind=\"configBoton.Icono.icono != ''\" class=\"material-icons ${configBoton.Icono.posicion}\">${configBoton.Icono.icono}</i> ${configBoton.Texto} </a></div></div></template>";});
-define('text!controles/ctrl-checkbox.html',[],function(){return "<div class=\"ren\"><div class=\"col c12\"><label><input type=\"checkbox\"> <span>Obternerlo</span></label></div></div>";});
+define('text!controles/ctrl-boton.html',[],function(){return "<template><div class=\"row\"><div class=\"col s12\"><a class=\"waves-effect waves-light btn\" click.delegate=\"configBoton.Funcion()\"><i if.bind=\"configBoton.Icono.icono != ''\" class=\"material-icons ${configBoton.Icono.posicion}\">${configBoton.Icono.icono}</i> ${configBoton.Texto} </a></div></div></template>";});
+define('text!controles/ctrl-checkbox.html',[],function(){return "<div class=\"row\"><div class=\"col s12\"><label><input type=\"checkbox\"> <span>Obternerlo</span></label></div></div>";});
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -170,7 +171,7 @@ define('controles/ctrl-combo',["require", "exports", "aurelia-framework"], funct
 
 
 
-define('text!controles/ctrl-combo.html',[],function(){return "<template><div class=\"ren\"><div class=\"col c12\"><div class=\"input-field col s12\"><select value.bind=\"configCombo.Seleccionado\"><option if.bind=\"configCombo.ValorDefault != null\" model.bind=\"configCombo.ValorDefault\" selected=\"selected\">${configCombo.TextoDefualt}</option><option repeat.for=\"item of configCombo.JsonDatos\" model.bind=\"item\">${item.Nombre}</option></select> <label>${configCombo.Label}</label></div></div></div></template>";});
+define('text!controles/ctrl-combo.html',[],function(){return "<template><div class=\"row\"><div class=\"col s12\"><div class=\"input-field col s12\"><select value.bind=\"configCombo.Seleccionado\"><option if.bind=\"configCombo.ValorDefault != null\" model.bind=\"configCombo.ValorDefault\" selected=\"selected\">${configCombo.TextoDefualt}</option><option repeat.for=\"item of configCombo.JsonDatos\" model.bind=\"item\">${item.Nombre}</option></select> <label>${configCombo.Label}</label></div></div></div></template>";});
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -216,7 +217,7 @@ define('controles/ctrl-input',["require", "exports", "aurelia-framework"], funct
 
 
 
-define('text!controles/ctrl-input.html',[],function(){return "<template><div class=\"ren\"><div class=\"col c12\"><div class=\"input-field\"><input placeholder=\"\" id=\"\" type=\"text\" class=\"${configInput.Clases}\" value.bind=\"configInput.Valor\"> <label for=\"\">${configInput.Label}</label></div></div></div></template>";});
+define('text!controles/ctrl-input.html',[],function(){return "<template><div class=\"row\"><div class=\"col s12\"><div class=\"input-field\"><input placeholder=\"\" id=\"\" type=\"text\" class=\"${configInput.Clases}\" value.bind=\"configInput.Valor\"> <label for=\"\">${configInput.Label}</label></div></div></div></template>";});
 define('text!controles/ctrl-menu.html',[],function(){return "https://materializecss.com/sidenav.html";});
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -247,7 +248,7 @@ define('controles/ctrl-migas',["require", "exports", "aurelia-framework"], funct
 
 
 
-define('text!controles/ctrl-migas.html',[],function(){return "<template><div class=\"ren\"><div class=\"col c12\"><nav><div class=\"nav-wrapper\"><div class=\"col c12\"><a href=\"#!\" repeat.for=\"miga of migas\" class=\"breadcrumb\">${miga}</a></div></div></nav></div></div></template>";});
+define('text!controles/ctrl-migas.html',[],function(){return "<template><div class=\"row\"><div class=\"col s12\"><nav><div class=\"nav-wrapper\"><div class=\"col s12\"><a href=\"#!\" repeat.for=\"miga of migas\" class=\"breadcrumb\">${miga}</a></div></div></nav></div></div></template>";});
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -300,7 +301,7 @@ define('controles/ctrl-radio-horizontal',["require", "exports", "aurelia-framewo
 
 
 
-define('text!controles/ctrl-radio-horizontal.html',[],function(){return "<template><div class=\"ren\"><div class=\"col c12\"><label repeat.for=\"radio of configRadio.Opciones\"><input class=\"with-gap\" type=\"radio\" name=\"${configRadio.Grupo}\" id=\"\" model.bind=\"radio\" checked.bind=\"configRadio.Seleccionado\"> <span>${radio.Nombre}</span></label></div></div><p></p></template>";});
+define('text!controles/ctrl-radio-horizontal.html',[],function(){return "<template><div class=\"row\"><div class=\"col s12\"><label repeat.for=\"radio of configRadio.Opciones\"><input class=\"with-gap\" type=\"radio\" name=\"${configRadio.Grupo}\" id=\"\" model.bind=\"radio\" checked.bind=\"configRadio.Seleccionado\"> <span>${radio.Nombre}</span></label></div></div><p></p></template>";});
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -353,8 +354,8 @@ define('controles/ctrl-radio-vertical',["require", "exports", "aurelia-framework
 
 
 
-define('text!controles/ctrl-radio-vertical.html',[],function(){return "<template><div class=\"ren\"><div class=\"col c12\"><p repeat.for=\"radio of configRadio.Opciones\"><label><input class=\"with-gap\" type=\"radio\" name=\"${configRadio.Grupo}\" id=\"\" model.bind=\"radio\" checked.bind=\"configRadio.Seleccionado\"> <span>${radio.Nombre}</span></label></p></div></div></template>";});
-define('text!controles/ctrl-tabla.html',[],function(){return "<div class=\"ren\"><div class=\"col c12\"><table><thead><tr><th>repetir</th></tr></thead><tbody><tr><td>Repetir tr</td></tr></tbody></table></div></div>recibir un arreglo de encabezados y otro de opciones";});
+define('text!controles/ctrl-radio-vertical.html',[],function(){return "<template><div class=\"row\"><div class=\"col s12\"><p repeat.for=\"radio of configRadio.Opciones\"><label><input class=\"with-gap\" type=\"radio\" name=\"${configRadio.Grupo}\" id=\"\" model.bind=\"radio\" checked.bind=\"configRadio.Seleccionado\"> <span>${radio.Nombre}</span></label></p></div></div></template>";});
+define('text!controles/ctrl-tabla.html',[],function(){return "<div class=\"row\"><div class=\"col s12\"><table><thead><tr><th>repetir</th></tr></thead><tbody><tr><td>Repetir tr</td></tr></tbody></table></div></div>recibir un arreglo de encabezados y otro de opciones";});
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -384,7 +385,7 @@ define('controles/ctrl-titulo',["require", "exports", "aurelia-framework"], func
 
 
 
-define('text!controles/ctrl-titulo.html',[],function(){return "<template><div class=\"ren\"><div class=\"col c12 center-align\"> ${titulo} </div></div></template>";});
+define('text!controles/ctrl-titulo.html',[],function(){return "<template><div class=\"row\"><div class=\"col s12 center-align\"> ${titulo} </div></div></template>";});
 define('controles/icono',["require", "exports", "../enumeradores/enum-posiciones", "../enumeradores/enum-iconos", "../enumeradores/enum-colores"], function (require, exports, enum_posiciones_1, enum_iconos_1, enum_colores_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -432,6 +433,7 @@ define('enumeradores/enum-iconos',["require", "exports"], function (require, exp
         EnumIconos["Correcto"] = "check_circle";
         EnumIconos["Advertencia"] = "warning";
         EnumIconos["Informacion"] = "info";
+        EnumIconos["Buscar"] = "search";
     })(EnumIconos = exports.EnumIconos || (exports.EnumIconos = {}));
 });
 
@@ -589,8 +591,25 @@ define('modulos/empleados/cpte-filtros-empleados',["require", "exports", "aureli
                 new ctrl_alerta_1.CtrlAlerta(enum_mensajes_1.EnumMensajes.ErrorAPI);
             });
         };
+        CpteFiltrosEmpleados.prototype.mostrarEmpleados = function (empleados) {
+            console.log(empleados);
+        };
         CpteFiltrosEmpleados.prototype.cancelar = function () {
             console.log(this.configRadioTiposEmpleados);
+        };
+        CpteFiltrosEmpleados.prototype.buscar = function () {
+            var self = this.Padre;
+            self.peticionEmpleados.consultarEmpleados(self.configInputNumero.Valor, self.configInputNombre.Valor, self.configInputPaterno.Valor, self.configInputMaterno.Valor, self.configComboPuestos.Seleccionado, self.configRadioTiposEmpleados.Seleccionado == null ? 0 : self.configRadioTiposEmpleados.Seleccionado.Valor, true)
+                .then(function (respuesta) {
+                if (respuesta.Codigo == enum_respuesta_api_1.EnumRespuestaAPI.Aceptado) {
+                    self.mostrarEmpleados(respuesta.Respuesta);
+                }
+                else
+                    new ctrl_alerta_1.CtrlAlerta(respuesta.Mensaje);
+            })
+                .catch(function (error) {
+                new ctrl_alerta_1.CtrlAlerta(enum_mensajes_1.EnumMensajes.ErrorAPI);
+            });
         };
         CpteFiltrosEmpleados.prototype.aceptar = function () {
             var self = this.Padre;
@@ -678,12 +697,23 @@ define('modulos/empleados/cpte-filtros-empleados',["require", "exports", "aureli
                 Opciones: this.opcionesTiposEmpleados,
                 Seleccionado: null
             };
+            this.configBotonBuscar = {
+                ID: '',
+                Icono: new icono_1.Icono(enum_iconos_1.EnumIconos.Buscar, enum_colores_1.EnumColores.SinColor, enum_posiciones_1.EnumPosiciones.izquierda),
+                Nombre: '',
+                Texto: 'Buscar',
+                Deshabilitado: false,
+                Mostrar: true,
+                Funcion: 'buscar',
+                Padre: this
+            };
             this.configBotonAceptar = {
                 ID: '',
                 Icono: new icono_1.Icono(enum_iconos_1.EnumIconos.Guardar, enum_colores_1.EnumColores.SinColor, enum_posiciones_1.EnumPosiciones.izquierda),
                 Nombre: '',
                 Texto: 'Aceptar',
                 Deshabilitado: false,
+                Mostrar: false,
                 Funcion: 'aceptar',
                 Padre: this
             };
@@ -693,6 +723,7 @@ define('modulos/empleados/cpte-filtros-empleados',["require", "exports", "aureli
                 Nombre: '',
                 Texto: 'Cancelar',
                 Deshabilitado: false,
+                Mostrar: false,
                 Funcion: 'cancelar',
                 Padre: this
             };
@@ -708,8 +739,8 @@ define('modulos/empleados/cpte-filtros-empleados',["require", "exports", "aureli
 
 
 
-define('text!modulos/empleados/cpte-filtros-empleados.html',[],function(){return "<template><div class=\"row\"><div class=\"col s12 m6\"><ctrl-input config-input.bind=\"configInputNumero\"></ctrl-input></div></div><div class=\"row\"><div class=\"col s12 m4\"><ctrl-input config-input.bind=\"configInputNombre\"></ctrl-input></div><div class=\"col s12 m4\"><ctrl-input config-input.bind=\"configInputPaterno\"></ctrl-input></div><div class=\"col s12 m4\"><ctrl-input config-input.bind=\"configInputMaterno\"></ctrl-input></div></div><div class=\"row\"><div class=\"col s12 m6\"><ctrl-combo config-combo.bind=\"configComboPuestos\"></ctrl-combo></div><div class=\"col s12 m6\"><ctrl-radio-vertical config-radio.bind=\"configRadioTiposEmpleados\"></ctrl-radio-vertical></div></div><div class=\"row\"><div class=\"col s12 offset-m10 m1\"><ctrl-boton config-boton.bind=\"configBotonCancelar\"></ctrl-boton></div><div class=\"col s12 m1\"><ctrl-boton config-boton.bind=\"configBotonAceptar\"></ctrl-boton></div></div></template>";});
-define('text!modulos/empleados/cpte-lista-empleados.html',[],function(){return "<div class=\"ren\"><div class=\"col c12\">Llamar ctrl-tabla</div></div>";});
+define('text!modulos/empleados/cpte-filtros-empleados.html',[],function(){return "<template><div class=\"row\"><div class=\"col s12 m6\"><ctrl-input config-input.bind=\"configInputNumero\"></ctrl-input></div></div><div class=\"row\"><div class=\"col s12 m4\"><ctrl-input config-input.bind=\"configInputNombre\"></ctrl-input></div><div class=\"col s12 m4\"><ctrl-input config-input.bind=\"configInputPaterno\"></ctrl-input></div><div class=\"col s12 m4\"><ctrl-input config-input.bind=\"configInputMaterno\"></ctrl-input></div></div><div class=\"row\"><div class=\"col s12 m6\"><ctrl-combo config-combo.bind=\"configComboPuestos\"></ctrl-combo></div><div class=\"col s12 m6\"><ctrl-radio-vertical config-radio.bind=\"configRadioTiposEmpleados\"></ctrl-radio-vertical></div></div><div class=\"row\"><div class=\"col s12 offset-m10 m1\"><ctrl-boton config-boton.bind=\"configBotonBuscar\"></ctrl-boton></div></div><div class=\"row\"><div class=\"col s12 offset-m9 m1\"><ctrl-boton config-boton.bind=\"configBotonCancelar\"></ctrl-boton></div><div class=\"col s12 m1\"><ctrl-boton config-boton.bind=\"configBotonAceptar\"></ctrl-boton></div></div></template>";});
+define('text!modulos/empleados/cpte-lista-empleados.html',[],function(){return "<div class=\"row\"><div class=\"col s12\">Llamar ctrl-tabla</div></div>";});
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -734,7 +765,7 @@ define('modulos/empleados/mod-empleados',["require", "exports", "aurelia-framewo
 
 
 
-define('text!modulos/empleados/mod-empleados.html',[],function(){return "<template><require from=\"../../controles/ctrl-titulo\"></require><require from=\"../../controles/ctrl-migas\"></require><require from=\"../../modulos/empleados/cpte-filtros-empleados\"></require><div class=\"ren\"><div class=\"col c12\"><ctrl-migas migas.bind=\"migas\"></ctrl-migas></div></div><div class=\"ren\"><div class=\"col c12\"><ctrl-titulo titulo.bind=\"tituloEmpleados\"></ctrl-titulo></div></div><div class=\"ren\"><div class=\"col c12\"></div><cpte-filtros-empleados></cpte-filtros-empleados></div></template>";});
+define('text!modulos/empleados/mod-empleados.html',[],function(){return "<template><require from=\"../../controles/ctrl-titulo\"></require><require from=\"../../controles/ctrl-migas\"></require><require from=\"../../modulos/empleados/cpte-filtros-empleados\"></require><div class=\"row\"><div class=\"col s12\"><ctrl-migas migas.bind=\"migas\"></ctrl-migas></div></div><div class=\"row\"><div class=\"col s12\"><ctrl-titulo titulo.bind=\"tituloEmpleados\"></ctrl-titulo></div></div><div class=\"row\"><div class=\"col s12\"></div><cpte-filtros-empleados></cpte-filtros-empleados></div></template>";});
 define('modulos/menu/menu-principal',["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -785,11 +816,15 @@ define('servicios/web-api/api-empleados',["require", "exports", "aurelia-framewo
         }
         ;
         ApiEmpleadosMetodos.prototype.consultarTiposEmpleados = function () {
+            return this.apiBase["format"]("consultar/tipos");
+        };
+        ;
+        ApiEmpleadosMetodos.prototype.consultarEmpleados = function () {
             return this.apiBase["format"]("consultar");
         };
         ;
         ApiEmpleadosMetodos.prototype.nuevoEmpleado = function () {
-            return this.apiBase["format"]('nuevo');
+            return this.apiBase["format"]("nuevo");
         };
         return ApiEmpleadosMetodos;
     }());
@@ -813,6 +848,29 @@ define('servicios/web-api/api-empleados',["require", "exports", "aurelia-framewo
                 });
             });
         };
+        ApiEmpleados.prototype.consultarEmpleados = function (ID, Nombre, ApellidoPaterno, ApellidoMaterno, PuestoID, TipoEmpleadoID, Activo) {
+            var _this = this;
+            var filtros = {
+                "ID": ID,
+                "Nombre": Nombre,
+                "ApellidoPaterno": ApellidoPaterno,
+                "ApellidoMaterno": ApellidoMaterno,
+                "TipoEmpleadoID": TipoEmpleadoID,
+                "PuestoID": PuestoID,
+                "Activo": Activo
+            };
+            var self = this;
+            var resultado = [];
+            return new Promise(function (result) {
+                _this.api.post(_this.apis.consultarEmpleados(), filtros)
+                    .then(function (respuesta) {
+                    return result(self.procesarRespuesta.ProcesarResultado(respuesta, resultado));
+                })
+                    .catch(function (error) {
+                    return result(self.procesarRespuesta.ProcesarError(error, resultado));
+                });
+            });
+        };
         ApiEmpleados.prototype.nuevoEmpleado = function (Nombre, ApellidoPaterno, ApellidoMaterno, PuestoID, TipoEmpleadoID) {
             var _this = this;
             var empleado = {
@@ -825,7 +883,6 @@ define('servicios/web-api/api-empleados',["require", "exports", "aurelia-framewo
             var self = this;
             var resultado = [];
             return new Promise(function (result) {
-                console.log(_this.apis.nuevoEmpleado());
                 _this.api.post(_this.apis.nuevoEmpleado(), empleado)
                     .then(function (respuesta) {
                     return result(self.procesarRespuesta.ProcesarResultado(respuesta, resultado));

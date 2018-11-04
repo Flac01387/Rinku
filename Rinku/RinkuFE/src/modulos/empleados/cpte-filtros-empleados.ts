@@ -26,6 +26,7 @@ export class CpteFiltrosEmpleados {
   configComboPuestos: ConfiguracionCombo;
   opcionesTiposEmpleados: OpcionRadioVertical[];
   configRadioTiposEmpleados: ConfiguracionRadioVertical;
+  configBotonBuscar: ConfiguracionBoton;
   configBotonAceptar: ConfiguracionBoton;
   configBotonCancelar: ConfiguracionBoton;
 
@@ -75,8 +76,39 @@ export class CpteFiltrosEmpleados {
       });
   }
 
+  mostrarEmpleados(empleados)
+  {
+    console.log(empleados);
+  }
+
   cancelar(){
     console.log(this.configRadioTiposEmpleados);
+  }
+
+  buscar()
+  {
+    var self = this.Padre;
+    
+    self.peticionEmpleados.consultarEmpleados(
+      self.configInputNumero.Valor, 
+      self.configInputNombre.Valor, 
+      self.configInputPaterno.Valor,
+      self.configInputMaterno.Valor,
+      self.configComboPuestos.Seleccionado,
+      self.configRadioTiposEmpleados.Seleccionado == null ? 0 : self.configRadioTiposEmpleados.Seleccionado.Valor,
+      true
+    )
+      .then(respuesta => {
+        if (respuesta.Codigo == EnumRespuestaAPI.Aceptado) 
+        {
+          self.mostrarEmpleados(respuesta.Respuesta);
+        }
+        else
+        new CtrlAlerta(respuesta.Mensaje);
+      })
+      .catch(error => {
+        new CtrlAlerta(EnumMensajes.ErrorAPI);
+      });
   }
 
   aceptar(){
@@ -92,7 +124,6 @@ export class CpteFiltrosEmpleados {
     )
     .then(respuesta => {
       if (respuesta.Codigo == EnumRespuestaAPI.Aceptado) {
-        //self.configRadioTiposEmpleados.Opciones = respuesta.Respuesta;
         self.inicializarControles();
       }
       else
@@ -182,6 +213,17 @@ export class CpteFiltrosEmpleados {
       Opciones: this.opcionesTiposEmpleados,
       Seleccionado: null
     };
+
+    this.configBotonBuscar = {
+      ID: '',
+      Icono: new Icono(EnumIconos.Buscar, EnumColores.SinColor, EnumPosiciones.izquierda),
+      Nombre: '',
+      Texto: 'Buscar',
+      Deshabilitado: false,
+      Mostrar: true,
+      Funcion: 'buscar',
+      Padre: this
+    };
   
     this.configBotonAceptar = {
       ID: '',
@@ -189,6 +231,7 @@ export class CpteFiltrosEmpleados {
       Nombre: '',
       Texto: 'Aceptar',
       Deshabilitado: false,
+      Mostrar: false,
       Funcion: 'aceptar',
       Padre: this
     };
@@ -199,6 +242,7 @@ export class CpteFiltrosEmpleados {
       Nombre: '',
       Texto: 'Cancelar',
       Deshabilitado: false,
+      Mostrar: false,
       Funcion: 'cancelar',
       Padre: this
     };

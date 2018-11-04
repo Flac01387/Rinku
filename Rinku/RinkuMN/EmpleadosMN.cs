@@ -11,6 +11,30 @@ namespace RinkuMN
 {
     public class EmpleadosMN
     {
+        public List<Empleados> ConsultarEmpleados(Empleados empleado)
+        {
+            try
+            {
+                AccesoDatos da = new AccesoDatos();
+
+                List<Empleados> empleados = da.ejecutarSP<Empleados>("sp_consultarEmpleados", empleado);
+
+                return empleados;
+            }
+            catch (SqlException error)
+            {
+                throw new ArgumentException(error.Message, error);
+            }
+            catch (ExcepcionNegocio error)
+            {
+                error.Tipos.Add(EnumTipoMensaje.Alerta);
+                throw new ArgumentException(error.Mensaje, error);
+            }
+            catch (Exception error)
+            {
+                throw new ArgumentException(error.Message, error);
+            }
+        }
         public List<TiposEmpleados> ConsultarTiposEmpleados()
         {
             try

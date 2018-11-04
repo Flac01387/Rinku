@@ -1,4 +1,5 @@
 ﻿using RinkuBase.DTO;
+using RinkuBase.Entidades;
 using RinkuMN;
 using System;
 using System.Data.SqlClient;
@@ -14,8 +15,33 @@ namespace RinkuAPI.Controllers
         ManejadorRespuestaAPI mr = new ManejadorRespuestaAPI();
         ManejadorErroresAPI me = new ManejadorErroresAPI();
 
-        [HttpGet]
+        [HttpPost]
         [Route("consultar")]
+        public IHttpActionResult ConsultarEmpleados(Empleados empleado)
+        {
+            try
+            {
+                EmpleadosMN empleados = new EmpleadosMN();
+
+                dynamic resultado = empleados.ConsultarEmpleados(empleado);
+
+                return Json(mr.ManejarRespuesta(resultado));
+            }
+            catch (SqlException error)
+            {
+                throw new ArgumentException(error.Message, error);
+            }
+            catch (ExcepcionNegocio error)
+            {
+                return Json(me.ManejarError(error));
+            }
+            catch (Exception error)
+            {
+                return Json(me.ManejarError(error.Message));
+            }
+        }
+        [HttpGet]
+        [Route("consultar/tipos")]
         public IHttpActionResult ConsultarTiposEmpleados()
         {
             try

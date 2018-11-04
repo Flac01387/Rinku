@@ -52,7 +52,12 @@
             "name": "aurelia-testing",
             "env": "dev"
           },
-          "text"
+          "text",
+          {
+            "name": "aurelia-validation",
+            "path": "../node_modules/aurelia-validation/dist/amd",
+            "main": "aurelia-validation"
+          }
         ]
       }
     ],

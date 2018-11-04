@@ -4,5 +4,6 @@
   Error = 'cancel',
   Correcto = 'check_circle',
   Advertencia = 'warning',
-  Informacion = 'info'
+  Informacion = 'info',
+  Buscar = 'search'
 }

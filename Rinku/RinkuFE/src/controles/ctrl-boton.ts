@@ -7,6 +7,7 @@ export class ConfiguracionBoton {
   Nombre: string = '';
   Texto: string = '';
   Deshabilitado: boolean = false;
+  Mostrar: boolean = true;
   Funcion: string = '';
   Padre: any = null
 }

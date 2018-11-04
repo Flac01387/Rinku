@@ -3,7 +3,7 @@
 	<require from="./instructionFilter"></require>
 	<nav>
 		<div class="nav-wrapper">
-			<div class="col c12">
+			<div class="col s12">
 				<template repeat.for="instruction of router.currentInstruction.getAllInstructions() | instructionFilter">
 					<a click.delegate="navigate(instruction)" class="breadcrumb">
 						${instruction.config.title}
