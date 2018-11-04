@@ -5,6 +5,7 @@ export function configure(config: FrameworkConfiguration) {
     "../controles/ctrl-input",
     "../controles/ctrl-radio-vertical",
     "../controles/ctrl-combo",
-    "../controles/ctrl-boton"
+    "../controles/ctrl-boton",
+    "../controles/ctrl-tabla"
   ]);
 }

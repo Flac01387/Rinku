@@ -355,7 +355,68 @@ define('controles/ctrl-radio-vertical',["require", "exports", "aurelia-framework
 
 
 define('text!controles/ctrl-radio-vertical.html',[],function(){return "<template><div class=\"row\"><div class=\"col s12\"><p repeat.for=\"radio of configRadio.Opciones\"><label><input class=\"with-gap\" type=\"radio\" name=\"${configRadio.Grupo}\" id=\"\" model.bind=\"radio\" checked.bind=\"configRadio.Seleccionado\"> <span>${radio.Nombre}</span></label></p></div></div></template>";});
-define('text!controles/ctrl-tabla.html',[],function(){return "<div class=\"row\"><div class=\"col s12\"><table><thead><tr><th>repetir</th></tr></thead><tbody><tr><td>Repetir tr</td></tr></tbody></table></div></div>recibir un arreglo de encabezados y otro de opciones";});
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+define('controles/ctrl-tabla',["require", "exports", "aurelia-framework"], function (require, exports, aurelia_framework_1) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    var Encabezados = (function () {
+        function Encabezados(Llave, Texto) {
+            if (Llave === void 0) { Llave = ''; }
+            if (Texto === void 0) { Texto = ''; }
+            this.Llave = '';
+            this.Texto = '';
+            this.Llave = Llave;
+            this.Texto = Texto;
+        }
+        return Encabezados;
+    }());
+    exports.Encabezados = Encabezados;
+    var ConfiguracionTabla = (function () {
+        function ConfiguracionTabla() {
+            this.ID = '';
+            this.Nombre = '';
+            this.Clases = '';
+            this.Encabezados = [];
+            this.JsonDatos = [];
+        }
+        return ConfiguracionTabla;
+    }());
+    exports.ConfiguracionTabla = ConfiguracionTabla;
+    var CtrlTabla = (function () {
+        function CtrlTabla() {
+        }
+        __decorate([
+            aurelia_framework_1.bindable({ defaultBindingMode: aurelia_framework_1.bindingMode.twoWay }),
+            __metadata("design:type", ConfiguracionTabla)
+        ], CtrlTabla.prototype, "configTabla", void 0);
+        CtrlTabla = __decorate([
+            aurelia_framework_1.autoinject
+        ], CtrlTabla);
+        return CtrlTabla;
+    }());
+    exports.CtrlTabla = CtrlTabla;
+    var KeysValueConverter = (function () {
+        function KeysValueConverter() {
+        }
+        KeysValueConverter.prototype.toView = function (obj) {
+            return Reflect.ownKeys(obj);
+        };
+        return KeysValueConverter;
+    }());
+    exports.KeysValueConverter = KeysValueConverter;
+});
+
+
+
+define('text!controles/ctrl-tabla.html',[],function(){return "<template><div class=\"row\"><div class=\"col s12\"><table><thead><tr><th repeat.for=\"encabezado of configTabla.Encabezados\">${encabezado.Texto}</th></tr></thead><tbody><tr repeat.for=\"renglon of configTabla.JsonDatos\"><td repeat.for=\"columna of renglon | keys\">${renglon[columna]}</td></tr></tbody></table></div></div></template>";});
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -525,6 +586,7 @@ define('main',["require", "exports", "aurelia-framework", "./environment", "mate
         aurelia.use
             .standardConfiguration()
             .feature('resources')
+            .plugin('aurelia-validation')
             .plugin(aurelia_framework_1.PLATFORM.moduleName("aurelia-validation"))
             .plugin(aurelia_framework_1.PLATFORM.moduleName('aurelia-materialize-bridge'), function (b) { return b.useAll(); });
         aurelia.use.developmentLogging(environment_1.default.debug ? 'debug' : 'warn');
@@ -547,7 +609,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-define('modulos/empleados/cpte-filtros-empleados',["require", "exports", "aurelia-framework", "../../controles/ctrl-alerta", "../../controles/icono", "../../servicios/web-api/api-puestos", "../../servicios/web-api/api-empleados", "../../enumeradores/enum-respuesta-api", "enumeradores/enum-posiciones", "enumeradores/enum-mensajes", "enumeradores/enum-iconos", "enumeradores/enum-colores"], function (require, exports, aurelia_framework_1, ctrl_alerta_1, icono_1, api_puestos_1, api_empleados_1, enum_respuesta_api_1, enum_posiciones_1, enum_mensajes_1, enum_iconos_1, enum_colores_1) {
+define('modulos/empleados/cpte-filtros-empleados',["require", "exports", "aurelia-framework", "../../controles/ctrl-tabla", "../../controles/ctrl-alerta", "../../controles/icono", "../../servicios/web-api/api-puestos", "../../servicios/web-api/api-empleados", "../../enumeradores/enum-respuesta-api", "enumeradores/enum-posiciones", "enumeradores/enum-mensajes", "enumeradores/enum-iconos", "enumeradores/enum-colores"], function (require, exports, aurelia_framework_1, ctrl_tabla_1, ctrl_alerta_1, icono_1, api_puestos_1, api_empleados_1, enum_respuesta_api_1, enum_posiciones_1, enum_mensajes_1, enum_iconos_1, enum_colores_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var CpteFiltrosEmpleados = (function () {
@@ -592,7 +654,32 @@ define('modulos/empleados/cpte-filtros-empleados',["require", "exports", "aureli
             });
         };
         CpteFiltrosEmpleados.prototype.mostrarEmpleados = function (empleados) {
-            console.log(empleados);
+            var obj = [];
+            for (var i in empleados) {
+                obj.push({
+                    "ID": empleados[i].ID,
+                    "Nombre": empleados[i].Nombre,
+                    "ApellidoPaterno": empleados[i].ApellidoPaterno,
+                    "ApellidoMaterno": empleados[i].ApellidoMaterno,
+                    "Puesto": empleados[i].Puesto,
+                    "TipoEmpleado": empleados[i].TipoEmpleado,
+                });
+            }
+            this.configTablaEmpleados = {
+                Encabezados: [
+                    new ctrl_tabla_1.Encabezados("ID", "ID"),
+                    new ctrl_tabla_1.Encabezados("Nombre", "Nombre"),
+                    new ctrl_tabla_1.Encabezados("ApellidoPaterno", "Apellido Paterno"),
+                    new ctrl_tabla_1.Encabezados("ApellidoMaterno", "Apellido Materno"),
+                    new ctrl_tabla_1.Encabezados("Puesto", "Puesto"),
+                    new ctrl_tabla_1.Encabezados("TipoEmpleado", "Tipo Empleado"),
+                    new ctrl_tabla_1.Encabezados("", "")
+                ],
+                Clases: '',
+                ID: '',
+                JsonDatos: obj,
+                Nombre: ''
+            };
         };
         CpteFiltrosEmpleados.prototype.cancelar = function () {
             console.log(this.configRadioTiposEmpleados);
@@ -739,7 +826,7 @@ define('modulos/empleados/cpte-filtros-empleados',["require", "exports", "aureli
 
 
 
-define('text!modulos/empleados/cpte-filtros-empleados.html',[],function(){return "<template><div class=\"row\"><div class=\"col s12 m6\"><ctrl-input config-input.bind=\"configInputNumero\"></ctrl-input></div></div><div class=\"row\"><div class=\"col s12 m4\"><ctrl-input config-input.bind=\"configInputNombre\"></ctrl-input></div><div class=\"col s12 m4\"><ctrl-input config-input.bind=\"configInputPaterno\"></ctrl-input></div><div class=\"col s12 m4\"><ctrl-input config-input.bind=\"configInputMaterno\"></ctrl-input></div></div><div class=\"row\"><div class=\"col s12 m6\"><ctrl-combo config-combo.bind=\"configComboPuestos\"></ctrl-combo></div><div class=\"col s12 m6\"><ctrl-radio-vertical config-radio.bind=\"configRadioTiposEmpleados\"></ctrl-radio-vertical></div></div><div class=\"row\"><div class=\"col s12 offset-m10 m1\"><ctrl-boton config-boton.bind=\"configBotonBuscar\"></ctrl-boton></div></div><div class=\"row\"><div class=\"col s12 offset-m9 m1\"><ctrl-boton config-boton.bind=\"configBotonCancelar\"></ctrl-boton></div><div class=\"col s12 m1\"><ctrl-boton config-boton.bind=\"configBotonAceptar\"></ctrl-boton></div></div></template>";});
+define('text!modulos/empleados/cpte-filtros-empleados.html',[],function(){return "<template><div class=\"row\"><div class=\"col s12 m6\"><ctrl-input config-input.bind=\"configInputNumero\"></ctrl-input></div></div><div class=\"row\"><div class=\"col s12 m4\"><ctrl-input config-input.bind=\"configInputNombre\"></ctrl-input></div><div class=\"col s12 m4\"><ctrl-input config-input.bind=\"configInputPaterno\"></ctrl-input></div><div class=\"col s12 m4\"><ctrl-input config-input.bind=\"configInputMaterno\"></ctrl-input></div></div><div class=\"row\"><div class=\"col s12 m6\"><ctrl-combo config-combo.bind=\"configComboPuestos\"></ctrl-combo></div><div class=\"col s12 m6\"><ctrl-radio-vertical config-radio.bind=\"configRadioTiposEmpleados\"></ctrl-radio-vertical></div></div><div class=\"row\"><div class=\"col s12 offset-m10 m1\"><ctrl-boton config-boton.bind=\"configBotonBuscar\"></ctrl-boton></div></div><div class=\"row\"><div class=\"col s12\"><ctrl-tabla config-tabla.bind=\"configTablaEmpleados\"></ctrl-tabla></div></div><div class=\"row\"><div class=\"col s12 offset-m9 m1\"><ctrl-boton config-boton.bind=\"configBotonCancelar\"></ctrl-boton></div><div class=\"col s12 m1\"><ctrl-boton config-boton.bind=\"configBotonAceptar\"></ctrl-boton></div></div></template>";});
 define('text!modulos/empleados/cpte-lista-empleados.html',[],function(){return "<div class=\"row\"><div class=\"col s12\">Llamar ctrl-tabla</div></div>";});
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -789,7 +876,8 @@ define('resources/index',["require", "exports"], function (require, exports) {
             "../controles/ctrl-input",
             "../controles/ctrl-radio-vertical",
             "../controles/ctrl-combo",
-            "../controles/ctrl-boton"
+            "../controles/ctrl-boton",
+            "../controles/ctrl-tabla"
         ]);
     }
     exports.configure = configure;

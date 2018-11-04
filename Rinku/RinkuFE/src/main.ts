@@ -6,6 +6,7 @@ export function configure(aurelia: Aurelia) {
   aurelia.use
     .standardConfiguration()
     .feature('resources')
+    .plugin('aurelia-validation')
 		.plugin(PLATFORM.moduleName("aurelia-validation"))
     .plugin(PLATFORM.moduleName('aurelia-materialize-bridge'), b => b.useAll());
 

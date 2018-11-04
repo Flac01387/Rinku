@@ -1,18 +1,18 @@
-<div class="row">
-	<div class="col s12">
-		<table>
-			<thead>
-				<tr>
-					<th>repetir</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td>Repetir tr</td>
-				</tr>
-			</tbody>
-		</table>
+<template>
+	<div class="row">
+		<div class="col s12">
+			<table>
+				<thead>
+					<tr>
+						<th repeat.for="encabezado of configTabla.Encabezados">${encabezado.Texto}</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr repeat.for="renglon of configTabla.JsonDatos">
+						<td repeat.for="columna of renglon | keys">${renglon[columna]}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 	</div>
-</div>
-
-recibir un arreglo de encabezados y otro de opciones
+</template>

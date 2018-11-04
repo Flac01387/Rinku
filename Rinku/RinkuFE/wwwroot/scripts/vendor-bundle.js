@@ -49559,6 +49559,7 @@ function _aureliaConfigureModuleLoader(){requirejs.config({
       "text!controles/ctrl-radio-horizontal.html",
       "controles/ctrl-radio-vertical",
       "text!controles/ctrl-radio-vertical.html",
+      "controles/ctrl-tabla",
       "text!controles/ctrl-tabla.html",
       "controles/ctrl-titulo",
       "text!controles/ctrl-titulo.html",

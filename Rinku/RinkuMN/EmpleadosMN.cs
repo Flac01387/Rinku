@@ -11,13 +11,13 @@ namespace RinkuMN
 {
     public class EmpleadosMN
     {
-        public List<Empleados> ConsultarEmpleados(Empleados empleado)
+        public List<DTOEmpleados> ConsultarEmpleados(DTOEmpleados empleado)
         {
             try
             {
                 AccesoDatos da = new AccesoDatos();
 
-                List<Empleados> empleados = da.ejecutarSP<Empleados>("sp_consultarEmpleados", empleado);
+                List<DTOEmpleados> empleados = da.ejecutarSP<DTOEmpleados>("sp_consultarEmpleados", empleado);
 
                 return empleados;
             }

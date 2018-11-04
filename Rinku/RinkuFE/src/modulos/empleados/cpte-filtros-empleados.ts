@@ -3,6 +3,7 @@ import { ConfiguracionInput } from '../../controles/ctrl-input';
 import { ConfiguracionCombo } from '../../controles/ctrl-combo';
 import { ConfiguracionRadioVertical, OpcionRadioVertical } from '../../controles/ctrl-radio-vertical';
 import { ConfiguracionBoton } from '../../controles/ctrl-boton';
+import { ConfiguracionTabla, Encabezados } from '../../controles/ctrl-tabla';
 import { CtrlAlerta } from '../../controles/ctrl-alerta';
 import { Icono } from '../../controles/icono';
 import { ApiPuestos } from '../../servicios/web-api/api-puestos';
@@ -29,6 +30,7 @@ export class CpteFiltrosEmpleados {
   configBotonBuscar: ConfiguracionBoton;
   configBotonAceptar: ConfiguracionBoton;
   configBotonCancelar: ConfiguracionBoton;
+  configTablaEmpleados: ConfiguracionTabla;
 
   constructor(private peticionPuestos: ApiPuestos, private peticionEmpleados: ApiEmpleados)
   {
@@ -78,7 +80,35 @@ export class CpteFiltrosEmpleados {
 
   mostrarEmpleados(empleados)
   {
-    console.log(empleados);
+    var obj = [];
+
+    for(var i in empleados)
+    {
+      obj.push({
+        "ID": empleados[i].ID,
+        "Nombre": empleados[i].Nombre,
+        "ApellidoPaterno": empleados[i].ApellidoPaterno,
+        "ApellidoMaterno": empleados[i].ApellidoMaterno,
+        "Puesto": empleados[i].Puesto,
+        "TipoEmpleado": empleados[i].TipoEmpleado,
+      });
+    }
+
+    this.configTablaEmpleados = {
+      Encabezados: [
+        new Encabezados("ID","ID"),
+        new Encabezados("Nombre", "Nombre"),
+        new Encabezados("ApellidoPaterno", "Apellido Paterno"),
+        new Encabezados("ApellidoMaterno", "Apellido Materno"),
+        new Encabezados("Puesto", "Puesto"), 
+        new Encabezados("TipoEmpleado","Tipo Empleado"),
+        new Encabezados("","")
+      ],
+      Clases: '',
+      ID: '',
+      JsonDatos: obj,
+      Nombre: ''
+    };
   }
 
   cancelar(){

@@ -17,7 +17,7 @@ namespace RinkuAPI.Controllers
 
         [HttpPost]
         [Route("consultar")]
-        public IHttpActionResult ConsultarEmpleados(Empleados empleado)
+        public IHttpActionResult ConsultarEmpleados(DTOEmpleados empleado)
         {
             try
             {
