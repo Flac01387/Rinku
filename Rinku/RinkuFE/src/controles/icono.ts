@@ -1,11 +1,15 @@
 ﻿import { EnumPosiciones } from '../enumeradores/enum-posiciones';
+import { EnumIconos } from '../enumeradores/enum-iconos';
+import { EnumColores } from '../enumeradores/enum-colores';
 
 export class Icono {
-  nombre: string = '';
+  icono: EnumIconos = EnumIconos.SinIcono;
+  color: EnumColores = EnumColores.SinColor;
   posicion: EnumPosiciones = EnumPosiciones.default;
 
-  constructor(nombre: string = '', posicion: EnumPosiciones = EnumPosiciones.default) {
-    this.nombre = nombre;
+  constructor(icono: EnumIconos = EnumIconos.SinIcono, color: EnumColores= EnumColores.SinColor, posicion: EnumPosiciones = EnumPosiciones.default) {
+    this.icono = icono;
+    this.color = color;
     this.posicion = posicion;
   }
 }

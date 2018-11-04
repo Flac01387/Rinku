@@ -10,6 +10,8 @@ import { ApiEmpleados } from '../../servicios/web-api/api-empleados';
 import { EnumRespuestaAPI } from '../../enumeradores/enum-respuesta-api';
 import { EnumPosiciones } from 'enumeradores/enum-posiciones';
 import { EnumMensajes } from 'enumeradores/enum-mensajes';
+import { EnumIconos } from 'enumeradores/enum-iconos';
+import { EnumColores } from 'enumeradores/enum-colores';
 
 @autoinject
 export class CpteFiltrosEmpleados {
@@ -183,7 +185,7 @@ export class CpteFiltrosEmpleados {
   
     this.configBotonAceptar = {
       ID: '',
-      Icono: new Icono('save', EnumPosiciones.izquierda),
+      Icono: new Icono(EnumIconos.Guardar, EnumColores.SinColor, EnumPosiciones.izquierda),
       Nombre: '',
       Texto: 'Aceptar',
       Deshabilitado: false,

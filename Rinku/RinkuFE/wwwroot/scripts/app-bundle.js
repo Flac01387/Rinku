@@ -42,11 +42,23 @@ define('app',["require", "exports", "aurelia-framework", "aurelia-event-aggregat
 
 
 define('text!app.html',[],function(){return "<template><require from=\"materialize-css/dist/css/materialize.css\"></require><div class=\"ren\"><div class=\"col c12\"><compose view.bind=\"Vistas\" view-model.bind=\"VistasModelos\"></compose></div></div></template>";});
-define('controles/ctrl-alerta',["require", "exports"], function (require, exports) {
+define('controles/ctrl-alerta',["require", "exports", "./icono"], function (require, exports, icono_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    var ConfiguracionAlerta = (function () {
+        function ConfiguracionAlerta() {
+            this.Icono = new icono_1.Icono();
+            this.Mensaje = '';
+        }
+        return ConfiguracionAlerta;
+    }());
+    exports.ConfiguracionAlerta = ConfiguracionAlerta;
     var CtrlAlerta = (function () {
-        function CtrlAlerta(mensaje) {
+        function CtrlAlerta(mensaje, icono) {
+            if (icono === void 0) { icono = null; }
+            var alert = '';
+            alert += (icono != null) ? '<i class="material-icons">' + icono.icono + '</i> ' : '';
+            alert += mensaje;
             M.toast({ html: mensaje });
         }
         return CtrlAlerta;
@@ -102,7 +114,7 @@ define('controles/ctrl-boton',["require", "exports", "aurelia-framework", "./ico
 
 
 
-define('text!controles/ctrl-boton.html',[],function(){return "<template><div class=\"ren\"><div class=\"col c12\"><a class=\"waves-effect waves-light btn\" click.delegate=\"configBoton.Funcion()\"><i if.bind=\"configBoton.Icono.nombre != ''\" class=\"material-icons ${configBoton.Icono.posicion}\">${configBoton.Icono.nombre}</i> ${configBoton.Texto} </a></div></div></template>";});
+define('text!controles/ctrl-boton.html',[],function(){return "<template><div class=\"ren\"><div class=\"col c12\"><a class=\"waves-effect waves-light btn\" click.delegate=\"configBoton.Funcion()\"><i if.bind=\"configBoton.Icono.icono != ''\" class=\"material-icons ${configBoton.Icono.posicion}\">${configBoton.Icono.icono}</i> ${configBoton.Texto} </a></div></div></template>";});
 define('text!controles/ctrl-checkbox.html',[],function(){return "<div class=\"ren\"><div class=\"col c12\"><label><input type=\"checkbox\"> <span>Obternerlo</span></label></div></div>";});
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -373,21 +385,54 @@ define('controles/ctrl-titulo',["require", "exports", "aurelia-framework"], func
 
 
 define('text!controles/ctrl-titulo.html',[],function(){return "<template><div class=\"ren\"><div class=\"col c12 center-align\"> ${titulo} </div></div></template>";});
-define('controles/icono',["require", "exports", "../enumeradores/enum-posiciones"], function (require, exports, enum_posiciones_1) {
+define('controles/icono',["require", "exports", "../enumeradores/enum-posiciones", "../enumeradores/enum-iconos", "../enumeradores/enum-colores"], function (require, exports, enum_posiciones_1, enum_iconos_1, enum_colores_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var Icono = (function () {
-        function Icono(nombre, posicion) {
-            if (nombre === void 0) { nombre = ''; }
+        function Icono(icono, color, posicion) {
+            if (icono === void 0) { icono = enum_iconos_1.EnumIconos.SinIcono; }
+            if (color === void 0) { color = enum_colores_1.EnumColores.SinColor; }
             if (posicion === void 0) { posicion = enum_posiciones_1.EnumPosiciones.default; }
-            this.nombre = '';
+            this.icono = enum_iconos_1.EnumIconos.SinIcono;
+            this.color = enum_colores_1.EnumColores.SinColor;
             this.posicion = enum_posiciones_1.EnumPosiciones.default;
-            this.nombre = nombre;
+            this.icono = icono;
+            this.color = color;
             this.posicion = posicion;
         }
         return Icono;
     }());
     exports.Icono = Icono;
+});
+
+
+
+define('enumeradores/enum-colores',["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    var EnumColores;
+    (function (EnumColores) {
+        EnumColores["SinColor"] = "";
+        EnumColores["Rojo"] = "red";
+        EnumColores["Azul"] = "blue";
+        EnumColores["Amarillo"] = "yellow";
+    })(EnumColores = exports.EnumColores || (exports.EnumColores = {}));
+});
+
+
+
+define('enumeradores/enum-iconos',["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    var EnumIconos;
+    (function (EnumIconos) {
+        EnumIconos["SinIcono"] = "";
+        EnumIconos["Guardar"] = "save";
+        EnumIconos["Error"] = "cancel";
+        EnumIconos["Correcto"] = "check_circle";
+        EnumIconos["Advertencia"] = "warning";
+        EnumIconos["Informacion"] = "info";
+    })(EnumIconos = exports.EnumIconos || (exports.EnumIconos = {}));
 });
 
 
@@ -500,7 +545,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-define('modulos/empleados/cpte-filtros-empleados',["require", "exports", "aurelia-framework", "../../controles/ctrl-alerta", "../../controles/icono", "../../servicios/web-api/api-puestos", "../../servicios/web-api/api-empleados", "../../enumeradores/enum-respuesta-api", "enumeradores/enum-posiciones", "enumeradores/enum-mensajes"], function (require, exports, aurelia_framework_1, ctrl_alerta_1, icono_1, api_puestos_1, api_empleados_1, enum_respuesta_api_1, enum_posiciones_1, enum_mensajes_1) {
+define('modulos/empleados/cpte-filtros-empleados',["require", "exports", "aurelia-framework", "../../controles/ctrl-alerta", "../../controles/icono", "../../servicios/web-api/api-puestos", "../../servicios/web-api/api-empleados", "../../enumeradores/enum-respuesta-api", "enumeradores/enum-posiciones", "enumeradores/enum-mensajes", "enumeradores/enum-iconos", "enumeradores/enum-colores"], function (require, exports, aurelia_framework_1, ctrl_alerta_1, icono_1, api_puestos_1, api_empleados_1, enum_respuesta_api_1, enum_posiciones_1, enum_mensajes_1, enum_iconos_1, enum_colores_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var CpteFiltrosEmpleados = (function () {
@@ -635,7 +680,7 @@ define('modulos/empleados/cpte-filtros-empleados',["require", "exports", "aureli
             };
             this.configBotonAceptar = {
                 ID: '',
-                Icono: new icono_1.Icono('save', enum_posiciones_1.EnumPosiciones.izquierda),
+                Icono: new icono_1.Icono(enum_iconos_1.EnumIconos.Guardar, enum_colores_1.EnumColores.SinColor, enum_posiciones_1.EnumPosiciones.izquierda),
                 Nombre: '',
                 Texto: 'Aceptar',
                 Deshabilitado: false,

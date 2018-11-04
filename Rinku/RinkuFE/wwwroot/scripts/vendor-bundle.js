@@ -49571,6 +49571,8 @@ function _aureliaConfigureModuleLoader(){requirejs.config({
       "controles/ctrl-titulo",
       "text!controles/ctrl-titulo.html",
       "controles/icono",
+      "enumeradores/enum-colores",
+      "enumeradores/enum-iconos",
       "enumeradores/enum-mensajes",
       "enumeradores/enum-posiciones",
       "enumeradores/enum-respuesta-api",
