@@ -1,5 +1,6 @@
 import { autoinject } from 'aurelia-framework';
 import { EventAggregator } from 'aurelia-event-aggregator';
+import 'materialize-css';
 import { Router } from 'aurelia-router';
 import { EnumVistas } from './enumeradores/enum-vistas';
 

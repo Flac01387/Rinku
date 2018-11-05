@@ -5,5 +5,6 @@
   Correcto = 'check_circle',
   Advertencia = 'warning',
   Informacion = 'info',
-  Buscar = 'search'
+  Buscar = 'search',
+  Opciones = 'menu'
 }

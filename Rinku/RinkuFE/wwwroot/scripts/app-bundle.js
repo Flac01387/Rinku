@@ -7,7 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-define('app',["require", "exports", "aurelia-framework", "aurelia-event-aggregator", "./enumeradores/enum-vistas"], function (require, exports, aurelia_framework_1, aurelia_event_aggregator_1, enum_vistas_1) {
+define('app',["require", "exports", "aurelia-framework", "aurelia-event-aggregator", "./enumeradores/enum-vistas", "materialize-css"], function (require, exports, aurelia_framework_1, aurelia_event_aggregator_1, enum_vistas_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var App = (function () {
@@ -218,6 +218,20 @@ define('controles/ctrl-input',["require", "exports", "aurelia-framework"], funct
 
 
 define('text!controles/ctrl-input.html',[],function(){return "<template><div class=\"row\"><div class=\"col s12\"><div class=\"input-field\"><input placeholder=\"\" id=\"\" type=\"text\" class=\"${configInput.Clases}\" value.bind=\"configInput.Valor\"> <label for=\"\">${configInput.Label}</label></div></div></div></template>";});
+define('controles/ctrl-menu-flotante-horizontal',["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    var ConfiguracionMenuFlotanteHorizontal = (function () {
+        function ConfiguracionMenuFlotanteHorizontal() {
+        }
+        return ConfiguracionMenuFlotanteHorizontal;
+    }());
+    exports.ConfiguracionMenuFlotanteHorizontal = ConfiguracionMenuFlotanteHorizontal;
+});
+
+
+
+define('text!controles/ctrl-menu-flotante-horizontal.html',[],function(){return "<template>JAJAJAJA!</template>";});
 define('text!controles/ctrl-menu.html',[],function(){return "https://materializecss.com/sidenav.html";});
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -367,6 +381,27 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 define('controles/ctrl-tabla',["require", "exports", "aurelia-framework"], function (require, exports, aurelia_framework_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    var EnumTipoColumnas;
+    (function (EnumTipoColumnas) {
+        EnumTipoColumnas["Entero"] = "number";
+        EnumTipoColumnas["Decimal"] = "decimal";
+        EnumTipoColumnas["Texto"] = "string";
+        EnumTipoColumnas["Fecha"] = "date";
+        EnumTipoColumnas["Moneda"] = "money";
+        EnumTipoColumnas["Checkbox"] = "checkbox";
+        EnumTipoColumnas["Acciones"] = "actions";
+    })(EnumTipoColumnas = exports.EnumTipoColumnas || (exports.EnumTipoColumnas = {}));
+    var Columnas = (function () {
+        function Columnas(Valor, Tipo) {
+            if (Tipo === void 0) { Tipo = EnumTipoColumnas.Texto; }
+            this.Valor = null;
+            this.Tipo = null;
+            this.Valor = Valor;
+            this.Tipo = Tipo;
+        }
+        return Columnas;
+    }());
+    exports.Columnas = Columnas;
     var Encabezados = (function () {
         function Encabezados(Llave, Texto) {
             if (Llave === void 0) { Llave = ''; }
@@ -393,6 +428,17 @@ define('controles/ctrl-tabla',["require", "exports", "aurelia-framework"], funct
     var CtrlTabla = (function () {
         function CtrlTabla() {
         }
+        CtrlTabla.prototype.formatearValor = function (valor, tipo) {
+            switch (tipo) {
+                case EnumTipoColumnas.Texto:
+                case EnumTipoColumnas.Entero:
+                    return valor;
+                case EnumTipoColumnas.Acciones:
+                    return;
+                default:
+                    return valor;
+            }
+        };
         __decorate([
             aurelia_framework_1.bindable({ defaultBindingMode: aurelia_framework_1.bindingMode.twoWay }),
             __metadata("design:type", ConfiguracionTabla)
@@ -416,7 +462,7 @@ define('controles/ctrl-tabla',["require", "exports", "aurelia-framework"], funct
 
 
 
-define('text!controles/ctrl-tabla.html',[],function(){return "<template><div class=\"row\"><div class=\"col s12\"><table><thead><tr><th repeat.for=\"encabezado of configTabla.Encabezados\">${encabezado.Texto}</th></tr></thead><tbody><tr repeat.for=\"renglon of configTabla.JsonDatos\"><td repeat.for=\"columna of renglon | keys\">${renglon[columna]}</td></tr></tbody></table></div></div></template>";});
+define('text!controles/ctrl-tabla.html',[],function(){return "<template><div class=\"row\"><div class=\"col s12\"><table class=\"responsive-table\"><thead><tr><th repeat.for=\"encabezado of configTabla.Encabezados\">${encabezado.Texto}</th></tr></thead><tbody><tr repeat.for=\"renglon of configTabla.JsonDatos\"><td repeat.for=\"columna of renglon | keys\"><span if.bind=\"renglon[columna].Tipo != 'actions'\"> ${formatearValor(renglon[columna].Valor, renglon[columna].Tipo)} </span><span else><ctrl-menu-opciones></ctrl-menu-opciones></span></td></tr></tbody></table></div></div></template>";});
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -495,6 +541,7 @@ define('enumeradores/enum-iconos',["require", "exports"], function (require, exp
         EnumIconos["Advertencia"] = "warning";
         EnumIconos["Informacion"] = "info";
         EnumIconos["Buscar"] = "search";
+        EnumIconos["Opciones"] = "menu";
     })(EnumIconos = exports.EnumIconos || (exports.EnumIconos = {}));
 });
 
@@ -548,6 +595,20 @@ define('enumeradores/enum-tipo-mensaje',["require", "exports"], function (requir
     (function (EnumTipoMensaje) {
         EnumTipoMensaje[EnumTipoMensaje["Alerta"] = 0] = "Alerta";
     })(EnumTipoMensaje = exports.EnumTipoMensaje || (exports.EnumTipoMensaje = {}));
+});
+
+
+
+define('enumeradores/enum-tipo-valores',["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    var EnumTipoValores;
+    (function (EnumTipoValores) {
+        EnumTipoValores["Entero"] = "number";
+        EnumTipoValores["Decimal"] = "decimal";
+        EnumTipoValores["Texto"] = "string";
+        EnumTipoValores["Fecha"] = "date";
+    })(EnumTipoValores = exports.EnumTipoValores || (exports.EnumTipoValores = {}));
 });
 
 
@@ -657,12 +718,13 @@ define('modulos/empleados/cpte-filtros-empleados',["require", "exports", "aureli
             var obj = [];
             for (var i in empleados) {
                 obj.push({
-                    "ID": empleados[i].ID,
-                    "Nombre": empleados[i].Nombre,
-                    "ApellidoPaterno": empleados[i].ApellidoPaterno,
-                    "ApellidoMaterno": empleados[i].ApellidoMaterno,
-                    "Puesto": empleados[i].Puesto,
-                    "TipoEmpleado": empleados[i].TipoEmpleado,
+                    "ID": new ctrl_tabla_1.Columnas(empleados[i].ID, ctrl_tabla_1.EnumTipoColumnas.Entero),
+                    "Nombre": new ctrl_tabla_1.Columnas(empleados[i].Nombre, ctrl_tabla_1.EnumTipoColumnas.Texto),
+                    "ApellidoPaterno": new ctrl_tabla_1.Columnas(empleados[i].ApellidoPaterno, ctrl_tabla_1.EnumTipoColumnas.Texto),
+                    "ApellidoMaterno": new ctrl_tabla_1.Columnas(empleados[i].ApellidoMaterno, ctrl_tabla_1.EnumTipoColumnas.Texto),
+                    "Puesto": new ctrl_tabla_1.Columnas(empleados[i].Puesto, ctrl_tabla_1.EnumTipoColumnas.Texto),
+                    "TipoEmpleado": new ctrl_tabla_1.Columnas(empleados[i].TipoEmpleado, ctrl_tabla_1.EnumTipoColumnas.Texto),
+                    "Acciones": new ctrl_tabla_1.Columnas(new AccionesTabla(), ctrl_tabla_1.EnumTipoColumnas.Acciones)
                 });
             }
             this.configTablaEmpleados = {
@@ -877,7 +939,8 @@ define('resources/index',["require", "exports"], function (require, exports) {
             "../controles/ctrl-radio-vertical",
             "../controles/ctrl-combo",
             "../controles/ctrl-boton",
-            "../controles/ctrl-tabla"
+            "../controles/ctrl-tabla",
+            "../controles/ctrl-menu-flotante-horizontal"
         ]);
     }
     exports.configure = configure;

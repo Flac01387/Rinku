@@ -3,7 +3,8 @@ import { ConfiguracionInput } from '../../controles/ctrl-input';
 import { ConfiguracionCombo } from '../../controles/ctrl-combo';
 import { ConfiguracionRadioVertical, OpcionRadioVertical } from '../../controles/ctrl-radio-vertical';
 import { ConfiguracionBoton } from '../../controles/ctrl-boton';
-import { ConfiguracionTabla, Encabezados } from '../../controles/ctrl-tabla';
+import { ConfiguracionTabla, Encabezados, Columnas, EnumTipoColumnas } from '../../controles/ctrl-tabla';
+import { ConfiguracionMenuFlotanteHorizontal } from '../../controles/ctrl-menu-flotante-horizontal';
 import { CtrlAlerta } from '../../controles/ctrl-alerta';
 import { Icono } from '../../controles/icono';
 import { ApiPuestos } from '../../servicios/web-api/api-puestos';
@@ -85,12 +86,13 @@ export class CpteFiltrosEmpleados {
     for(var i in empleados)
     {
       obj.push({
-        "ID": empleados[i].ID,
-        "Nombre": empleados[i].Nombre,
-        "ApellidoPaterno": empleados[i].ApellidoPaterno,
-        "ApellidoMaterno": empleados[i].ApellidoMaterno,
-        "Puesto": empleados[i].Puesto,
-        "TipoEmpleado": empleados[i].TipoEmpleado,
+        "ID": new Columnas(empleados[i].ID, EnumTipoColumnas.Entero),
+        "Nombre": new Columnas(empleados[i].Nombre, EnumTipoColumnas.Texto),
+        "ApellidoPaterno": new Columnas(empleados[i].ApellidoPaterno, EnumTipoColumnas.Texto),
+        "ApellidoMaterno": new Columnas(empleados[i].ApellidoMaterno, EnumTipoColumnas.Texto),
+        "Puesto": new Columnas(empleados[i].Puesto, EnumTipoColumnas.Texto),
+        "TipoEmpleado": new Columnas(empleados[i].TipoEmpleado, EnumTipoColumnas.Texto),
+        "Acciones": new Columnas(new ConfiguracionMenuFlotanteHorizontal(), EnumTipoColumnas.Acciones)
       });
     }
 

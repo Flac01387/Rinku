@@ -1,7 +1,7 @@
 <template>
 	<div class="row">
 		<div class="col s12">
-			<table>
+			<table class="responsive-table">
 				<thead>
 					<tr>
 						<th repeat.for="encabezado of configTabla.Encabezados">${encabezado.Texto}</th>
@@ -9,7 +9,14 @@
 				</thead>
 				<tbody>
 					<tr repeat.for="renglon of configTabla.JsonDatos">
-						<td repeat.for="columna of renglon | keys">${renglon[columna]}</td>
+						<td repeat.for="columna of renglon | keys">
+							<span if.bind="renglon[columna].Tipo != 'actions'">
+								${formatearValor(renglon[columna].Valor, renglon[columna].Tipo)}
+							</span>
+							<span else>
+								<ctrl-menu-opciones></ctrl-menu-opciones>
+							</span>
+						</td>
 					</tr>
 				</tbody>
 			</table>

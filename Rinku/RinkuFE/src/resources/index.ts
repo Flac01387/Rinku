@@ -6,6 +6,7 @@ export function configure(config: FrameworkConfiguration) {
     "../controles/ctrl-radio-vertical",
     "../controles/ctrl-combo",
     "../controles/ctrl-boton",
-    "../controles/ctrl-tabla"
+    "../controles/ctrl-tabla",
+    "../controles/ctrl-menu-flotante-horizontal"
   ]);
 }
