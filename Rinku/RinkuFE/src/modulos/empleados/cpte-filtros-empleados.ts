@@ -6,7 +6,7 @@ import { ConfiguracionBoton } from '../../controles/ctrl-boton';
 import { ConfiguracionTabla, Encabezados, Columnas, EnumTipoColumnas } from '../../controles/ctrl-tabla';
 import { ConfiguracionMenuFlotanteHorizontal } from '../../controles/ctrl-menu-flotante-horizontal';
 import { CtrlAlerta } from '../../controles/ctrl-alerta';
-import { Icono } from '../../controles/icono';
+import { Icono, EnumTamanosIconos } from '../../controles/icono';
 import { ApiPuestos } from '../../servicios/web-api/api-puestos';
 import { ApiEmpleados } from '../../servicios/web-api/api-empleados';
 import { EnumRespuestaAPI } from '../../enumeradores/enum-respuesta-api';
@@ -81,36 +81,50 @@ export class CpteFiltrosEmpleados {
 
   mostrarEmpleados(empleados)
   {
-    var obj = [];
-
-    for(var i in empleados)
+    try
     {
-      obj.push({
-        "ID": new Columnas(empleados[i].ID, EnumTipoColumnas.Entero),
-        "Nombre": new Columnas(empleados[i].Nombre, EnumTipoColumnas.Texto),
-        "ApellidoPaterno": new Columnas(empleados[i].ApellidoPaterno, EnumTipoColumnas.Texto),
-        "ApellidoMaterno": new Columnas(empleados[i].ApellidoMaterno, EnumTipoColumnas.Texto),
-        "Puesto": new Columnas(empleados[i].Puesto, EnumTipoColumnas.Texto),
-        "TipoEmpleado": new Columnas(empleados[i].TipoEmpleado, EnumTipoColumnas.Texto),
-        "Acciones": new Columnas(new ConfiguracionMenuFlotanteHorizontal(), EnumTipoColumnas.Acciones)
-      });
+      var empleado = [];
+  
+      var IconoPrincipal: Icono = new Icono(EnumIconos.Opciones, EnumColores.Azul, EnumPosiciones.centro, 'Opciones');
+      var Opciones: Icono[] = [];
+  
+      Opciones.push(new Icono(EnumIconos.Opciones, EnumColores.Verde, EnumPosiciones.default, 'Editar'));
+      Opciones.push(new Icono(EnumIconos.Opciones, EnumColores.Rojo, EnumPosiciones.default, 'Eliminar'));
+  
+      var acciones: ConfiguracionMenuFlotanteHorizontal = new ConfiguracionMenuFlotanteHorizontal(IconoPrincipal, Opciones) 
+  
+      for(var i in empleados)
+      {
+        empleado.push({
+          "ID": new Columnas(empleados[i].ID, EnumTipoColumnas.Entero),
+          "Nombre": new Columnas(empleados[i].Nombre, EnumTipoColumnas.Texto),
+          "ApellidoPaterno": new Columnas(empleados[i].ApellidoPaterno, EnumTipoColumnas.Texto),
+          "ApellidoMaterno": new Columnas(empleados[i].ApellidoMaterno, EnumTipoColumnas.Texto),
+          "Puesto": new Columnas(empleados[i].Puesto, EnumTipoColumnas.Texto),
+          "TipoEmpleado": new Columnas(empleados[i].TipoEmpleado, EnumTipoColumnas.Texto),
+          "Acciones": new Columnas(acciones, EnumTipoColumnas.Acciones)
+        });
+      }
+  
+      this.configTablaEmpleados = {
+        Encabezados: [
+          new Encabezados("ID","ID"),
+          new Encabezados("Nombre", "Nombre"),
+          new Encabezados("ApellidoPaterno", "Apellido Paterno"),
+          new Encabezados("ApellidoMaterno", "Apellido Materno"),
+          new Encabezados("Puesto", "Puesto"), 
+          new Encabezados("TipoEmpleado","Tipo Empleado"),
+          new Encabezados("","")
+        ],
+        Clases: '',
+        ID: '',
+        JsonDatos: empleado,
+        Nombre: ''
+      };
     }
-
-    this.configTablaEmpleados = {
-      Encabezados: [
-        new Encabezados("ID","ID"),
-        new Encabezados("Nombre", "Nombre"),
-        new Encabezados("ApellidoPaterno", "Apellido Paterno"),
-        new Encabezados("ApellidoMaterno", "Apellido Materno"),
-        new Encabezados("Puesto", "Puesto"), 
-        new Encabezados("TipoEmpleado","Tipo Empleado"),
-        new Encabezados("","")
-      ],
-      Clases: '',
-      ID: '',
-      JsonDatos: obj,
-      Nombre: ''
-    };
+    catch(e){
+      new CtrlAlerta("Error al pintar la tabla de empleados");
+    }
   }
 
   cancelar(){

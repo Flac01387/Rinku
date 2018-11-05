@@ -3,5 +3,6 @@
   arriba = 'top',
   abajo = 'down',
   izquierda = 'left',
-  derecha = 'right'
+  derecha = 'right',
+  centro = 'center'
 }

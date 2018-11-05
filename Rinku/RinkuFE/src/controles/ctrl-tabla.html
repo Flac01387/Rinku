@@ -10,11 +10,11 @@
 				<tbody>
 					<tr repeat.for="renglon of configTabla.JsonDatos">
 						<td repeat.for="columna of renglon | keys">
-							<span if.bind="renglon[columna].Tipo != 'actions'">
-								${formatearValor(renglon[columna].Valor, renglon[columna].Tipo)}
+							<span if.bind="renglon[columna].Tipo == 'actions'">
+								<ctrl-menu-flotante-horizontal config-menu-flotante-horizontal.bind="renglon[columna].Valor"></ctrl-menu-flotante-horizontal>	
 							</span>
 							<span else>
-								<ctrl-menu-opciones></ctrl-menu-opciones>
+									${formatearValor(renglon[columna].Valor, renglon[columna].Tipo)}
 							</span>
 						</td>
 					</tr>

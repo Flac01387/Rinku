@@ -218,20 +218,54 @@ define('controles/ctrl-input',["require", "exports", "aurelia-framework"], funct
 
 
 define('text!controles/ctrl-input.html',[],function(){return "<template><div class=\"row\"><div class=\"col s12\"><div class=\"input-field\"><input placeholder=\"\" id=\"\" type=\"text\" class=\"${configInput.Clases}\" value.bind=\"configInput.Valor\"> <label for=\"\">${configInput.Label}</label></div></div></div></template>";});
-define('controles/ctrl-menu-flotante-horizontal',["require", "exports"], function (require, exports) {
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+define('controles/ctrl-menu-flotante-horizontal',["require", "exports", "aurelia-framework"], function (require, exports, aurelia_framework_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var ConfiguracionMenuFlotanteHorizontal = (function () {
-        function ConfiguracionMenuFlotanteHorizontal() {
+        function ConfiguracionMenuFlotanteHorizontal(IconoPrincipal, Opciones) {
+            this.IconoPrincipal = null;
+            this.Opciones = [];
+            this.IconoPrincipal = IconoPrincipal;
+            this.Opciones = Opciones;
         }
         return ConfiguracionMenuFlotanteHorizontal;
     }());
     exports.ConfiguracionMenuFlotanteHorizontal = ConfiguracionMenuFlotanteHorizontal;
+    var CtrlMenuFlotanteHorizontal = (function () {
+        function CtrlMenuFlotanteHorizontal() {
+        }
+        CtrlMenuFlotanteHorizontal.prototype.attached = function () {
+            document.addEventListener('DOMContentLoaded', function () {
+                var elems = document.querySelectorAll('.fixed-action-btn');
+                var instances = M.FloatingActionButton.init(elems, {
+                    direction: 'left'
+                });
+            });
+        };
+        __decorate([
+            aurelia_framework_1.bindable({ defaultBindingMode: aurelia_framework_1.bindingMode.twoWay }),
+            __metadata("design:type", ConfiguracionMenuFlotanteHorizontal)
+        ], CtrlMenuFlotanteHorizontal.prototype, "configMenuFlotanteHorizontal", void 0);
+        CtrlMenuFlotanteHorizontal = __decorate([
+            aurelia_framework_1.autoinject
+        ], CtrlMenuFlotanteHorizontal);
+        return CtrlMenuFlotanteHorizontal;
+    }());
+    exports.CtrlMenuFlotanteHorizontal = CtrlMenuFlotanteHorizontal;
 });
 
 
 
-define('text!controles/ctrl-menu-flotante-horizontal.html',[],function(){return "<template>JAJAJAJA!</template>";});
+define('text!controles/ctrl-menu-flotante-horizontal.html',[],function(){return "<template><div class=\"row\"><div class=\"col s12\"><div style=\"position:relative;height:70px\"><div class=\"fixed-action-btn horizontal direction-top direction-left\" style=\"position:absolute;display:inline-block;right:24px\"><a class=\"btn-floating btn-large red\"><i class=\"large material-icons\">mode_edit</i></a><ul><li><a class=\"btn-floating red\" style=\"opacity:0;transform:scale(.4) translateY(0) translateX(40px)\"><i class=\"material-icons\">insert_chart</i></a></li></ul></div></div></div></div></template>";});
 define('text!controles/ctrl-menu.html',[],function(){return "https://materializecss.com/sidenav.html";});
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -462,7 +496,7 @@ define('controles/ctrl-tabla',["require", "exports", "aurelia-framework"], funct
 
 
 
-define('text!controles/ctrl-tabla.html',[],function(){return "<template><div class=\"row\"><div class=\"col s12\"><table class=\"responsive-table\"><thead><tr><th repeat.for=\"encabezado of configTabla.Encabezados\">${encabezado.Texto}</th></tr></thead><tbody><tr repeat.for=\"renglon of configTabla.JsonDatos\"><td repeat.for=\"columna of renglon | keys\"><span if.bind=\"renglon[columna].Tipo != 'actions'\"> ${formatearValor(renglon[columna].Valor, renglon[columna].Tipo)} </span><span else><ctrl-menu-opciones></ctrl-menu-opciones></span></td></tr></tbody></table></div></div></template>";});
+define('text!controles/ctrl-tabla.html',[],function(){return "<template><div class=\"row\"><div class=\"col s12\"><table class=\"responsive-table\"><thead><tr><th repeat.for=\"encabezado of configTabla.Encabezados\">${encabezado.Texto}</th></tr></thead><tbody><tr repeat.for=\"renglon of configTabla.JsonDatos\"><td repeat.for=\"columna of renglon | keys\"><span if.bind=\"renglon[columna].Tipo == 'actions'\"><ctrl-menu-flotante-horizontal config-menu-flotante-horizontal.bind=\"renglon[columna].Valor\"></ctrl-menu-flotante-horizontal></span><span else> ${formatearValor(renglon[columna].Valor, renglon[columna].Tipo)} </span></td></tr></tbody></table></div></div></template>";});
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -496,17 +530,29 @@ define('text!controles/ctrl-titulo.html',[],function(){return "<template><div cl
 define('controles/icono',["require", "exports", "../enumeradores/enum-posiciones", "../enumeradores/enum-iconos", "../enumeradores/enum-colores"], function (require, exports, enum_posiciones_1, enum_iconos_1, enum_colores_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    var EnumTamanosIconos;
+    (function (EnumTamanosIconos) {
+        EnumTamanosIconos["Chico"] = "small";
+        EnumTamanosIconos["Mediano"] = "medium";
+        EnumTamanosIconos["Grande"] = "big";
+    })(EnumTamanosIconos = exports.EnumTamanosIconos || (exports.EnumTamanosIconos = {}));
     var Icono = (function () {
-        function Icono(icono, color, posicion) {
+        function Icono(icono, color, posicion, titulo, tamano) {
             if (icono === void 0) { icono = enum_iconos_1.EnumIconos.SinIcono; }
             if (color === void 0) { color = enum_colores_1.EnumColores.SinColor; }
             if (posicion === void 0) { posicion = enum_posiciones_1.EnumPosiciones.default; }
+            if (titulo === void 0) { titulo = ''; }
+            if (tamano === void 0) { tamano = EnumTamanosIconos.Chico; }
             this.icono = enum_iconos_1.EnumIconos.SinIcono;
             this.color = enum_colores_1.EnumColores.SinColor;
             this.posicion = enum_posiciones_1.EnumPosiciones.default;
+            this.titulo = '';
+            this.tamano = EnumTamanosIconos.Chico;
             this.icono = icono;
             this.color = color;
             this.posicion = posicion;
+            this.titulo = titulo;
+            this.tamano = tamano;
         }
         return Icono;
     }());
@@ -524,6 +570,7 @@ define('enumeradores/enum-colores',["require", "exports"], function (require, ex
         EnumColores["Rojo"] = "red";
         EnumColores["Azul"] = "blue";
         EnumColores["Amarillo"] = "yellow";
+        EnumColores["Verde"] = "green";
     })(EnumColores = exports.EnumColores || (exports.EnumColores = {}));
 });
 
@@ -568,6 +615,7 @@ define('enumeradores/enum-posiciones',["require", "exports"], function (require,
         EnumPosiciones["abajo"] = "down";
         EnumPosiciones["izquierda"] = "left";
         EnumPosiciones["derecha"] = "right";
+        EnumPosiciones["centro"] = "center";
     })(EnumPosiciones = exports.EnumPosiciones || (exports.EnumPosiciones = {}));
 });
 
@@ -670,7 +718,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-define('modulos/empleados/cpte-filtros-empleados',["require", "exports", "aurelia-framework", "../../controles/ctrl-tabla", "../../controles/ctrl-alerta", "../../controles/icono", "../../servicios/web-api/api-puestos", "../../servicios/web-api/api-empleados", "../../enumeradores/enum-respuesta-api", "enumeradores/enum-posiciones", "enumeradores/enum-mensajes", "enumeradores/enum-iconos", "enumeradores/enum-colores"], function (require, exports, aurelia_framework_1, ctrl_tabla_1, ctrl_alerta_1, icono_1, api_puestos_1, api_empleados_1, enum_respuesta_api_1, enum_posiciones_1, enum_mensajes_1, enum_iconos_1, enum_colores_1) {
+define('modulos/empleados/cpte-filtros-empleados',["require", "exports", "aurelia-framework", "../../controles/ctrl-tabla", "../../controles/ctrl-menu-flotante-horizontal", "../../controles/ctrl-alerta", "../../controles/icono", "../../servicios/web-api/api-puestos", "../../servicios/web-api/api-empleados", "../../enumeradores/enum-respuesta-api", "enumeradores/enum-posiciones", "enumeradores/enum-mensajes", "enumeradores/enum-iconos", "enumeradores/enum-colores"], function (require, exports, aurelia_framework_1, ctrl_tabla_1, ctrl_menu_flotante_horizontal_1, ctrl_alerta_1, icono_1, api_puestos_1, api_empleados_1, enum_respuesta_api_1, enum_posiciones_1, enum_mensajes_1, enum_iconos_1, enum_colores_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var CpteFiltrosEmpleados = (function () {
@@ -715,33 +763,43 @@ define('modulos/empleados/cpte-filtros-empleados',["require", "exports", "aureli
             });
         };
         CpteFiltrosEmpleados.prototype.mostrarEmpleados = function (empleados) {
-            var obj = [];
-            for (var i in empleados) {
-                obj.push({
-                    "ID": new ctrl_tabla_1.Columnas(empleados[i].ID, ctrl_tabla_1.EnumTipoColumnas.Entero),
-                    "Nombre": new ctrl_tabla_1.Columnas(empleados[i].Nombre, ctrl_tabla_1.EnumTipoColumnas.Texto),
-                    "ApellidoPaterno": new ctrl_tabla_1.Columnas(empleados[i].ApellidoPaterno, ctrl_tabla_1.EnumTipoColumnas.Texto),
-                    "ApellidoMaterno": new ctrl_tabla_1.Columnas(empleados[i].ApellidoMaterno, ctrl_tabla_1.EnumTipoColumnas.Texto),
-                    "Puesto": new ctrl_tabla_1.Columnas(empleados[i].Puesto, ctrl_tabla_1.EnumTipoColumnas.Texto),
-                    "TipoEmpleado": new ctrl_tabla_1.Columnas(empleados[i].TipoEmpleado, ctrl_tabla_1.EnumTipoColumnas.Texto),
-                    "Acciones": new ctrl_tabla_1.Columnas(new AccionesTabla(), ctrl_tabla_1.EnumTipoColumnas.Acciones)
-                });
+            try {
+                var empleado = [];
+                var IconoPrincipal = new icono_1.Icono(enum_iconos_1.EnumIconos.Opciones, enum_colores_1.EnumColores.Azul, enum_posiciones_1.EnumPosiciones.centro, 'Opciones');
+                var Opciones = [];
+                Opciones.push(new icono_1.Icono(enum_iconos_1.EnumIconos.Opciones, enum_colores_1.EnumColores.Verde, enum_posiciones_1.EnumPosiciones.default, 'Editar'));
+                Opciones.push(new icono_1.Icono(enum_iconos_1.EnumIconos.Opciones, enum_colores_1.EnumColores.Rojo, enum_posiciones_1.EnumPosiciones.default, 'Eliminar'));
+                var acciones = new ctrl_menu_flotante_horizontal_1.ConfiguracionMenuFlotanteHorizontal(IconoPrincipal, Opciones);
+                for (var i in empleados) {
+                    empleado.push({
+                        "ID": new ctrl_tabla_1.Columnas(empleados[i].ID, ctrl_tabla_1.EnumTipoColumnas.Entero),
+                        "Nombre": new ctrl_tabla_1.Columnas(empleados[i].Nombre, ctrl_tabla_1.EnumTipoColumnas.Texto),
+                        "ApellidoPaterno": new ctrl_tabla_1.Columnas(empleados[i].ApellidoPaterno, ctrl_tabla_1.EnumTipoColumnas.Texto),
+                        "ApellidoMaterno": new ctrl_tabla_1.Columnas(empleados[i].ApellidoMaterno, ctrl_tabla_1.EnumTipoColumnas.Texto),
+                        "Puesto": new ctrl_tabla_1.Columnas(empleados[i].Puesto, ctrl_tabla_1.EnumTipoColumnas.Texto),
+                        "TipoEmpleado": new ctrl_tabla_1.Columnas(empleados[i].TipoEmpleado, ctrl_tabla_1.EnumTipoColumnas.Texto),
+                        "Acciones": new ctrl_tabla_1.Columnas(acciones, ctrl_tabla_1.EnumTipoColumnas.Acciones)
+                    });
+                }
+                this.configTablaEmpleados = {
+                    Encabezados: [
+                        new ctrl_tabla_1.Encabezados("ID", "ID"),
+                        new ctrl_tabla_1.Encabezados("Nombre", "Nombre"),
+                        new ctrl_tabla_1.Encabezados("ApellidoPaterno", "Apellido Paterno"),
+                        new ctrl_tabla_1.Encabezados("ApellidoMaterno", "Apellido Materno"),
+                        new ctrl_tabla_1.Encabezados("Puesto", "Puesto"),
+                        new ctrl_tabla_1.Encabezados("TipoEmpleado", "Tipo Empleado"),
+                        new ctrl_tabla_1.Encabezados("", "")
+                    ],
+                    Clases: '',
+                    ID: '',
+                    JsonDatos: empleado,
+                    Nombre: ''
+                };
             }
-            this.configTablaEmpleados = {
-                Encabezados: [
-                    new ctrl_tabla_1.Encabezados("ID", "ID"),
-                    new ctrl_tabla_1.Encabezados("Nombre", "Nombre"),
-                    new ctrl_tabla_1.Encabezados("ApellidoPaterno", "Apellido Paterno"),
-                    new ctrl_tabla_1.Encabezados("ApellidoMaterno", "Apellido Materno"),
-                    new ctrl_tabla_1.Encabezados("Puesto", "Puesto"),
-                    new ctrl_tabla_1.Encabezados("TipoEmpleado", "Tipo Empleado"),
-                    new ctrl_tabla_1.Encabezados("", "")
-                ],
-                Clases: '',
-                ID: '',
-                JsonDatos: obj,
-                Nombre: ''
-            };
+            catch (e) {
+                new ctrl_alerta_1.CtrlAlerta("Error al pintar la tabla de empleados");
+            }
         };
         CpteFiltrosEmpleados.prototype.cancelar = function () {
             console.log(this.configRadioTiposEmpleados);

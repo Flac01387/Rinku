@@ -2,5 +2,6 @@
   SinColor = '',
   Rojo = 'red',
   Azul = 'blue',
-  Amarillo = 'yellow'
+  Amarillo = 'yellow',
+  Verde = 'green'
 }
