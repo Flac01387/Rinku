@@ -1,4 +1,6 @@
 ﻿import { bindable, bindingMode, autoinject } from 'aurelia-framework';
+import { EventAggregator } from 'aurelia-event-aggregator';
+import * as eventosEmpleados from '../../eventos/eventos-empleados';
 import { ConfiguracionInput } from '../../controles/ctrl-input';
 import { ConfiguracionCombo } from '../../controles/ctrl-combo';
 import { ConfiguracionRadioVertical, OpcionRadioVertical } from '../../controles/ctrl-radio-vertical';
@@ -14,6 +16,7 @@ import { EnumPosiciones } from 'enumeradores/enum-posiciones';
 import { EnumMensajes } from 'enumeradores/enum-mensajes';
 import { EnumIconos } from 'enumeradores/enum-iconos';
 import { EnumColores } from 'enumeradores/enum-colores';
+import { EnumVistas } from 'enumeradores/enum-vistas';
 
 @autoinject
 export class CpteFiltrosEmpleados {
@@ -29,11 +32,9 @@ export class CpteFiltrosEmpleados {
   opcionesTiposEmpleados: OpcionRadioVertical[];
   configRadioTiposEmpleados: ConfiguracionRadioVertical;
   configBotonBuscar: ConfiguracionBoton;
-  configBotonAceptar: ConfiguracionBoton;
   configBotonCancelar: ConfiguracionBoton;
-  configTablaEmpleados: ConfiguracionTabla;
 
-  constructor(private peticionPuestos: ApiPuestos, private peticionEmpleados: ApiEmpleados)
+  constructor(private ea: EventAggregator, private peticionPuestos: ApiPuestos, private peticionEmpleados: ApiEmpleados)
   {
     this.inicializarControles();
     this.consultarPuestos();
@@ -106,7 +107,7 @@ export class CpteFiltrosEmpleados {
         });
       }
   
-      this.configTablaEmpleados = {
+      var configTablaEmpleados: ConfiguracionTabla = {
         Encabezados: [
           new Encabezados("ID","ID"),
           new Encabezados("Nombre", "Nombre"),
@@ -121,6 +122,11 @@ export class CpteFiltrosEmpleados {
         JsonDatos: empleado,
         Nombre: ''
       };
+
+      this.ea.publish(new eventosEmpleados.CambiarVistasPacientes(EnumVistas.vistaListaEmpleados));
+      setTimeout(() => {
+        this.ea.publish(new eventosEmpleados.EnviarListaPacientes(configTablaEmpleados));
+      }, 100);
     }
     catch(e){
       new CtrlAlerta("Error al pintar la tabla de empleados");
@@ -268,17 +274,6 @@ export class CpteFiltrosEmpleados {
       Deshabilitado: false,
       Mostrar: true,
       Funcion: 'buscar',
-      Padre: this
-    };
-  
-    this.configBotonAceptar = {
-      ID: '',
-      Icono: new Icono(EnumIconos.Guardar, EnumColores.SinColor, EnumPosiciones.izquierda),
-      Nombre: '',
-      Texto: 'Aceptar',
-      Deshabilitado: false,
-      Mostrar: false,
-      Funcion: 'aceptar',
       Padre: this
     };
   

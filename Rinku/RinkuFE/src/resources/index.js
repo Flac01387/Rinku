@@ -7,7 +7,10 @@ define(["require", "exports"], function (require, exports) {
             "../controles/ctrl-radio-vertical",
             "../controles/ctrl-combo",
             "../controles/ctrl-boton",
-            "../controles/ctrl-tabla"
+            "../controles/ctrl-tabla",
+            "../controles/ctrl-menu-flotante-horizontal",
+            "../controles/ctrl-migas",
+            "../controles/ctrl-titulo"
         ]);
     }
     exports.configure = configure;

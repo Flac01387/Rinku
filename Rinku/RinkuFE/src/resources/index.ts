@@ -7,6 +7,8 @@ export function configure(config: FrameworkConfiguration) {
     "../controles/ctrl-combo",
     "../controles/ctrl-boton",
     "../controles/ctrl-tabla",
-    "../controles/ctrl-menu-flotante-horizontal"
+    "../controles/ctrl-menu-flotante-horizontal",
+    "../controles/ctrl-migas",
+    "../controles/ctrl-titulo"
   ]);
 }

@@ -47,16 +47,20 @@ GO
 ALTER PROCEDURE sp_consultarEmpleados @ID int, @Nombre varchar(150), @ApellidoPaterno varchar(150), @ApellidoMaterno varchar(150), @PuestoID int, @TipoEmpleadoID int, @Activo bit
 AS    
 BEGIN    
- SELECT ID, Nombre, ApellidoPaterno, ApellidoMaterno, PuestoID,	TipoEmpleadoID, Activo
- FROM Empleados(NOLOCK)
+ SELECT 
+	E.ID, E.Nombre, E.ApellidoPaterno, E.ApellidoMaterno, E.PuestoID, E.TipoEmpleadoID, E.Activo,
+	P.Nombre as Puesto, TE.Nombre as TipoEmpleado
+ FROM Empleados E(NOLOCK)
+ INNER JOIN Puestos P(NOLOCK) ON E.PuestoID = P.ID
+ INNER JOIN TiposEmpleados TE(NOLOCK) ON E.TipoEmpleadoID = TE.ID
  WHERE 
-	ID = CASE WHEN @ID != 0 THEN @ID ELSE ID END AND
-	Nombre like '%'+@Nombre+'%' AND 
-	ApellidoPaterno like '%'+@ApellidoPaterno+'%' AND 
-	ApellidoMaterno like '%'+@ApellidoMaterno+'%' AND
-	PuestoID = CASE WHEN @PuestoID > 0 THEN @PuestoID ELSE PuestoID END AND
-	TipoEmpleadoID = CASE WHEN @TipoEmpleadoID > 0 THEN @TipoEmpleadoID ELSE TipoEmpleadoID END AND
-	Activo = @Activo
+	E.ID = CASE WHEN @ID != 0 THEN @ID ELSE E.ID END AND
+	E.Nombre like '%'+@Nombre+'%' AND 
+	E.ApellidoPaterno like '%'+@ApellidoPaterno+'%' AND 
+	E.ApellidoMaterno like '%'+@ApellidoMaterno+'%' AND
+	E.PuestoID = CASE WHEN @PuestoID > 0 THEN @PuestoID ELSE E.PuestoID END AND
+	E.TipoEmpleadoID = CASE WHEN @TipoEmpleadoID > 0 THEN @TipoEmpleadoID ELSE E.TipoEmpleadoID END AND
+	E.Activo = @Activo
 END
 
 GO

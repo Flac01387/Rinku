@@ -1,8 +1,4 @@
 <template>
-  <require from="../../controles/ctrl-titulo"></require>
-  <require from="../../controles/ctrl-migas"></require>
-  <require from="../../modulos/empleados/cpte-filtros-empleados"></require>
-
   <div class="row">
     <div class="col s12">
       <ctrl-migas migas.bind="migas"></ctrl-migas>
@@ -15,6 +11,6 @@
   </div>
   <div class="row">
     <div class="col s12"></div>
-      <cpte-filtros-empleados></cpte-filtros-empleados>
+    <compose view.bind="VistasEmpleados" view-model.bind="VistasModelosEmpleados"></compose>
   </div>
 </template>
