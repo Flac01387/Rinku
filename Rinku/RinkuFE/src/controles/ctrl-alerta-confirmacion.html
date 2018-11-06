@@ -1,0 +1,12 @@
+<template>
+    <div id="${configAlertaConfirmacion.id}" class="modal">
+        <div class="modal-content">
+            <h4>${configAlertaConfirmacion.titulo}</h4>
+            <p>${configAlertaConfirmacion.mensaje}</p>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancelar</a>
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat" click.delegate="clickAceptar()">Aceptar</a>
+        </div>
+    </div>
+</template>

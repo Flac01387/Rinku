@@ -3,13 +3,13 @@
         <div class="col s12">
             <div style="position: relative; height: 70px;">
                 <div class="fixed-action-btn horizontal direction-top direction-left" style="position: absolute; display: inline-block; right: 24px;">
-                    <a class="btn-floating btn-small red">
-                        <i class="small material-icons">mode_edit</i>
+                    <a class="btn-floating btn-large ${configMenuFlotanteHorizontal.IconoPrincipal.color}">
+                        <i class="small material-icons">${configMenuFlotanteHorizontal.IconoPrincipal.icono}</i>
                     </a>
                     <ul>
-                        <li>
-                            <a class="btn-floating red" style="opacity: 0; transform: scale(0.4) translateY(0px) translateX(40px);">
-                                <i class="material-icons">insert_chart</i>
+                        <li repeat.for="opc of configMenuFlotanteHorizontal.Opciones">
+                            <a class="btn-floating ${opc.Icono.color}" click.delegate="clickAccion(opc.Funcion)" style="opacity: 0; transform: scale(0.4) translateY(0px) translateX(40px);">
+                                <i class="material-icons">${opc.Icono.icono}</i>
                             </a>
                         </li>
                     </ul>

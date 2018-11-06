@@ -17,6 +17,7 @@ define(["require", "exports", "aurelia-framework", "./icono"], function (require
             this.Nombre = '';
             this.Texto = '';
             this.Deshabilitado = false;
+            this.Mostrar = true;
             this.Funcion = '';
             this.Padre = null;
         }

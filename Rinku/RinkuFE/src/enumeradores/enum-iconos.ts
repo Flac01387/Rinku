@@ -6,5 +6,7 @@
   Advertencia = 'warning',
   Informacion = 'info',
   Buscar = 'search',
-  Opciones = 'menu'
+  Opciones = 'menu',
+  Editar = 'mode_edit',
+  Borrar = 'delete'
 }

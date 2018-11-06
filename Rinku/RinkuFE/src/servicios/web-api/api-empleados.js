@@ -17,11 +17,15 @@ define(["require", "exports", "aurelia-framework", "../../environment", "./api-s
         }
         ;
         ApiEmpleadosMetodos.prototype.consultarTiposEmpleados = function () {
+            return this.apiBase["format"]("consultar/tipos");
+        };
+        ;
+        ApiEmpleadosMetodos.prototype.consultarEmpleados = function () {
             return this.apiBase["format"]("consultar");
         };
         ;
         ApiEmpleadosMetodos.prototype.nuevoEmpleado = function () {
-            return this.apiBase["format"]('nuevo');
+            return this.apiBase["format"]("nuevo");
         };
         return ApiEmpleadosMetodos;
     }());
@@ -45,6 +49,29 @@ define(["require", "exports", "aurelia-framework", "../../environment", "./api-s
                 });
             });
         };
+        ApiEmpleados.prototype.consultarEmpleados = function (ID, Nombre, ApellidoPaterno, ApellidoMaterno, PuestoID, TipoEmpleadoID, Activo) {
+            var _this = this;
+            var filtros = {
+                "ID": ID,
+                "Nombre": Nombre,
+                "ApellidoPaterno": ApellidoPaterno,
+                "ApellidoMaterno": ApellidoMaterno,
+                "TipoEmpleadoID": TipoEmpleadoID,
+                "PuestoID": PuestoID,
+                "Activo": Activo
+            };
+            var self = this;
+            var resultado = [];
+            return new Promise(function (result) {
+                _this.api.post(_this.apis.consultarEmpleados(), filtros)
+                    .then(function (respuesta) {
+                    return result(self.procesarRespuesta.ProcesarResultado(respuesta, resultado));
+                })
+                    .catch(function (error) {
+                    return result(self.procesarRespuesta.ProcesarError(error, resultado));
+                });
+            });
+        };
         ApiEmpleados.prototype.nuevoEmpleado = function (Nombre, ApellidoPaterno, ApellidoMaterno, PuestoID, TipoEmpleadoID) {
             var _this = this;
             var empleado = {
@@ -57,7 +84,6 @@ define(["require", "exports", "aurelia-framework", "../../environment", "./api-s
             var self = this;
             var resultado = [];
             return new Promise(function (result) {
-                console.log(_this.apis.nuevoEmpleado());
                 _this.api.post(_this.apis.nuevoEmpleado(), empleado)
                     .then(function (respuesta) {
                     return result(self.procesarRespuesta.ProcesarResultado(respuesta, resultado));

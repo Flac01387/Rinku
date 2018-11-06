@@ -1,14 +1,15 @@
 ﻿import { bindable, bindingMode, autoinject } from 'aurelia-framework';
 import { EventAggregator } from 'aurelia-event-aggregator';
 import * as eventosEmpleados from '../../eventos/eventos-empleados';
+import * as EventosControles from '../../eventos/eventos-controles';
 import { ConfiguracionInput } from '../../controles/ctrl-input';
 import { ConfiguracionCombo } from '../../controles/ctrl-combo';
 import { ConfiguracionRadioVertical, OpcionRadioVertical } from '../../controles/ctrl-radio-vertical';
 import { ConfiguracionBoton } from '../../controles/ctrl-boton';
 import { ConfiguracionTabla, Encabezados, Columnas, EnumTipoColumnas } from '../../controles/ctrl-tabla';
-import { ConfiguracionMenuFlotanteHorizontal } from '../../controles/ctrl-menu-flotante-horizontal';
+import { ConfiguracionMenuFlotanteHorizontal, ConfiguracionOpcionMenuFlotanteHorizontal } from '../../controles/ctrl-menu-flotante-horizontal';
 import { CtrlAlerta } from '../../controles/ctrl-alerta';
-import { Icono, EnumTamanosIconos } from '../../controles/icono';
+import { Icono } from '../../controles/icono';
 import { ApiPuestos } from '../../servicios/web-api/api-puestos';
 import { ApiEmpleados } from '../../servicios/web-api/api-empleados';
 import { EnumRespuestaAPI } from '../../enumeradores/enum-respuesta-api';
@@ -20,7 +21,7 @@ import { EnumVistas } from 'enumeradores/enum-vistas';
 
 @autoinject
 export class CpteFiltrosEmpleados {
-
+  
   Padre: any = null;
 
   //Controles utilizados en la pantalla
@@ -34,11 +35,39 @@ export class CpteFiltrosEmpleados {
   configBotonBuscar: ConfiguracionBoton;
   configBotonCancelar: ConfiguracionBoton;
 
+  //Subscripciones
+  subscribeEditarEmpleado: any;
+  subscribeClickAccion: any;
+
   constructor(private ea: EventAggregator, private peticionPuestos: ApiPuestos, private peticionEmpleados: ApiEmpleados)
   {
     this.inicializarControles();
     this.consultarPuestos();
     this.consultarTiposEmpleados();
+  }
+
+  attached() 
+  {
+    var self = this;
+
+    this.subscribeEditarEmpleado = this.ea.subscribe(eventosEmpleados.EditarEmpleado, msg => {
+      self.editarEmpleado(msg.empleado);
+    });
+
+    this.subscribeClickAccion = this.ea.subscribe(EventosControles.ClickAccion, msg => {
+
+      switch(msg.opc)
+      {
+        case 'EditarEmpleado':
+          self.editarEmpleado(msg.objeto);
+          break;
+      }
+    });
+  }
+
+  detached() {
+    this.subscribeEditarEmpleado.dispose();
+    this.subscribeClickAccion.dispose();
   }
 
   consultarPuestos() {
@@ -87,10 +116,10 @@ export class CpteFiltrosEmpleados {
       var empleado = [];
   
       var IconoPrincipal: Icono = new Icono(EnumIconos.Opciones, EnumColores.Azul, EnumPosiciones.centro, 'Opciones');
-      var Opciones: Icono[] = [];
-  
-      Opciones.push(new Icono(EnumIconos.Opciones, EnumColores.Verde, EnumPosiciones.default, 'Editar'));
-      Opciones.push(new Icono(EnumIconos.Opciones, EnumColores.Rojo, EnumPosiciones.default, 'Eliminar'));
+      var Opciones: ConfiguracionOpcionMenuFlotanteHorizontal[] = [];
+
+      Opciones.push(new ConfiguracionOpcionMenuFlotanteHorizontal(new Icono(EnumIconos.Editar, EnumColores.Verde, EnumPosiciones.default, 'Editar'), 'EditarEmpleado'));
+      Opciones.push(new ConfiguracionOpcionMenuFlotanteHorizontal(new Icono(EnumIconos.Borrar, EnumColores.Rojo, EnumPosiciones.default, 'Eliminar'), 'EliminarEmpleado'));
   
       var acciones: ConfiguracionMenuFlotanteHorizontal = new ConfiguracionMenuFlotanteHorizontal(IconoPrincipal, Opciones) 
   
@@ -123,7 +152,8 @@ export class CpteFiltrosEmpleados {
         Nombre: ''
       };
 
-      this.ea.publish(new eventosEmpleados.CambiarVistasPacientes(EnumVistas.vistaListaEmpleados));
+      this.ea.publish(new eventosEmpleados.CambiarVistasEmpleados(EnumVistas.vistaListaEmpleados));
+
       setTimeout(() => {
         this.ea.publish(new eventosEmpleados.EnviarListaPacientes(configTablaEmpleados));
       }, 100);
@@ -184,6 +214,11 @@ export class CpteFiltrosEmpleados {
     .catch(error => {
       new CtrlAlerta(EnumMensajes.ErrorAPI);
     });
+  }
+
+  editarEmpleado(empleado)
+  {
+    console.log('Editar: ',empleado);
   }
 
   inicializarControles()

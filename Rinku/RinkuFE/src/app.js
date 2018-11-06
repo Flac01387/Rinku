@@ -7,7 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-define(["require", "exports", "aurelia-framework", "aurelia-event-aggregator", "./enumeradores/enum-vistas"], function (require, exports, aurelia_framework_1, aurelia_event_aggregator_1, enum_vistas_1) {
+define(["require", "exports", "aurelia-framework", "aurelia-event-aggregator", "./enumeradores/enum-vistas", "materialize-css"], function (require, exports, aurelia_framework_1, aurelia_event_aggregator_1, enum_vistas_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var App = (function () {

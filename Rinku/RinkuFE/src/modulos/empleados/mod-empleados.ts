@@ -20,7 +20,7 @@ export class ModEmpleados {
 
   attached() {
     var self = this;
-    this.subscribeCambiarVistasEmpleados = this.ea.subscribe(eventosEmpleados.CambiarVistasPacientes, msg => {
+    this.subscribeCambiarVistasEmpleados = this.ea.subscribe(eventosEmpleados.CambiarVistasEmpleados, msg => {
       self.cambiarVistaEmpleados(msg.vista);
     });
   }

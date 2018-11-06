@@ -8,6 +8,7 @@ define(["require", "exports"], function (require, exports) {
         EnumPosiciones["abajo"] = "down";
         EnumPosiciones["izquierda"] = "left";
         EnumPosiciones["derecha"] = "right";
+        EnumPosiciones["centro"] = "center";
     })(EnumPosiciones = exports.EnumPosiciones || (exports.EnumPosiciones = {}));
 });
 //# sourceMappingURL=enum-posiciones.js.map

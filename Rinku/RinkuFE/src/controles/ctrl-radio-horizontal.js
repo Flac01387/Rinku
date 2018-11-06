@@ -15,6 +15,7 @@ define(["require", "exports", "aurelia-framework"], function (require, exports, 
             this.ID = '';
             this.Deshabilitado = false;
             this.Nombre = '';
+            this.Valor = null;
         }
         return OpcionRadioHorizontal;
     }());
@@ -26,6 +27,7 @@ define(["require", "exports", "aurelia-framework"], function (require, exports, 
             this.Grupo = '';
             this.Obligatorio = false;
             this.Opciones = [];
+            this.Seleccionado = new OpcionRadioHorizontal();
         }
         return ConfiguracionRadioHorizontal;
     }());

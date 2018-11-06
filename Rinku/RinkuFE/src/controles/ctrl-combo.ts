@@ -10,8 +10,8 @@ export class ConfiguracionCombo {
   Obligatorio: boolean = false;
   UrlDatos: string = '';
   JsonDatos: any[] = [];
-  TextoDefault: string = null;
-  ValorDefault: number = null;
+  TextoDefault: string = '';
+  ValorDefault: any = null;
   Valor: any = null;
 }
 
@@ -21,8 +21,6 @@ export class CtrlCombo {
 
   attached()
   {
-    this.configCombo.ValorDefault = 1;
-    this.configCombo.TextoDefault = 'Quitarlos del attached';
     var element = document.querySelector("div.input-field select");
     M.FormSelect.init(element);
   }

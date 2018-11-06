@@ -22,7 +22,7 @@ define(["require", "exports", "aurelia-framework"], function (require, exports, 
             this.UrlDatos = '';
             this.JsonDatos = [];
             this.TextoDefault = '';
-            this.ValorDefault = -1;
+            this.ValorDefault = null;
             this.Valor = null;
         }
         return ConfiguracionCombo;
@@ -33,6 +33,8 @@ define(["require", "exports", "aurelia-framework"], function (require, exports, 
             this.configCombo = new ConfiguracionCombo();
         }
         CtrlCombo.prototype.attached = function () {
+            this.configCombo.ValorDefault = 1;
+            this.configCombo.TextoDefault = 'Quitarlos del attached';
             var element = document.querySelector("div.input-field select");
             M.FormSelect.init(element);
         };

@@ -1,5 +1,6 @@
 import { autoinject, bindable, bindingMode  } from 'aurelia-framework';
 import { EnumIconos } from 'enumeradores/enum-iconos';
+import { ConfiguracionMenuFlotanteHorizontal } from './ctrl-menu-flotante-horizontal';
 
 export enum EnumTipoColumnas
 {
@@ -46,7 +47,7 @@ export class ConfiguracionTabla {
 @autoinject
 export class CtrlTabla {
   @bindable({ defaultBindingMode: bindingMode.twoWay }) configTabla: ConfiguracionTabla;
-
+  
   formatearValor(valor: any, tipo: EnumTipoColumnas)
   {
     switch(tipo)

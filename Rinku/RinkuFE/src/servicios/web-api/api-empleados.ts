@@ -21,6 +21,10 @@ class ApiEmpleadosMetodos {
   nuevoEmpleado() {
     return this.apiBase["format"]("nuevo");
   }
+
+  eliminarEmpleado() {
+    return this.apiBase["format"]("eliminar");
+  }
 }
 
 @autoinject
@@ -87,6 +91,21 @@ export class ApiEmpleados
     var resultado: any[] = [];
     return new Promise<any>(result => {
       this.api.post(this.apis.nuevoEmpleado(), empleado)
+      .then(respuesta => {
+          return result(self.procesarRespuesta.ProcesarResultado(respuesta, resultado));
+      })
+      .catch(error => {
+          return result(self.procesarRespuesta.ProcesarError(error, resultado));
+      });
+    });
+  }
+
+  eliminarEmpleado(ID: number): Promise<any>
+  {
+    var self = this;
+    var resultado: any[] = [];
+    return new Promise<any>(result => {
+      this.api.post(this.apis.eliminarEmpleado(), ID)
       .then(respuesta => {
           return result(self.procesarRespuesta.ProcesarResultado(respuesta, resultado));
       })

@@ -1,11 +1,5 @@
 import { Icono } from './icono';
 
-export class ConfiguracionAlerta
-{
-    Icono: Icono = new Icono();
-    Mensaje: string = '';
-}
-
 export class CtrlAlerta
 {
     constructor(mensaje: string, icono: Icono = null)

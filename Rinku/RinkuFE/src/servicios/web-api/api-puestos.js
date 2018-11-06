@@ -35,11 +35,9 @@ define(["require", "exports", "aurelia-framework", "../../environment", "./api-s
             return new Promise(function (result) {
                 _this.api.get(_this.apis.consultarPuestos())
                     .then(function (respuesta) {
-                    console.log('respuesta puestos');
                     return result(self.procesarRespuesta.ProcesarResultado(respuesta, resultado));
                 })
                     .catch(function (error) {
-                    console.log('catch puestos');
                     return result(self.procesarRespuesta.ProcesarError(error, resultado));
                 });
             });

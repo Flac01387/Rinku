@@ -27,7 +27,7 @@ define(["require", "exports", "aurelia-framework"], function (require, exports, 
             this.Obligatorio = false;
             this.Opciones = [];
             this.Grupo = '';
-            this.Valor = null;
+            this.Seleccionado = new OpcionRadioVertical();
         }
         return ConfiguracionRadioVertical;
     }());
