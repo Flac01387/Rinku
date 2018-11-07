@@ -33,8 +33,6 @@ define(["require", "exports", "aurelia-framework"], function (require, exports, 
             this.configCombo = new ConfiguracionCombo();
         }
         CtrlCombo.prototype.attached = function () {
-            this.configCombo.ValorDefault = 1;
-            this.configCombo.TextoDefault = 'Quitarlos del attached';
             var element = document.querySelector("div.input-field select");
             M.FormSelect.init(element);
         };

@@ -43,6 +43,11 @@ export class ModEmpleados {
         this.VistasEmpleados = EnumVistas.vistaListaEmpleados["vista"];
         this.VistasModelosEmpleados = EnumVistas.vistaListaEmpleados["modelo"];
         break;
+      case EnumVistas.vistaEditarEmpleados:
+        this.migas= ["Empleados","Editar Empleado"];
+        this.VistasEmpleados = EnumVistas.vistaEditarEmpleados["vista"];
+        this.VistasModelosEmpleados = EnumVistas.vistaEditarEmpleados["modelo"];
+        break;
     }
   }
 }

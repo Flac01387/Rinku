@@ -10,7 +10,8 @@ define(["require", "exports"], function (require, exports) {
             "../controles/ctrl-tabla",
             "../controles/ctrl-menu-flotante-horizontal",
             "../controles/ctrl-migas",
-            "../controles/ctrl-titulo"
+            "../controles/ctrl-titulo",
+            "../controles/ctrl-alerta-confirmacion"
         ]);
     }
     exports.configure = configure;

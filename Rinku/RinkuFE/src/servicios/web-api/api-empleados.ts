@@ -42,7 +42,7 @@ export class ApiEmpleados
     var self = this;
     var resultado: any[] = [];
     return new Promise<any>(result => {
-      this.api.get(this.apis.consultarTiposEmpleados())
+      this.api.get(self.apis.consultarTiposEmpleados())
         .then(respuesta => {
             return result(self.procesarRespuesta.ProcesarResultado(respuesta, resultado));
         })
@@ -68,7 +68,7 @@ export class ApiEmpleados
     var self = this;
     var resultado: any[] = [];
     return new Promise<any>(result => {
-      this.api.post(this.apis.consultarEmpleados(), filtros)
+      this.api.post(self.apis.consultarEmpleados(), filtros)
       .then(respuesta => {
           return result(self.procesarRespuesta.ProcesarResultado(respuesta, resultado));
       })
@@ -90,7 +90,7 @@ export class ApiEmpleados
     var self = this;
     var resultado: any[] = [];
     return new Promise<any>(result => {
-      this.api.post(this.apis.nuevoEmpleado(), empleado)
+      this.api.post(self.apis.nuevoEmpleado(), empleado)
       .then(respuesta => {
           return result(self.procesarRespuesta.ProcesarResultado(respuesta, resultado));
       })
@@ -100,12 +100,12 @@ export class ApiEmpleados
     });
   }
 
-  eliminarEmpleado(ID: number): Promise<any>
+  eliminarEmpleado(empleado: any): Promise<any>
   {
     var self = this;
     var resultado: any[] = [];
     return new Promise<any>(result => {
-      this.api.post(this.apis.eliminarEmpleado(), ID)
+      this.api.post(self.apis.eliminarEmpleado(), empleado)
       .then(respuesta => {
           return result(self.procesarRespuesta.ProcesarResultado(respuesta, resultado));
       })

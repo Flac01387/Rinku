@@ -1,13 +1,13 @@
 define(["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    var CambiarVistasPacientes = (function () {
-        function CambiarVistasPacientes(vista) {
+    var CambiarVistasEmpleados = (function () {
+        function CambiarVistasEmpleados(vista) {
             this.vista = vista;
         }
-        return CambiarVistasPacientes;
+        return CambiarVistasEmpleados;
     }());
-    exports.CambiarVistasPacientes = CambiarVistasPacientes;
+    exports.CambiarVistasEmpleados = CambiarVistasEmpleados;
     var EnviarListaPacientes = (function () {
         function EnviarListaPacientes(configuracion) {
             this.configuracion = configuracion;
@@ -15,5 +15,12 @@ define(["require", "exports"], function (require, exports) {
         return EnviarListaPacientes;
     }());
     exports.EnviarListaPacientes = EnviarListaPacientes;
+    var EditarEmpleado = (function () {
+        function EditarEmpleado(empleado) {
+            this.empleado = empleado;
+        }
+        return EditarEmpleado;
+    }());
+    exports.EditarEmpleado = EditarEmpleado;
 });
 //# sourceMappingURL=eventos-empleados.js.map

@@ -11,6 +11,8 @@ define(["require", "exports"], function (require, exports) {
         EnumIconos["Informacion"] = "info";
         EnumIconos["Buscar"] = "search";
         EnumIconos["Opciones"] = "menu";
+        EnumIconos["Editar"] = "mode_edit";
+        EnumIconos["Borrar"] = "delete";
     })(EnumIconos = exports.EnumIconos || (exports.EnumIconos = {}));
 });
 //# sourceMappingURL=enum-iconos.js.map

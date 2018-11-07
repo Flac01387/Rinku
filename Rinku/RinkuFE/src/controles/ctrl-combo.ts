@@ -13,6 +13,7 @@ export class ConfiguracionCombo {
   TextoDefault: string = '';
   ValorDefault: any = null;
   Valor: any = null;
+  Seleccionado: any = null;
 }
 
 @autoinject

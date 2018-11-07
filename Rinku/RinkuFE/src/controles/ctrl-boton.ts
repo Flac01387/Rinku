@@ -1,4 +1,6 @@
 ﻿import { autoinject, bindable, bindingMode } from 'aurelia-framework';
+import { EventAggregator } from 'aurelia-event-aggregator';
+import * as EventosControles from '../eventos/eventos-controles';
 import { Icono } from './icono';
 
 export class ConfiguracionBoton {
@@ -9,15 +11,16 @@ export class ConfiguracionBoton {
   Deshabilitado: boolean = false;
   Mostrar: boolean = true;
   Funcion: string = '';
-  Padre: any = null
 }
 
 @autoinject
 export class CtrlBoton {
   @bindable({ defaultBindingMode: bindingMode.twoWay }) configBoton: ConfiguracionBoton = new ConfiguracionBoton();
 
-  bind(ctx)
+  constructor(private ea: EventAggregator) { }
+
+  clickBoton()
   {
-    this.configBoton.Funcion = ctx[this.configBoton.Funcion];
+    this.ea.publish(new EventosControles.ClickBoton(this.configBoton.Funcion));
   }
 }

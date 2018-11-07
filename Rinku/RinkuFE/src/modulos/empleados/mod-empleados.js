@@ -19,7 +19,7 @@ define(["require", "exports", "aurelia-framework", "aurelia-event-aggregator", "
         }
         ModEmpleados.prototype.attached = function () {
             var self = this;
-            this.subscribeCambiarVistasEmpleados = this.ea.subscribe(eventosEmpleados.CambiarVistasPacientes, function (msg) {
+            this.subscribeCambiarVistasEmpleados = this.ea.subscribe(eventosEmpleados.CambiarVistasEmpleados, function (msg) {
                 self.cambiarVistaEmpleados(msg.vista);
             });
         };

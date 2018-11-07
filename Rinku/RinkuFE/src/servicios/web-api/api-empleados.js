@@ -27,6 +27,9 @@ define(["require", "exports", "aurelia-framework", "../../environment", "./api-s
         ApiEmpleadosMetodos.prototype.nuevoEmpleado = function () {
             return this.apiBase["format"]("nuevo");
         };
+        ApiEmpleadosMetodos.prototype.eliminarEmpleado = function () {
+            return this.apiBase["format"]("eliminar");
+        };
         return ApiEmpleadosMetodos;
     }());
     var ApiEmpleados = (function () {
@@ -85,6 +88,20 @@ define(["require", "exports", "aurelia-framework", "../../environment", "./api-s
             var resultado = [];
             return new Promise(function (result) {
                 _this.api.post(_this.apis.nuevoEmpleado(), empleado)
+                    .then(function (respuesta) {
+                    return result(self.procesarRespuesta.ProcesarResultado(respuesta, resultado));
+                })
+                    .catch(function (error) {
+                    return result(self.procesarRespuesta.ProcesarError(error, resultado));
+                });
+            });
+        };
+        ApiEmpleados.prototype.eliminarEmpleado = function (ID) {
+            var _this = this;
+            var self = this;
+            var resultado = [];
+            return new Promise(function (result) {
+                _this.api.post(_this.apis.eliminarEmpleado(), ID)
                     .then(function (respuesta) {
                     return result(self.procesarRespuesta.ProcesarResultado(respuesta, resultado));
                 })

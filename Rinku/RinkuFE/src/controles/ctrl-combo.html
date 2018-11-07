@@ -2,9 +2,9 @@
   <div class="row">
     <div class="col s12">
       <div class="input-field col s12">
-        <select value.bind="configCombo.Seleccionado">
+        <select name="${configCombo.Nombre}" value.bind="configCombo.Seleccionado">
           <option if.bind="configCombo.TextoDefault != ''" model.bind="configCombo.ValorDefault" selected>${configCombo.TextoDefault}</option>
-          <option repeat.for="item of configCombo.JsonDatos" model.bind="item">${item.Nombre}</option>
+          <option repeat.for="item of configCombo.JsonDatos" value="${item.Valor}" model.bind="item">${item.Nombre}</option>
         </select>
         <label>${configCombo.Label}</label>
       </div>

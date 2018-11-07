@@ -6,8 +6,6 @@ import { ConfiguracionInput } from '../../controles/ctrl-input';
 import { ConfiguracionCombo } from '../../controles/ctrl-combo';
 import { ConfiguracionRadioVertical, OpcionRadioVertical } from '../../controles/ctrl-radio-vertical';
 import { ConfiguracionBoton } from '../../controles/ctrl-boton';
-import { ConfiguracionTabla, Encabezados, Columnas, EnumTipoColumnas } from '../../controles/ctrl-tabla';
-import { ConfiguracionMenuFlotanteHorizontal, ConfiguracionOpcionMenuFlotanteHorizontal } from '../../controles/ctrl-menu-flotante-horizontal';
 import { CtrlAlerta } from '../../controles/ctrl-alerta';
 import { Icono } from '../../controles/icono';
 import { ApiPuestos } from '../../servicios/web-api/api-puestos';
@@ -34,16 +32,17 @@ export class CpteFiltrosEmpleados {
   configRadioTiposEmpleados: ConfiguracionRadioVertical;
   configBotonBuscar: ConfiguracionBoton;
   configBotonCancelar: ConfiguracionBoton;
+  configBotonActualizar: ConfiguracionBoton;
+  configBotonRegistrar: ConfiguracionBoton;
 
   //Subscripciones
+  subscribeClickBoton: any;
   subscribeEditarEmpleado: any;
   subscribeClickAccion: any;
 
   constructor(private ea: EventAggregator, private peticionPuestos: ApiPuestos, private peticionEmpleados: ApiEmpleados)
   {
     this.inicializarControles();
-    this.consultarPuestos();
-    this.consultarTiposEmpleados();
   }
 
   attached() 
@@ -51,11 +50,12 @@ export class CpteFiltrosEmpleados {
     var self = this;
 
     this.subscribeEditarEmpleado = this.ea.subscribe(eventosEmpleados.EditarEmpleado, msg => {
-      self.editarEmpleado(msg.empleado);
+      self.inicializarControles();
+      self.editarEmpleado(msg.empleadoID);
     });
 
-    this.subscribeClickAccion = this.ea.subscribe(EventosControles.ClickAccion, msg => {
-
+    this.subscribeClickAccion = this.ea.subscribe(EventosControles.ClickAccion, msg => 
+    {
       switch(msg.opc)
       {
         case 'EditarEmpleado':
@@ -63,9 +63,28 @@ export class CpteFiltrosEmpleados {
           break;
       }
     });
+
+    this.subscribeClickBoton = this.ea.subscribe(EventosControles.ClickBoton, msg =>
+    {
+      var self = this;
+    
+      switch(msg.funcion)
+      {
+        case 'buscar':
+          self.buscar();
+          break;
+        case 'actualizar':
+          self.actualizar();
+          break;
+        case 'cancelar':
+          self.inicializarControles();
+          break;
+      }
+    });
   }
 
   detached() {
+    this.subscribeClickBoton.dispose();
     this.subscribeEditarEmpleado.dispose();
     this.subscribeClickAccion.dispose();
   }
@@ -77,12 +96,22 @@ export class CpteFiltrosEmpleados {
     this.peticionPuestos.consultarPuestos()
       .then(respuesta => {
         if (respuesta.Codigo == EnumRespuestaAPI.Aceptado) {
+
+          for(var i in respuesta.Respuesta)
+            respuesta.Respuesta[i].Valor = respuesta.Respuesta[i].ID;
+
           self.configComboPuestos.JsonDatos = respuesta.Respuesta;
+
+          setTimeout(() => {
+            var element = document.querySelector("div.input-field select");
+            M.FormSelect.init(element);
+          }, 100);
         }
         else
         new CtrlAlerta(respuesta.Mensaje);
       })
       .catch(error => {
+        console.log(EnumMensajes.ErrorAPI);
         new CtrlAlerta(EnumMensajes.ErrorAPI);
       });
   }
@@ -105,57 +134,19 @@ export class CpteFiltrosEmpleados {
         new CtrlAlerta(respuesta.Mensaje);
       })
       .catch(error => {
+        console.log(EnumMensajes.ErrorAPI);
         new CtrlAlerta(EnumMensajes.ErrorAPI);
       });
   }
-
-  mostrarEmpleados(empleados)
+  
+  mostrarListaEmpleados(empleados)
   {
     try
     {
-      var empleado = [];
-  
-      var IconoPrincipal: Icono = new Icono(EnumIconos.Opciones, EnumColores.Azul, EnumPosiciones.centro, 'Opciones');
-      var Opciones: ConfiguracionOpcionMenuFlotanteHorizontal[] = [];
-
-      Opciones.push(new ConfiguracionOpcionMenuFlotanteHorizontal(new Icono(EnumIconos.Editar, EnumColores.Verde, EnumPosiciones.default, 'Editar'), 'EditarEmpleado'));
-      Opciones.push(new ConfiguracionOpcionMenuFlotanteHorizontal(new Icono(EnumIconos.Borrar, EnumColores.Rojo, EnumPosiciones.default, 'Eliminar'), 'EliminarEmpleado'));
-  
-      var acciones: ConfiguracionMenuFlotanteHorizontal = new ConfiguracionMenuFlotanteHorizontal(IconoPrincipal, Opciones) 
-  
-      for(var i in empleados)
-      {
-        empleado.push({
-          "ID": new Columnas(empleados[i].ID, EnumTipoColumnas.Entero),
-          "Nombre": new Columnas(empleados[i].Nombre, EnumTipoColumnas.Texto),
-          "ApellidoPaterno": new Columnas(empleados[i].ApellidoPaterno, EnumTipoColumnas.Texto),
-          "ApellidoMaterno": new Columnas(empleados[i].ApellidoMaterno, EnumTipoColumnas.Texto),
-          "Puesto": new Columnas(empleados[i].Puesto, EnumTipoColumnas.Texto),
-          "TipoEmpleado": new Columnas(empleados[i].TipoEmpleado, EnumTipoColumnas.Texto),
-          "Acciones": new Columnas(acciones, EnumTipoColumnas.Acciones)
-        });
-      }
-  
-      var configTablaEmpleados: ConfiguracionTabla = {
-        Encabezados: [
-          new Encabezados("ID","ID"),
-          new Encabezados("Nombre", "Nombre"),
-          new Encabezados("ApellidoPaterno", "Apellido Paterno"),
-          new Encabezados("ApellidoMaterno", "Apellido Materno"),
-          new Encabezados("Puesto", "Puesto"), 
-          new Encabezados("TipoEmpleado","Tipo Empleado"),
-          new Encabezados("","")
-        ],
-        Clases: '',
-        ID: '',
-        JsonDatos: empleado,
-        Nombre: ''
-      };
-
       this.ea.publish(new eventosEmpleados.CambiarVistasEmpleados(EnumVistas.vistaListaEmpleados));
 
       setTimeout(() => {
-        this.ea.publish(new eventosEmpleados.EnviarListaPacientes(configTablaEmpleados));
+        this.ea.publish(new eventosEmpleados.EnviarListaEmpleados(empleados));
       }, 100);
     }
     catch(e){
@@ -163,13 +154,9 @@ export class CpteFiltrosEmpleados {
     }
   }
 
-  cancelar(){
-    console.log(this.configRadioTiposEmpleados);
-  }
-
   buscar()
   {
-    var self = this.Padre;
+    var self = this;
     
     self.peticionEmpleados.consultarEmpleados(
       self.configInputNumero.Valor, 
@@ -183,19 +170,20 @@ export class CpteFiltrosEmpleados {
       .then(respuesta => {
         if (respuesta.Codigo == EnumRespuestaAPI.Aceptado) 
         {
-          self.mostrarEmpleados(respuesta.Respuesta);
+          self.mostrarListaEmpleados(respuesta.Respuesta);
         }
         else
         new CtrlAlerta(respuesta.Mensaje);
       })
       .catch(error => {
+        console.log(EnumMensajes.ErrorAPI);
         new CtrlAlerta(EnumMensajes.ErrorAPI);
       });
   }
 
-  aceptar(){
-    
-    var self = this.Padre;
+  actualizar()
+  {
+    var self = this;
 
     self.peticionEmpleados.nuevoEmpleado(
       self.configInputNombre.Valor, 
@@ -206,23 +194,108 @@ export class CpteFiltrosEmpleados {
     )
     .then(respuesta => {
       if (respuesta.Codigo == EnumRespuestaAPI.Aceptado) {
+        new CtrlAlerta("Empleado actualizado correctamente");
+      }
+      else
+        new CtrlAlerta(respuesta.Mensaje, new Icono(EnumIconos.Advertencia, EnumColores.Amarillo));
+    })
+    .catch(error => {
+      console.log(EnumMensajes.ErrorAPI);
+      new CtrlAlerta(EnumMensajes.ErrorAPI);
+    });
+  }
+
+  aceptar(){
+
+    var self = this;
+
+    self.peticionEmpleados.nuevoEmpleado(
+      self.configInputNombre.Valor, 
+      self.configInputPaterno.Valor,
+      self.configInputMaterno.Valor,
+      self.configComboPuestos.Seleccionado,
+      self.configRadioTiposEmpleados.Seleccionado.Valor
+    )
+    .then(respuesta => {
+      if (respuesta.Codigo == EnumRespuestaAPI.Aceptado) {
+        new CtrlAlerta("Empleado registrado correctamente");
         self.inicializarControles();
       }
       else
         new CtrlAlerta(respuesta.Mensaje, new Icono(EnumIconos.Advertencia, EnumColores.Amarillo));
     })
     .catch(error => {
+      console.log(EnumMensajes.ErrorAPI);
       new CtrlAlerta(EnumMensajes.ErrorAPI);
     });
   }
 
   editarEmpleado(empleado)
   {
-    console.log('Editar: ',empleado);
+      var self = this;
+
+      this.configInputNumero.Valor = empleado;
+
+      this.peticionEmpleados.consultarEmpleados(this.configInputNumero.Valor, "", "","",-1,-1,true)
+      .then(respuesta =>
+      {
+        if (respuesta.Codigo == EnumRespuestaAPI.Aceptado) 
+        {
+          self.llenarFormulario(respuesta.Respuesta[0]);
+        }
+        else
+        new CtrlAlerta(respuesta.Mensaje);
+      })
+      .catch(error => {
+        console.log(EnumMensajes.ErrorAPI);
+        new CtrlAlerta(EnumMensajes.ErrorAPI);
+      });
+  }
+
+  llenarFormulario(empleado: any)
+  {
+    try
+    {
+      this.configInputNumero.Deshabilitado = true;
+      this.configInputNombre.Valor = empleado.Nombre;
+      this.configInputPaterno.Valor = empleado.ApellidoPaterno;
+      this.configInputMaterno.Valor = empleado.ApellidoMaterno;
+      this.configBotonActualizar.Mostrar = true;
+      this.configBotonCancelar.Mostrar = true;
+      this.configBotonBuscar.Mostrar = false;
+      this.configComboPuestos.Seleccionado;
+
+      //Seleccionar combo comboPuestos
+      var element = document.querySelector("div.input-field select");
+      console.log(element);
+      
+      var combo = element as HTMLSelectElement;
+
+      for(var i = 0; i< combo.length; i++)
+      {
+        if(element[i].value == empleado.PuestoID)
+          combo.selectedIndex = i;
+      }
+
+      //Seleccionar radio
+      var elements = document.getElementsByName(this.configRadioTiposEmpleados.Grupo);
+      for (var i=0; i<elements.length; i++)
+      {
+        var x = elements[i] as HTMLInputElement;
+        if(x.value == empleado.PuestoID)
+          x.checked = true;
+      }
+    }
+    catch(error){
+      console.log(error);
+    }
   }
 
   inicializarControles()
   {
+    this.consultarPuestos();
+    this.consultarTiposEmpleados();
+
     this.configInputNumero = {
       ID: '',
       Nombre: '',
@@ -231,7 +304,7 @@ export class CpteFiltrosEmpleados {
       Obligatorio: false,
       Placeholder: '',
       SoloLectura: false,
-      Deshabilitado: true,
+      Deshabilitado: false,
       Valor: '',
       Clases: ''
     };
@@ -277,7 +350,7 @@ export class CpteFiltrosEmpleados {
 
     this.configComboPuestos = {
       ID: '',
-      Nombre: '',
+      Nombre: 'comboPuestos',
       Icono: false,
       Label: 'Puesto',
       Obligatorio: false,
@@ -287,7 +360,8 @@ export class CpteFiltrosEmpleados {
       UrlDatos: '',
       TextoDefault: 'Seleccione un puesto',
       ValorDefault: -1,
-      Valor: -1
+      Valor: null,
+      Seleccionado: null
     };
   
     this.opcionesTiposEmpleados = [];
@@ -308,10 +382,9 @@ export class CpteFiltrosEmpleados {
       Texto: 'Buscar',
       Deshabilitado: false,
       Mostrar: true,
-      Funcion: 'buscar',
-      Padre: this
+      Funcion: 'buscar'
     };
-  
+
     this.configBotonCancelar = {
       ID: '',
       Icono: new Icono(),
@@ -319,8 +392,27 @@ export class CpteFiltrosEmpleados {
       Texto: 'Cancelar',
       Deshabilitado: false,
       Mostrar: false,
-      Funcion: 'cancelar',
-      Padre: this
+      Funcion: 'cancelar'
+    };
+  
+    this.configBotonActualizar = {
+      ID: '',
+      Icono: new Icono(),
+      Nombre: '',
+      Texto: 'Actualizar',
+      Deshabilitado: false,
+      Mostrar: false,
+      Funcion: 'actualizar'
+    };
+  
+    this.configBotonRegistrar = {
+      ID: '',
+      Icono: new Icono(),
+      Nombre: '',
+      Texto: 'Registrar',
+      Deshabilitado: false,
+      Mostrar: false,
+      Funcion: 'registrar'
     };
   }
 }

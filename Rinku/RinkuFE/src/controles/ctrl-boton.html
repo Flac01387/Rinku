@@ -1,7 +1,7 @@
 ﻿<template>
   <div class="row">
     <div class="col s12">
-        <a class="waves-effect waves-light btn" click.delegate="configBoton.Funcion()">
+        <a class="waves-effect waves-light btn" if.bind="configBoton.Mostrar" click.delegate="clickBoton()">
           <i if.bind="configBoton.Icono.icono != ''" class="material-icons ${configBoton.Icono.posicion}">${configBoton.Icono.icono}</i>
           ${configBoton.Texto}
         </a>

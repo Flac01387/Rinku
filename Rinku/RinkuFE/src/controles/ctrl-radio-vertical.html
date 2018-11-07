@@ -3,7 +3,7 @@
     <div class="col s12">
       <p repeat.for="radio of configRadio.Opciones">
         <label>
-          <input class="with-gap" type="radio" name="${configRadio.Grupo}" id="" model.bind="radio" checked.bind="configRadio.Seleccionado" />
+          <input class="with-gap" value.bind="radio.Valor" type="radio" name="${configRadio.Grupo}" model.bind="radio" checked.bind="configRadio.Seleccionado" />
           <span>${radio.Nombre}</span>
         </label>
       </p>
