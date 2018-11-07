@@ -1,0 +1,16 @@
+<template>
+    <div class="row">
+        <div class="col s12">
+        <ctrl-migas migas.bind="migas"></ctrl-migas>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s12">
+        <ctrl-titulo titulo.bind="tituloMovimientos"></ctrl-titulo>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s12"></div>
+        <compose view.bind="VistasMovimientos" view-model.bind="VistasModelosMovimientos"></compose>
+    </div>
+</template>

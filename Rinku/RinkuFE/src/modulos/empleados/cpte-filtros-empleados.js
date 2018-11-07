@@ -7,7 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-define(["require", "exports", "aurelia-framework", "aurelia-event-aggregator", "../../eventos/eventos-empleados", "../../eventos/eventos-controles", "../../controles/ctrl-tabla", "../../controles/ctrl-menu-flotante-horizontal", "../../controles/ctrl-alerta", "../../controles/icono", "../../servicios/web-api/api-puestos", "../../servicios/web-api/api-empleados", "../../enumeradores/enum-respuesta-api", "enumeradores/enum-posiciones", "enumeradores/enum-mensajes", "enumeradores/enum-iconos", "enumeradores/enum-colores", "enumeradores/enum-vistas"], function (require, exports, aurelia_framework_1, aurelia_event_aggregator_1, eventosEmpleados, EventosControles, ctrl_tabla_1, ctrl_menu_flotante_horizontal_1, ctrl_alerta_1, icono_1, api_puestos_1, api_empleados_1, enum_respuesta_api_1, enum_posiciones_1, enum_mensajes_1, enum_iconos_1, enum_colores_1, enum_vistas_1) {
+define(["require", "exports", "aurelia-framework", "aurelia-event-aggregator", "../../eventos/eventos-empleados", "../../eventos/eventos-controles", "../../controles/ctrl-alerta", "../../controles/icono", "../../servicios/web-api/api-puestos", "../../servicios/web-api/api-empleados", "../../enumeradores/enum-respuesta-api", "enumeradores/enum-posiciones", "enumeradores/enum-mensajes", "enumeradores/enum-iconos", "enumeradores/enum-colores", "enumeradores/enum-vistas"], function (require, exports, aurelia_framework_1, aurelia_event_aggregator_1, eventosEmpleados, EventosControles, ctrl_alerta_1, icono_1, api_puestos_1, api_empleados_1, enum_respuesta_api_1, enum_posiciones_1, enum_mensajes_1, enum_iconos_1, enum_colores_1, enum_vistas_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var CpteFiltrosEmpleados = (function () {
@@ -17,13 +17,13 @@ define(["require", "exports", "aurelia-framework", "aurelia-event-aggregator", "
             this.peticionEmpleados = peticionEmpleados;
             this.Padre = null;
             this.inicializarControles();
-            this.consultarPuestos();
-            this.consultarTiposEmpleados();
         }
         CpteFiltrosEmpleados.prototype.attached = function () {
+            var _this = this;
             var self = this;
             this.subscribeEditarEmpleado = this.ea.subscribe(eventosEmpleados.EditarEmpleado, function (msg) {
-                self.editarEmpleado(msg.empleado);
+                self.inicializarControles();
+                self.editarEmpleado(msg.empleadoID);
             });
             this.subscribeClickAccion = this.ea.subscribe(EventosControles.ClickAccion, function (msg) {
                 switch (msg.opc) {
@@ -32,8 +32,23 @@ define(["require", "exports", "aurelia-framework", "aurelia-event-aggregator", "
                         break;
                 }
             });
+            this.subscribeClickBoton = this.ea.subscribe(EventosControles.ClickBoton, function (msg) {
+                var self = _this;
+                switch (msg.funcion) {
+                    case 'buscar':
+                        self.buscar();
+                        break;
+                    case 'actualizar':
+                        self.actualizar();
+                        break;
+                    case 'cancelar':
+                        self.inicializarControles();
+                        break;
+                }
+            });
         };
         CpteFiltrosEmpleados.prototype.detached = function () {
+            this.subscribeClickBoton.dispose();
             this.subscribeEditarEmpleado.dispose();
             this.subscribeClickAccion.dispose();
         };
@@ -42,12 +57,19 @@ define(["require", "exports", "aurelia-framework", "aurelia-event-aggregator", "
             this.peticionPuestos.consultarPuestos()
                 .then(function (respuesta) {
                 if (respuesta.Codigo == enum_respuesta_api_1.EnumRespuestaAPI.Aceptado) {
+                    for (var i in respuesta.Respuesta)
+                        respuesta.Respuesta[i].Valor = respuesta.Respuesta[i].ID;
                     self.configComboPuestos.JsonDatos = respuesta.Respuesta;
+                    setTimeout(function () {
+                        var element = document.querySelector("div.input-field select");
+                        M.FormSelect.init(element);
+                    }, 100);
                 }
                 else
                     new ctrl_alerta_1.CtrlAlerta(respuesta.Mensaje);
             })
                 .catch(function (error) {
+                console.log(enum_mensajes_1.EnumMensajes.ErrorAPI);
                 new ctrl_alerta_1.CtrlAlerta(enum_mensajes_1.EnumMensajes.ErrorAPI);
             });
         };
@@ -66,88 +88,115 @@ define(["require", "exports", "aurelia-framework", "aurelia-event-aggregator", "
                     new ctrl_alerta_1.CtrlAlerta(respuesta.Mensaje);
             })
                 .catch(function (error) {
+                console.log(enum_mensajes_1.EnumMensajes.ErrorAPI);
                 new ctrl_alerta_1.CtrlAlerta(enum_mensajes_1.EnumMensajes.ErrorAPI);
             });
         };
-        CpteFiltrosEmpleados.prototype.mostrarEmpleados = function (empleados) {
+        CpteFiltrosEmpleados.prototype.mostrarListaEmpleados = function (empleados) {
             var _this = this;
             try {
-                var empleado = [];
-                var IconoPrincipal = new icono_1.Icono(enum_iconos_1.EnumIconos.Opciones, enum_colores_1.EnumColores.Azul, enum_posiciones_1.EnumPosiciones.centro, 'Opciones');
-                var Opciones = [];
-                Opciones.push(new ctrl_menu_flotante_horizontal_1.ConfiguracionOpcionMenuFlotanteHorizontal(new icono_1.Icono(enum_iconos_1.EnumIconos.Editar, enum_colores_1.EnumColores.Verde, enum_posiciones_1.EnumPosiciones.default, 'Editar'), 'EditarEmpleado'));
-                Opciones.push(new ctrl_menu_flotante_horizontal_1.ConfiguracionOpcionMenuFlotanteHorizontal(new icono_1.Icono(enum_iconos_1.EnumIconos.Borrar, enum_colores_1.EnumColores.Rojo, enum_posiciones_1.EnumPosiciones.default, 'Eliminar'), 'EliminarEmpleado'));
-                var acciones = new ctrl_menu_flotante_horizontal_1.ConfiguracionMenuFlotanteHorizontal(IconoPrincipal, Opciones);
-                for (var i in empleados) {
-                    empleado.push({
-                        "ID": new ctrl_tabla_1.Columnas(empleados[i].ID, ctrl_tabla_1.EnumTipoColumnas.Entero),
-                        "Nombre": new ctrl_tabla_1.Columnas(empleados[i].Nombre, ctrl_tabla_1.EnumTipoColumnas.Texto),
-                        "ApellidoPaterno": new ctrl_tabla_1.Columnas(empleados[i].ApellidoPaterno, ctrl_tabla_1.EnumTipoColumnas.Texto),
-                        "ApellidoMaterno": new ctrl_tabla_1.Columnas(empleados[i].ApellidoMaterno, ctrl_tabla_1.EnumTipoColumnas.Texto),
-                        "Puesto": new ctrl_tabla_1.Columnas(empleados[i].Puesto, ctrl_tabla_1.EnumTipoColumnas.Texto),
-                        "TipoEmpleado": new ctrl_tabla_1.Columnas(empleados[i].TipoEmpleado, ctrl_tabla_1.EnumTipoColumnas.Texto),
-                        "Acciones": new ctrl_tabla_1.Columnas(acciones, ctrl_tabla_1.EnumTipoColumnas.Acciones)
-                    });
-                }
-                var configTablaEmpleados = {
-                    Encabezados: [
-                        new ctrl_tabla_1.Encabezados("ID", "ID"),
-                        new ctrl_tabla_1.Encabezados("Nombre", "Nombre"),
-                        new ctrl_tabla_1.Encabezados("ApellidoPaterno", "Apellido Paterno"),
-                        new ctrl_tabla_1.Encabezados("ApellidoMaterno", "Apellido Materno"),
-                        new ctrl_tabla_1.Encabezados("Puesto", "Puesto"),
-                        new ctrl_tabla_1.Encabezados("TipoEmpleado", "Tipo Empleado"),
-                        new ctrl_tabla_1.Encabezados("", "")
-                    ],
-                    Clases: '',
-                    ID: '',
-                    JsonDatos: empleado,
-                    Nombre: ''
-                };
                 this.ea.publish(new eventosEmpleados.CambiarVistasEmpleados(enum_vistas_1.EnumVistas.vistaListaEmpleados));
                 setTimeout(function () {
-                    _this.ea.publish(new eventosEmpleados.EnviarListaPacientes(configTablaEmpleados));
+                    _this.ea.publish(new eventosEmpleados.EnviarListaEmpleados(empleados));
                 }, 100);
             }
             catch (e) {
                 new ctrl_alerta_1.CtrlAlerta("Error al pintar la tabla de empleados");
             }
         };
-        CpteFiltrosEmpleados.prototype.cancelar = function () {
-            console.log(this.configRadioTiposEmpleados);
-        };
         CpteFiltrosEmpleados.prototype.buscar = function () {
-            var self = this.Padre;
+            var self = this;
             self.peticionEmpleados.consultarEmpleados(self.configInputNumero.Valor, self.configInputNombre.Valor, self.configInputPaterno.Valor, self.configInputMaterno.Valor, self.configComboPuestos.Seleccionado, self.configRadioTiposEmpleados.Seleccionado == null ? 0 : self.configRadioTiposEmpleados.Seleccionado.Valor, true)
                 .then(function (respuesta) {
                 if (respuesta.Codigo == enum_respuesta_api_1.EnumRespuestaAPI.Aceptado) {
-                    self.mostrarEmpleados(respuesta.Respuesta);
+                    self.mostrarListaEmpleados(respuesta.Respuesta);
                 }
                 else
                     new ctrl_alerta_1.CtrlAlerta(respuesta.Mensaje);
             })
                 .catch(function (error) {
+                console.log(enum_mensajes_1.EnumMensajes.ErrorAPI);
+                new ctrl_alerta_1.CtrlAlerta(enum_mensajes_1.EnumMensajes.ErrorAPI);
+            });
+        };
+        CpteFiltrosEmpleados.prototype.actualizar = function () {
+            var self = this;
+            self.peticionEmpleados.actualizarEmpleado(self.configInputNumero.Valor, self.configInputNombre.Valor, self.configInputPaterno.Valor, self.configInputMaterno.Valor, self.configComboPuestos.Seleccionado, self.configRadioTiposEmpleados.Seleccionado.Valor, true)
+                .then(function (respuesta) {
+                if (respuesta.Codigo == enum_respuesta_api_1.EnumRespuestaAPI.Aceptado) {
+                    new ctrl_alerta_1.CtrlAlerta("Empleado actualizado correctamente");
+                }
+                else
+                    new ctrl_alerta_1.CtrlAlerta(respuesta.Mensaje, new icono_1.Icono(enum_iconos_1.EnumIconos.Advertencia, enum_colores_1.EnumColores.Amarillo));
+            })
+                .catch(function (error) {
+                console.log(enum_mensajes_1.EnumMensajes.ErrorAPI);
                 new ctrl_alerta_1.CtrlAlerta(enum_mensajes_1.EnumMensajes.ErrorAPI);
             });
         };
         CpteFiltrosEmpleados.prototype.aceptar = function () {
-            var self = this.Padre;
+            var self = this;
             self.peticionEmpleados.nuevoEmpleado(self.configInputNombre.Valor, self.configInputPaterno.Valor, self.configInputMaterno.Valor, self.configComboPuestos.Seleccionado, self.configRadioTiposEmpleados.Seleccionado.Valor)
                 .then(function (respuesta) {
                 if (respuesta.Codigo == enum_respuesta_api_1.EnumRespuestaAPI.Aceptado) {
+                    new ctrl_alerta_1.CtrlAlerta("Empleado registrado correctamente");
                     self.inicializarControles();
                 }
                 else
                     new ctrl_alerta_1.CtrlAlerta(respuesta.Mensaje, new icono_1.Icono(enum_iconos_1.EnumIconos.Advertencia, enum_colores_1.EnumColores.Amarillo));
             })
                 .catch(function (error) {
+                console.log(enum_mensajes_1.EnumMensajes.ErrorAPI);
                 new ctrl_alerta_1.CtrlAlerta(enum_mensajes_1.EnumMensajes.ErrorAPI);
             });
         };
         CpteFiltrosEmpleados.prototype.editarEmpleado = function (empleado) {
-            console.log('Editar: ', empleado);
+            var self = this;
+            this.configInputNumero.Valor = empleado;
+            this.peticionEmpleados.consultarEmpleados(this.configInputNumero.Valor, "", "", "", -1, -1, true)
+                .then(function (respuesta) {
+                if (respuesta.Codigo == enum_respuesta_api_1.EnumRespuestaAPI.Aceptado) {
+                    self.llenarFormulario(respuesta.Respuesta[0]);
+                }
+                else
+                    new ctrl_alerta_1.CtrlAlerta(respuesta.Mensaje);
+            })
+                .catch(function (error) {
+                console.log(enum_mensajes_1.EnumMensajes.ErrorAPI);
+                new ctrl_alerta_1.CtrlAlerta(enum_mensajes_1.EnumMensajes.ErrorAPI);
+            });
+        };
+        CpteFiltrosEmpleados.prototype.llenarFormulario = function (empleado) {
+            try {
+                this.configInputNumero.Deshabilitado = true;
+                this.configInputNombre.Valor = empleado.Nombre;
+                this.configInputPaterno.Valor = empleado.ApellidoPaterno;
+                this.configInputMaterno.Valor = empleado.ApellidoMaterno;
+                this.configBotonActualizar.Mostrar = true;
+                this.configBotonCancelar.Mostrar = true;
+                this.configBotonBuscar.Mostrar = false;
+                this.configComboPuestos.Seleccionado;
+                var element = document.querySelector("div.input-field select");
+                console.log(element);
+                var combo = element;
+                for (var i = 0; i < combo.length; i++) {
+                    if (element[i].value == empleado.PuestoID)
+                        combo.selectedIndex = i;
+                }
+                var elements = document.getElementsByName(this.configRadioTiposEmpleados.Grupo);
+                for (var i = 0; i < elements.length; i++) {
+                    var x = elements[i];
+                    if (x.value == empleado.PuestoID)
+                        x.checked = true;
+                }
+            }
+            catch (error) {
+                console.log(error);
+            }
         };
         CpteFiltrosEmpleados.prototype.inicializarControles = function () {
+            this.consultarPuestos();
+            this.consultarTiposEmpleados();
             this.configInputNumero = {
                 ID: '',
                 Nombre: '',
@@ -156,7 +205,7 @@ define(["require", "exports", "aurelia-framework", "aurelia-event-aggregator", "
                 Obligatorio: false,
                 Placeholder: '',
                 SoloLectura: false,
-                Deshabilitado: true,
+                Deshabilitado: false,
                 Valor: '',
                 Clases: ''
             };
@@ -198,7 +247,7 @@ define(["require", "exports", "aurelia-framework", "aurelia-event-aggregator", "
             };
             this.configComboPuestos = {
                 ID: '',
-                Nombre: '',
+                Nombre: 'comboPuestos',
                 Icono: false,
                 Label: 'Puesto',
                 Obligatorio: false,
@@ -208,7 +257,8 @@ define(["require", "exports", "aurelia-framework", "aurelia-event-aggregator", "
                 UrlDatos: '',
                 TextoDefault: 'Seleccione un puesto',
                 ValorDefault: -1,
-                Valor: -1
+                Valor: null,
+                Seleccionado: null
             };
             this.opcionesTiposEmpleados = [];
             this.configRadioTiposEmpleados = {
@@ -226,8 +276,7 @@ define(["require", "exports", "aurelia-framework", "aurelia-event-aggregator", "
                 Texto: 'Buscar',
                 Deshabilitado: false,
                 Mostrar: true,
-                Funcion: 'buscar',
-                Padre: this
+                Funcion: 'buscar'
             };
             this.configBotonCancelar = {
                 ID: '',
@@ -236,8 +285,25 @@ define(["require", "exports", "aurelia-framework", "aurelia-event-aggregator", "
                 Texto: 'Cancelar',
                 Deshabilitado: false,
                 Mostrar: false,
-                Funcion: 'cancelar',
-                Padre: this
+                Funcion: 'cancelar'
+            };
+            this.configBotonActualizar = {
+                ID: '',
+                Icono: new icono_1.Icono(),
+                Nombre: '',
+                Texto: 'Actualizar',
+                Deshabilitado: false,
+                Mostrar: false,
+                Funcion: 'actualizar'
+            };
+            this.configBotonRegistrar = {
+                ID: '',
+                Icono: new icono_1.Icono(),
+                Nombre: '',
+                Texto: 'Registrar',
+                Deshabilitado: false,
+                Mostrar: false,
+                Funcion: 'registrar'
             };
         };
         CpteFiltrosEmpleados = __decorate([

@@ -94,6 +94,32 @@ namespace RinkuAPI.Controllers
         }
 
         [HttpPost]
+        [Route("actualizar")]
+        public IHttpActionResult ActualizarEmpleado(DTOEmpleados empleado)
+        {
+            try
+            {
+                EmpleadosMN empMN = new EmpleadosMN();
+
+                dynamic resultado = empMN.actualizarEmpleado(empleado);
+
+                return Json(mr.ManejarRespuesta(resultado));
+            }
+            catch (SqlException error)
+            {
+                throw new ArgumentException(error.Message, error);
+            }
+            catch (ExcepcionNegocio error)
+            {
+                return Json(me.ManejarError(error));
+            }
+            catch (Exception error)
+            {
+                return Json(me.ManejarError(error.Message));
+            }
+        }
+
+        [HttpPost]
         [Route("eliminar")]
         public IHttpActionResult eliminarEmpleado(DTOEmpleados empleado)
         {

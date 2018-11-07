@@ -24,6 +24,7 @@ define(["require", "exports", "aurelia-framework"], function (require, exports, 
             this.TextoDefault = '';
             this.ValorDefault = null;
             this.Valor = null;
+            this.Seleccionado = null;
         }
         return ConfiguracionCombo;
     }());

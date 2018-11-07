@@ -15,16 +15,9 @@ export class App {
     this.pantallaPrincipal();
   }
 
-  attached()
-  {
-    //Inicializar  los controles
-    /*var element = document.querySelector("div.input-field select");
-    M.FormSelect.init(element,{});*/
-  }
-
   pantallaPrincipal() {
-    this.Vistas = EnumVistas.vistaEmpleados["vista"];
-    this.VistasModelos = EnumVistas.vistaEmpleados["modelo"];
+    this.Vistas = EnumVistas.vistaMovimientos["vista"];
+    this.VistasModelos = EnumVistas.vistaMovimientos["modelo"];
   }
 }
   

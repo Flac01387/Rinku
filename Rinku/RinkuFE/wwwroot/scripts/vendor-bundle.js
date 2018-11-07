@@ -49591,6 +49591,7 @@ function _aureliaConfigureModuleLoader(){requirejs.config({
       "resources",
       "resources/index",
       "servicios/web-api/api-empleados",
+      "servicios/web-api/api-jornadas",
       "servicios/web-api/api-procesar-respuesta",
       "servicios/web-api/api-puestos",
       "servicios/web-api/api-respuesta",

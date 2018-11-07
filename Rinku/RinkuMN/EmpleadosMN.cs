@@ -85,6 +85,31 @@ namespace RinkuMN
             }
         }
 
+        public List<DTOEmpleados> actualizarEmpleado(DTOEmpleados empleado)
+        {
+            try
+            {
+                AccesoDatos da = new AccesoDatos();
+
+                List<DTOEmpleados> empleados = da.ejecutarSP<DTOEmpleados>("sp_actualizarEmpleado", empleado);
+
+                return empleados;
+            }
+            catch (SqlException error)
+            {
+                throw new ArgumentException(error.Message, error);
+            }
+            catch (ExcepcionNegocio error)
+            {
+                error.Tipos.Add(EnumTipoMensaje.Alerta);
+                throw new ArgumentException(error.Mensaje, error);
+            }
+            catch (Exception error)
+            {
+                throw new ArgumentException(error.Message, error);
+            }
+        }
+
         public List<DTOEmpleados> eliminarEmpleado(DTOEmpleados empleado)
         {
             try

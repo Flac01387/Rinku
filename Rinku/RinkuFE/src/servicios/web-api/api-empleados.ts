@@ -22,6 +22,10 @@ class ApiEmpleadosMetodos {
     return this.apiBase["format"]("nuevo");
   }
 
+  actualizarEmpleado() {
+    return this.apiBase["format"]("actualizar");
+  }
+
   eliminarEmpleado() {
     return this.apiBase["format"]("eliminar");
   }
@@ -52,7 +56,7 @@ export class ApiEmpleados
     });
   }
 
-  consultarEmpleados(ID: number, Nombre: string, ApellidoPaterno: string, ApellidoMaterno: string, PuestoID: number, TipoEmpleadoID: number, Activo: boolean): Promise<any>
+  consultarEmpleados(ID: number, Nombre: string, ApellidoPaterno: string, ApellidoMaterno: string, PuestoID: number, TipoEmpleadoID: number, JornadaID: number, Activo: boolean): Promise<any>
   {
 
     var filtros = {
@@ -62,6 +66,7 @@ export class ApiEmpleados
       "ApellidoMaterno": ApellidoMaterno,
       "TipoEmpleadoID": TipoEmpleadoID,
       "PuestoID": PuestoID,
+      "JornadaID": JornadaID,
       "Activo": Activo
     };
 
@@ -78,14 +83,44 @@ export class ApiEmpleados
     });
   }
 
-  nuevoEmpleado(Nombre: string, ApellidoPaterno: string, ApellidoMaterno: string, PuestoID: number, TipoEmpleadoID: number): Promise<any>
+  actualizarEmpleado(ID: number, Nombre: string, ApellidoPaterno: string, ApellidoMaterno: string, PuestoID: number, TipoEmpleadoID: number, JornadaID: number, Activo: boolean): Promise<any>
   {
+
     var empleado = {
+      "ID": ID,
       "Nombre": Nombre,
       "ApellidoPaterno": ApellidoPaterno,
       "ApellidoMaterno": ApellidoMaterno,
       "TipoEmpleadoID": TipoEmpleadoID,
-      "PuestoID": PuestoID
+      "PuestoID": PuestoID,
+      "JornadaID": JornadaID,
+      "Activo": Activo
+    };
+
+    var self = this;
+    var resultado: any[] = [];
+    return new Promise<any>(result => {
+      this.api.post(self.apis.actualizarEmpleado(), empleado)
+      .then(respuesta => {
+          return result(self.procesarRespuesta.ProcesarResultado(respuesta, resultado));
+      })
+      .catch(error => {
+          return result(self.procesarRespuesta.ProcesarError(error, resultado));
+      });
+    });
+  }
+
+  nuevoEmpleado(ID: number, Nombre: string, ApellidoPaterno: string, ApellidoMaterno: string, PuestoID: number, TipoEmpleadoID: number, JornadaID: number, Activo: boolean): Promise<any>
+  {
+    var empleado = {
+      "ID": ID,
+      "Nombre": Nombre,
+      "ApellidoPaterno": ApellidoPaterno,
+      "ApellidoMaterno": ApellidoMaterno,
+      "TipoEmpleadoID": TipoEmpleadoID,
+      "PuestoID": PuestoID,
+      "JornadaID": JornadaID,
+      "Activo": Activo
     };
     var self = this;
     var resultado: any[] = [];

@@ -38,6 +38,11 @@ define(["require", "exports", "aurelia-framework", "aurelia-event-aggregator", "
                     this.VistasEmpleados = enum_vistas_1.EnumVistas.vistaListaEmpleados["vista"];
                     this.VistasModelosEmpleados = enum_vistas_1.EnumVistas.vistaListaEmpleados["modelo"];
                     break;
+                case enum_vistas_1.EnumVistas.vistaEditarEmpleados:
+                    this.migas = ["Empleados", "Editar Empleado"];
+                    this.VistasEmpleados = enum_vistas_1.EnumVistas.vistaEditarEmpleados["vista"];
+                    this.VistasModelosEmpleados = enum_vistas_1.EnumVistas.vistaEditarEmpleados["modelo"];
+                    break;
             }
         };
         ModEmpleados = __decorate([

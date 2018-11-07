@@ -3,6 +3,7 @@ export default {
   testing: false,
   apiUrl: {
     puestos: 'http://localhost:55758/api/puestos/',
-    empleados: 'http://localhost:55758/api/empleados/'
+    empleados: 'http://localhost:55758/api/empleados/',
+    jornadas: 'http://localhost:55758/api/jornadas/'
   }
 };

@@ -3,16 +3,16 @@
     <div class="col s12 m6">
       <ctrl-input config-input.bind="configInputNumero"></ctrl-input>
     </div>
-    <div class="col s12 offset-m3 m1">
-      <ctrl-boton config-boton.bind="configBotonNuevo"></ctrl-boton>
+    <div if.bind="configBotonRegistrar.Mostrar" class="col s12 offset-m3 m1">
+      <ctrl-boton config-boton.bind="configBotonRegistrar"></ctrl-boton>
     </div>
-    <div class="col s12 m2">
-      <ctrl-boton config-boton.bind="configBotonBuscar"></ctrl-boton>
-    </div>
-    <div class="col s12 offset-m3 m1">
+    <div if.bind="configBotonCancelar.Mostrar" class="col s12 offset-m3 m1">
       <ctrl-boton config-boton.bind="configBotonCancelar"></ctrl-boton>
     </div>
-    <div class="col s12 m2">
+    <div if.bind="configBotonBuscar.Mostrar" class="col s12 m2">
+      <ctrl-boton config-boton.bind="configBotonBuscar"></ctrl-boton>
+    </div>
+    <div if.bind="configBotonActualizar.Mostrar" class="col s12 m2">
       <ctrl-boton config-boton.bind="configBotonActualizar"></ctrl-boton>
     </div>
   </div>
@@ -31,8 +31,11 @@
     <div class="col s12 m6">
       <ctrl-combo config-combo.bind="configComboPuestos"></ctrl-combo>
     </div>
-    <div class="col s12 m6">
+    <div class="col s12 m3">
       <ctrl-radio-vertical config-radio.bind="configRadioTiposEmpleados"></ctrl-radio-vertical>
+    </div>
+    <div class="col s12 m3">
+      <ctrl-radio-vertical config-radio.bind="configRadioJornadas"></ctrl-radio-vertical>
     </div>
   </div>
 </template>

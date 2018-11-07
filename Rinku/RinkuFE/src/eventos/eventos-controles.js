@@ -9,6 +9,13 @@ define(["require", "exports"], function (require, exports) {
         return ClickAccion;
     }());
     exports.ClickAccion = ClickAccion;
+    var ClickBoton = (function () {
+        function ClickBoton(funcion) {
+            this.funcion = funcion;
+        }
+        return ClickBoton;
+    }());
+    exports.ClickBoton = ClickBoton;
     var MostrarModal = (function () {
         function MostrarModal() {
         }

@@ -8,16 +8,16 @@ define(["require", "exports"], function (require, exports) {
         return CambiarVistasEmpleados;
     }());
     exports.CambiarVistasEmpleados = CambiarVistasEmpleados;
-    var EnviarListaPacientes = (function () {
-        function EnviarListaPacientes(configuracion) {
+    var EnviarListaEmpleados = (function () {
+        function EnviarListaEmpleados(configuracion) {
             this.configuracion = configuracion;
         }
-        return EnviarListaPacientes;
+        return EnviarListaEmpleados;
     }());
-    exports.EnviarListaPacientes = EnviarListaPacientes;
+    exports.EnviarListaEmpleados = EnviarListaEmpleados;
     var EditarEmpleado = (function () {
-        function EditarEmpleado(empleado) {
-            this.empleado = empleado;
+        function EditarEmpleado(empleadoID) {
+            this.empleadoID = empleadoID;
         }
         return EditarEmpleado;
     }());

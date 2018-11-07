@@ -19,6 +19,7 @@ import { EnumVistas } from 'enumeradores/enum-vistas';
 @autoinject
 export class CpteListaEmpleados
 {
+    configBotonRegresar: ConfiguracionBoton;
     configBotonNuevoEmpleado: ConfiguracionBoton;
     configTablaEmpleados: ConfiguracionTabla;
     configAlertaEmpleados: ConfiguracionAlertaConfirmacion;
@@ -65,14 +66,17 @@ export class CpteListaEmpleados
 
         this.subscribeClickBoton = this.ea.subscribe(EventosControles.ClickBoton, msg =>
         {
-          var self = this;
+            var self = this;
         
-          switch(msg.funcion)
-          {
-            case 'nuevoEmpleado':
-              self.regresarFiltrosEmpleados();
-              break;
-          }
+            switch(msg.funcion)
+            {
+                case 'nuevoEmpleado':
+                    self.registrarEmpleado();
+                    break;
+                case 'regresar':
+                    self.regresarFiltrosEmpleados();
+                    break;
+            }
         });
     }
 
@@ -143,7 +147,7 @@ export class CpteListaEmpleados
         this.ea.publish(new eventosEmpleados.CambiarVistasEmpleados(EnumVistas.vistaEditarEmpleados));
   
         setTimeout(() => {
-            this.ea.publish(new eventosEmpleados.EditarEmpleado(self.empleado.ID.Valor));
+            self.ea.publish(new eventosEmpleados.EditarEmpleado(self.empleado.ID.Valor));
         }, 100);
     }
 
@@ -177,6 +181,17 @@ export class CpteListaEmpleados
         });
     }
 
+    registrarEmpleado()
+    {
+        var self = this;
+
+        this.ea.publish(new eventosEmpleados.CambiarVistasEmpleados(EnumVistas.vistaNuevosEmpleados));
+
+        setTimeout(() => {
+            self.ea.publish(new eventosEmpleados.RegistrarEmpleado());
+        }, 100);
+    }
+
     regresarFiltrosEmpleados()
     {
         this.ea.publish(new eventosEmpleados.CambiarVistasEmpleados(EnumVistas.vistaFiltrosEmpleados));
@@ -184,6 +199,16 @@ export class CpteListaEmpleados
 
     inicializarControles()
     {
+        this.configBotonRegresar = {
+            ID: '',
+            Icono: new Icono(),
+            Nombre: '',
+            Texto: 'Regresar',
+            Deshabilitado: false,
+            Mostrar: true,
+            Funcion: 'regresar'
+        };
+
         this.configBotonNuevoEmpleado = {
             ID: '',
             Icono: new Icono(EnumIconos.Guardar, EnumColores.SinColor, EnumPosiciones.izquierda),

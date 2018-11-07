@@ -1,4 +1,5 @@
 ﻿import { bindable, bindingMode, autoinject } from 'aurelia-framework';
+import { ValidationController } from 'aurelia-validation';
 import { EventAggregator } from 'aurelia-event-aggregator';
 import * as eventosEmpleados from '../../eventos/eventos-empleados';
 import * as EventosControles from '../../eventos/eventos-controles';
@@ -10,6 +11,7 @@ import { CtrlAlerta } from '../../controles/ctrl-alerta';
 import { Icono } from '../../controles/icono';
 import { ApiPuestos } from '../../servicios/web-api/api-puestos';
 import { ApiEmpleados } from '../../servicios/web-api/api-empleados';
+import { ApiJornadas } from '../../servicios/web-api/api-jornadas';
 import { EnumRespuestaAPI } from '../../enumeradores/enum-respuesta-api';
 import { EnumPosiciones } from 'enumeradores/enum-posiciones';
 import { EnumMensajes } from 'enumeradores/enum-mensajes';
@@ -30,6 +32,8 @@ export class CpteFiltrosEmpleados {
   configComboPuestos: ConfiguracionCombo;
   opcionesTiposEmpleados: OpcionRadioVertical[];
   configRadioTiposEmpleados: ConfiguracionRadioVertical;
+  opcionesJornadas: OpcionRadioVertical[];
+  configRadioJornadas: ConfiguracionRadioVertical;
   configBotonBuscar: ConfiguracionBoton;
   configBotonCancelar: ConfiguracionBoton;
   configBotonActualizar: ConfiguracionBoton;
@@ -39,8 +43,9 @@ export class CpteFiltrosEmpleados {
   subscribeClickBoton: any;
   subscribeEditarEmpleado: any;
   subscribeClickAccion: any;
+  subscribeRegistrarEmpleado: any;
 
-  constructor(private ea: EventAggregator, private peticionPuestos: ApiPuestos, private peticionEmpleados: ApiEmpleados)
+  constructor(private ea: EventAggregator, private peticionPuestos: ApiPuestos, private peticionEmpleados: ApiEmpleados, private peticionJornadas: ApiJornadas)
   {
     this.inicializarControles();
   }
@@ -52,6 +57,11 @@ export class CpteFiltrosEmpleados {
     this.subscribeEditarEmpleado = this.ea.subscribe(eventosEmpleados.EditarEmpleado, msg => {
       self.inicializarControles();
       self.editarEmpleado(msg.empleadoID);
+    });
+
+    this.subscribeRegistrarEmpleado = this.ea.subscribe(eventosEmpleados.RegistrarEmpleado, msg => {
+      self.inicializarControles();
+      self.registrarEmpleado();
     });
 
     this.subscribeClickAccion = this.ea.subscribe(EventosControles.ClickAccion, msg => 
@@ -78,6 +88,9 @@ export class CpteFiltrosEmpleados {
           break;
         case 'cancelar':
           self.inicializarControles();
+          break;
+        case 'registrar':
+          self.aceptar();
           break;
       }
     });
@@ -138,6 +151,29 @@ export class CpteFiltrosEmpleados {
         new CtrlAlerta(EnumMensajes.ErrorAPI);
       });
   }
+
+  consultarJornadas() {
+
+    var self = this;
+    
+    this.peticionJornadas.consultarJornadas()
+      .then(respuesta => {
+        if (respuesta.Codigo == EnumRespuestaAPI.Aceptado) {
+          for(var i in respuesta.Respuesta)
+          {
+            respuesta.Respuesta[i].Valor = respuesta.Respuesta[i].ID;
+            respuesta.Respuesta[i].ID = 'tipoJor-'+respuesta.Respuesta[i].ID;
+          }
+          self.configRadioJornadas.Opciones = respuesta.Respuesta;
+        }
+        else
+        new CtrlAlerta(respuesta.Mensaje);
+      })
+      .catch(error => {
+        console.log(EnumMensajes.ErrorAPI);
+        new CtrlAlerta(EnumMensajes.ErrorAPI);
+      });
+  }
   
   mostrarListaEmpleados(empleados)
   {
@@ -165,6 +201,7 @@ export class CpteFiltrosEmpleados {
       self.configInputMaterno.Valor,
       self.configComboPuestos.Seleccionado,
       self.configRadioTiposEmpleados.Seleccionado == null ? 0 : self.configRadioTiposEmpleados.Seleccionado.Valor,
+      self.configRadioJornadas.Seleccionado == null ? 0 : self.configRadioJornadas.Seleccionado.Valor,
       true
     )
       .then(respuesta => {
@@ -185,12 +222,15 @@ export class CpteFiltrosEmpleados {
   {
     var self = this;
 
-    self.peticionEmpleados.nuevoEmpleado(
+    self.peticionEmpleados.actualizarEmpleado(
+      self.configInputNumero.Valor, 
       self.configInputNombre.Valor, 
       self.configInputPaterno.Valor,
       self.configInputMaterno.Valor,
-      self.configComboPuestos.Seleccionado,
-      self.configRadioTiposEmpleados.Seleccionado.Valor
+      self.configComboPuestos.Seleccionado.Valor,
+      self.configRadioTiposEmpleados.Seleccionado == null ? 0 : self.configRadioTiposEmpleados.Seleccionado.Valor,
+      self.configRadioJornadas.Seleccionado == null ? 0 : self.configRadioTiposEmpleados.Seleccionado.Valor,
+      true
     )
     .then(respuesta => {
       if (respuesta.Codigo == EnumRespuestaAPI.Aceptado) {
@@ -210,11 +250,14 @@ export class CpteFiltrosEmpleados {
     var self = this;
 
     self.peticionEmpleados.nuevoEmpleado(
+      0,
       self.configInputNombre.Valor, 
       self.configInputPaterno.Valor,
       self.configInputMaterno.Valor,
-      self.configComboPuestos.Seleccionado,
-      self.configRadioTiposEmpleados.Seleccionado.Valor
+      self.configComboPuestos.Seleccionado.Valor,
+      self.configRadioTiposEmpleados.Seleccionado == null ? 0 : self.configRadioTiposEmpleados.Seleccionado.Valor,
+      self.configRadioJornadas.Seleccionado == null ? 0 : self.configRadioJornadas.Seleccionado.Valor,
+      true
     )
     .then(respuesta => {
       if (respuesta.Codigo == EnumRespuestaAPI.Aceptado) {
@@ -236,7 +279,7 @@ export class CpteFiltrosEmpleados {
 
       this.configInputNumero.Valor = empleado;
 
-      this.peticionEmpleados.consultarEmpleados(this.configInputNumero.Valor, "", "","",-1,-1,true)
+      this.peticionEmpleados.consultarEmpleados(this.configInputNumero.Valor, "", "","",-1,-1,-1,true)
       .then(respuesta =>
       {
         if (respuesta.Codigo == EnumRespuestaAPI.Aceptado) 
@@ -252,6 +295,17 @@ export class CpteFiltrosEmpleados {
       });
   }
 
+  registrarEmpleado()
+  {
+      var self = this;
+      
+      this.configInputNumero.Deshabilitado = true;
+      this.configBotonActualizar.Mostrar = false;
+      this.configBotonRegistrar.Mostrar = true;
+      this.configBotonCancelar.Mostrar = true;
+      this.configBotonBuscar.Mostrar = false;
+  }
+
   llenarFormulario(empleado: any)
   {
     try
@@ -263,6 +317,7 @@ export class CpteFiltrosEmpleados {
       this.configBotonActualizar.Mostrar = true;
       this.configBotonCancelar.Mostrar = true;
       this.configBotonBuscar.Mostrar = false;
+      this.configBotonRegistrar.Mostrar = false;
       this.configComboPuestos.Seleccionado;
 
       //Seleccionar combo comboPuestos
@@ -295,6 +350,7 @@ export class CpteFiltrosEmpleados {
   {
     this.consultarPuestos();
     this.consultarTiposEmpleados();
+    this.consultarJornadas();
 
     this.configInputNumero = {
       ID: '',
@@ -374,6 +430,17 @@ export class CpteFiltrosEmpleados {
       Opciones: this.opcionesTiposEmpleados,
       Seleccionado: null
     };
+  
+    this.opcionesJornadas = [];
+  
+    this.configRadioJornadas = {
+      Nombre: 'tipoEmpleado',
+      Label: '',
+      Grupo: 'tiposJornadas',
+      Obligatorio: false,
+      Opciones: this.opcionesJornadas,
+      Seleccionado: null
+    };
 
     this.configBotonBuscar = {
       ID: '',
@@ -411,7 +478,7 @@ export class CpteFiltrosEmpleados {
       Nombre: '',
       Texto: 'Registrar',
       Deshabilitado: false,
-      Mostrar: false,
+      Mostrar: true,
       Funcion: 'registrar'
     };
   }

@@ -16,11 +16,9 @@ define('app',["require", "exports", "aurelia-framework", "aurelia-event-aggregat
             this.migas = [];
             this.pantallaPrincipal();
         }
-        App.prototype.attached = function () {
-        };
         App.prototype.pantallaPrincipal = function () {
-            this.Vistas = enum_vistas_1.EnumVistas.vistaEmpleados["vista"];
-            this.VistasModelos = enum_vistas_1.EnumVistas.vistaEmpleados["modelo"];
+            this.Vistas = enum_vistas_1.EnumVistas.vistaMovimientos["vista"];
+            this.VistasModelos = enum_vistas_1.EnumVistas.vistaMovimientos["modelo"];
         };
         App = __decorate([
             aurelia_framework_1.autoinject,
@@ -732,8 +730,12 @@ define('enumeradores/enum-vistas',["require", "exports"], function (require, exp
         EnumVistas[EnumVistas["vistaNinguna"] = { vista: '', modelo: '' }] = "vistaNinguna";
         EnumVistas[EnumVistas["vistaEmpleados"] = { vista: 'modulos/empleados/mod-empleados.html', modelo: 'modulos/empleados/mod-empleados' }] = "vistaEmpleados";
         EnumVistas[EnumVistas["vistaFiltrosEmpleados"] = { vista: 'modulos/empleados/cpte-filtros-empleados.html', modelo: 'modulos/empleados/cpte-filtros-empleados' }] = "vistaFiltrosEmpleados";
+        EnumVistas[EnumVistas["vistaNuevosEmpleados"] = { vista: 'modulos/empleados/cpte-filtros-empleados.html', modelo: 'modulos/empleados/cpte-filtros-empleados' }] = "vistaNuevosEmpleados";
         EnumVistas[EnumVistas["vistaEditarEmpleados"] = { vista: 'modulos/empleados/cpte-filtros-empleados.html', modelo: 'modulos/empleados/cpte-filtros-empleados' }] = "vistaEditarEmpleados";
         EnumVistas[EnumVistas["vistaListaEmpleados"] = { vista: 'modulos/empleados/cpte-lista-empleados.html', modelo: 'modulos/empleados/cpte-lista-empleados' }] = "vistaListaEmpleados";
+        EnumVistas[EnumVistas["vistaNominas"] = { vista: 'modulos/nominas/mod-nominas.html', modelo: 'modulos/nominas/mod-nominas' }] = "vistaNominas";
+        EnumVistas[EnumVistas["vistaMovimientos"] = { vista: 'modulos/movimientos/mod-movimientos.html', modelo: 'modulos/movimientos/mod-movimientos' }] = "vistaMovimientos";
+        EnumVistas[EnumVistas["vistaRegistroMovimientos"] = { vista: 'modulos/movimientos/cpte-registro-movimientos.html', modelo: 'modulos/movimientos/cpte-registro-movimientos' }] = "vistaRegistroMovimientos";
     })(EnumVistas = exports.EnumVistas || (exports.EnumVistas = {}));
 });
 
@@ -747,7 +749,8 @@ define('environment',["require", "exports"], function (require, exports) {
         testing: false,
         apiUrl: {
             puestos: 'http://localhost:55758/api/puestos/',
-            empleados: 'http://localhost:55758/api/empleados/'
+            empleados: 'http://localhost:55758/api/empleados/',
+            jornadas: 'http://localhost:55758/api/jornadas/'
         }
     };
 });
@@ -812,6 +815,12 @@ define('eventos/eventos-empleados',["require", "exports"], function (require, ex
         return EditarEmpleado;
     }());
     exports.EditarEmpleado = EditarEmpleado;
+    var RegistrarEmpleado = (function () {
+        function RegistrarEmpleado() {
+        }
+        return RegistrarEmpleado;
+    }());
+    exports.RegistrarEmpleado = RegistrarEmpleado;
 });
 
 
@@ -846,14 +855,107 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-define('modulos/empleados/cpte-filtros-empleados',["require", "exports", "aurelia-framework", "aurelia-event-aggregator", "../../eventos/eventos-empleados", "../../eventos/eventos-controles", "../../controles/ctrl-alerta", "../../controles/icono", "../../servicios/web-api/api-puestos", "../../servicios/web-api/api-empleados", "../../enumeradores/enum-respuesta-api", "enumeradores/enum-posiciones", "enumeradores/enum-mensajes", "enumeradores/enum-iconos", "enumeradores/enum-colores", "enumeradores/enum-vistas"], function (require, exports, aurelia_framework_1, aurelia_event_aggregator_1, eventosEmpleados, EventosControles, ctrl_alerta_1, icono_1, api_puestos_1, api_empleados_1, enum_respuesta_api_1, enum_posiciones_1, enum_mensajes_1, enum_iconos_1, enum_colores_1, enum_vistas_1) {
+define('modulos/actividadades/mod-actividades',["require", "exports", "aurelia-framework", "aurelia-event-aggregator", "../../enumeradores/enum-vistas"], function (require, exports, aurelia_framework_1, aurelia_event_aggregator_1, enum_vistas_1) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    var ModMovimientos = (function () {
+        function ModMovimientos(ea) {
+            this.ea = ea;
+            this.tituloMovimientos = 'Movimientos';
+            this.migas = ["Movimientos"];
+            this.cambiarVistaMovimientos(enum_vistas_1.EnumVistas.vistaRegistroMovimientos);
+        }
+        ModMovimientos.prototype.attached = function () {
+            var self = this;
+        };
+        ModMovimientos.prototype.detached = function () {
+            this.subscribeCambiarVistasMovimientos.dispose();
+        };
+        ModMovimientos.prototype.cambiarVistaMovimientos = function (vista) {
+            switch (vista) {
+                case enum_vistas_1.EnumVistas.vistaRegistroMovimientos:
+                    this.migas = ["Movimientos", "Registro Movimientos"];
+                    this.VistasMovimientos = enum_vistas_1.EnumVistas.vistaRegistroMovimientos["vista"];
+                    this.VistasModelosMovimientos = enum_vistas_1.EnumVistas.vistaRegistroMovimientos["modelo"];
+                    break;
+            }
+        };
+        ModMovimientos = __decorate([
+            aurelia_framework_1.autoinject,
+            __metadata("design:paramtypes", [aurelia_event_aggregator_1.EventAggregator])
+        ], ModMovimientos);
+        return ModMovimientos;
+    }());
+    exports.ModMovimientos = ModMovimientos;
+});
+
+
+
+define('text!modulos/actividadades/mod-actividades.html',[],function(){return "<template><div class=\"row\"><div class=\"col s12\"><ctrl-migas migas.bind=\"migas\"></ctrl-migas></div></div><div class=\"row\"><div class=\"col s12\"><ctrl-titulo titulo.bind=\"tituloActividades\"></ctrl-titulo></div></div><div class=\"row\"><div class=\"col s12\"></div><compose view.bind=\"VistasActividades\" view-model.bind=\"VistasModelosActividades\"></compose></div></template>";});
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+define('modulos/actividadades/mod-movimientos',["require", "exports", "aurelia-framework", "aurelia-event-aggregator", "../../enumeradores/enum-vistas"], function (require, exports, aurelia_framework_1, aurelia_event_aggregator_1, enum_vistas_1) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    var ModMovimientos = (function () {
+        function ModMovimientos(ea) {
+            this.ea = ea;
+            this.tituloMovimientos = 'Movimientos';
+            this.migas = ["Movimientos"];
+            this.cambiarVistaMovimientos(enum_vistas_1.EnumVistas.vistaRegistroMovimientos);
+        }
+        ModMovimientos.prototype.attached = function () {
+            var self = this;
+        };
+        ModMovimientos.prototype.detached = function () {
+            this.subscribeCambiarVistasMovimientos.dispose();
+        };
+        ModMovimientos.prototype.cambiarVistaMovimientos = function (vista) {
+            switch (vista) {
+                case enum_vistas_1.EnumVistas.vistaRegistroMovimientos:
+                    this.migas = ["Movimientos", "Registro Movimientos"];
+                    this.VistasMovimientos = enum_vistas_1.EnumVistas.vistaRegistroMovimientos["vista"];
+                    this.VistasModelosMovimientos = enum_vistas_1.EnumVistas.vistaRegistroMovimientos["modelo"];
+                    break;
+            }
+        };
+        ModMovimientos = __decorate([
+            aurelia_framework_1.autoinject,
+            __metadata("design:paramtypes", [aurelia_event_aggregator_1.EventAggregator])
+        ], ModMovimientos);
+        return ModMovimientos;
+    }());
+    exports.ModMovimientos = ModMovimientos;
+});
+
+
+
+define('text!modulos/actividadades/mod-movimientos.html',[],function(){return "<template><div class=\"row\"><div class=\"col s12\"><ctrl-migas migas.bind=\"migas\"></ctrl-migas></div></div><div class=\"row\"><div class=\"col s12\"><ctrl-titulo titulo.bind=\"tituloMovimientos\"></ctrl-titulo></div></div><div class=\"row\"><div class=\"col s12\"></div><compose view.bind=\"VistasMovimientos\" view-model.bind=\"VistasModelosMovimientos\"></compose></div></template>";});
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+define('modulos/empleados/cpte-filtros-empleados',["require", "exports", "aurelia-framework", "aurelia-event-aggregator", "../../eventos/eventos-empleados", "../../eventos/eventos-controles", "../../controles/ctrl-alerta", "../../controles/icono", "../../servicios/web-api/api-puestos", "../../servicios/web-api/api-empleados", "../../servicios/web-api/api-jornadas", "../../enumeradores/enum-respuesta-api", "enumeradores/enum-posiciones", "enumeradores/enum-mensajes", "enumeradores/enum-iconos", "enumeradores/enum-colores", "enumeradores/enum-vistas"], function (require, exports, aurelia_framework_1, aurelia_event_aggregator_1, eventosEmpleados, EventosControles, ctrl_alerta_1, icono_1, api_puestos_1, api_empleados_1, api_jornadas_1, enum_respuesta_api_1, enum_posiciones_1, enum_mensajes_1, enum_iconos_1, enum_colores_1, enum_vistas_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var CpteFiltrosEmpleados = (function () {
-        function CpteFiltrosEmpleados(ea, peticionPuestos, peticionEmpleados) {
+        function CpteFiltrosEmpleados(ea, peticionPuestos, peticionEmpleados, peticionJornadas) {
             this.ea = ea;
             this.peticionPuestos = peticionPuestos;
             this.peticionEmpleados = peticionEmpleados;
+            this.peticionJornadas = peticionJornadas;
             this.Padre = null;
             this.inicializarControles();
         }
@@ -863,6 +965,10 @@ define('modulos/empleados/cpte-filtros-empleados',["require", "exports", "aureli
             this.subscribeEditarEmpleado = this.ea.subscribe(eventosEmpleados.EditarEmpleado, function (msg) {
                 self.inicializarControles();
                 self.editarEmpleado(msg.empleadoID);
+            });
+            this.subscribeRegistrarEmpleado = this.ea.subscribe(eventosEmpleados.RegistrarEmpleado, function (msg) {
+                self.inicializarControles();
+                self.registrarEmpleado();
             });
             this.subscribeClickAccion = this.ea.subscribe(EventosControles.ClickAccion, function (msg) {
                 switch (msg.opc) {
@@ -882,6 +988,9 @@ define('modulos/empleados/cpte-filtros-empleados',["require", "exports", "aureli
                         break;
                     case 'cancelar':
                         self.inicializarControles();
+                        break;
+                    case 'registrar':
+                        self.aceptar();
                         break;
                 }
             });
@@ -931,6 +1040,25 @@ define('modulos/empleados/cpte-filtros-empleados',["require", "exports", "aureli
                 new ctrl_alerta_1.CtrlAlerta(enum_mensajes_1.EnumMensajes.ErrorAPI);
             });
         };
+        CpteFiltrosEmpleados.prototype.consultarJornadas = function () {
+            var self = this;
+            this.peticionJornadas.consultarJornadas()
+                .then(function (respuesta) {
+                if (respuesta.Codigo == enum_respuesta_api_1.EnumRespuestaAPI.Aceptado) {
+                    for (var i in respuesta.Respuesta) {
+                        respuesta.Respuesta[i].Valor = respuesta.Respuesta[i].ID;
+                        respuesta.Respuesta[i].ID = 'tipoJor-' + respuesta.Respuesta[i].ID;
+                    }
+                    self.configRadioJornadas.Opciones = respuesta.Respuesta;
+                }
+                else
+                    new ctrl_alerta_1.CtrlAlerta(respuesta.Mensaje);
+            })
+                .catch(function (error) {
+                console.log(enum_mensajes_1.EnumMensajes.ErrorAPI);
+                new ctrl_alerta_1.CtrlAlerta(enum_mensajes_1.EnumMensajes.ErrorAPI);
+            });
+        };
         CpteFiltrosEmpleados.prototype.mostrarListaEmpleados = function (empleados) {
             var _this = this;
             try {
@@ -945,7 +1073,7 @@ define('modulos/empleados/cpte-filtros-empleados',["require", "exports", "aureli
         };
         CpteFiltrosEmpleados.prototype.buscar = function () {
             var self = this;
-            self.peticionEmpleados.consultarEmpleados(self.configInputNumero.Valor, self.configInputNombre.Valor, self.configInputPaterno.Valor, self.configInputMaterno.Valor, self.configComboPuestos.Seleccionado, self.configRadioTiposEmpleados.Seleccionado == null ? 0 : self.configRadioTiposEmpleados.Seleccionado.Valor, true)
+            self.peticionEmpleados.consultarEmpleados(self.configInputNumero.Valor, self.configInputNombre.Valor, self.configInputPaterno.Valor, self.configInputMaterno.Valor, self.configComboPuestos.Seleccionado, self.configRadioTiposEmpleados.Seleccionado == null ? 0 : self.configRadioTiposEmpleados.Seleccionado.Valor, self.configRadioJornadas.Seleccionado == null ? 0 : self.configRadioJornadas.Seleccionado.Valor, true)
                 .then(function (respuesta) {
                 if (respuesta.Codigo == enum_respuesta_api_1.EnumRespuestaAPI.Aceptado) {
                     self.mostrarListaEmpleados(respuesta.Respuesta);
@@ -960,7 +1088,7 @@ define('modulos/empleados/cpte-filtros-empleados',["require", "exports", "aureli
         };
         CpteFiltrosEmpleados.prototype.actualizar = function () {
             var self = this;
-            self.peticionEmpleados.nuevoEmpleado(self.configInputNombre.Valor, self.configInputPaterno.Valor, self.configInputMaterno.Valor, self.configComboPuestos.Seleccionado, self.configRadioTiposEmpleados.Seleccionado.Valor)
+            self.peticionEmpleados.actualizarEmpleado(self.configInputNumero.Valor, self.configInputNombre.Valor, self.configInputPaterno.Valor, self.configInputMaterno.Valor, self.configComboPuestos.Seleccionado.Valor, self.configRadioTiposEmpleados.Seleccionado == null ? 0 : self.configRadioTiposEmpleados.Seleccionado.Valor, self.configRadioJornadas.Seleccionado == null ? 0 : self.configRadioTiposEmpleados.Seleccionado.Valor, true)
                 .then(function (respuesta) {
                 if (respuesta.Codigo == enum_respuesta_api_1.EnumRespuestaAPI.Aceptado) {
                     new ctrl_alerta_1.CtrlAlerta("Empleado actualizado correctamente");
@@ -975,7 +1103,7 @@ define('modulos/empleados/cpte-filtros-empleados',["require", "exports", "aureli
         };
         CpteFiltrosEmpleados.prototype.aceptar = function () {
             var self = this;
-            self.peticionEmpleados.nuevoEmpleado(self.configInputNombre.Valor, self.configInputPaterno.Valor, self.configInputMaterno.Valor, self.configComboPuestos.Seleccionado, self.configRadioTiposEmpleados.Seleccionado.Valor)
+            self.peticionEmpleados.nuevoEmpleado(0, self.configInputNombre.Valor, self.configInputPaterno.Valor, self.configInputMaterno.Valor, self.configComboPuestos.Seleccionado.Valor, self.configRadioTiposEmpleados.Seleccionado == null ? 0 : self.configRadioTiposEmpleados.Seleccionado.Valor, self.configRadioJornadas.Seleccionado == null ? 0 : self.configRadioJornadas.Seleccionado.Valor, true)
                 .then(function (respuesta) {
                 if (respuesta.Codigo == enum_respuesta_api_1.EnumRespuestaAPI.Aceptado) {
                     new ctrl_alerta_1.CtrlAlerta("Empleado registrado correctamente");
@@ -992,7 +1120,7 @@ define('modulos/empleados/cpte-filtros-empleados',["require", "exports", "aureli
         CpteFiltrosEmpleados.prototype.editarEmpleado = function (empleado) {
             var self = this;
             this.configInputNumero.Valor = empleado;
-            this.peticionEmpleados.consultarEmpleados(this.configInputNumero.Valor, "", "", "", -1, -1, true)
+            this.peticionEmpleados.consultarEmpleados(this.configInputNumero.Valor, "", "", "", -1, -1, -1, true)
                 .then(function (respuesta) {
                 if (respuesta.Codigo == enum_respuesta_api_1.EnumRespuestaAPI.Aceptado) {
                     self.llenarFormulario(respuesta.Respuesta[0]);
@@ -1005,6 +1133,14 @@ define('modulos/empleados/cpte-filtros-empleados',["require", "exports", "aureli
                 new ctrl_alerta_1.CtrlAlerta(enum_mensajes_1.EnumMensajes.ErrorAPI);
             });
         };
+        CpteFiltrosEmpleados.prototype.registrarEmpleado = function () {
+            var self = this;
+            this.configInputNumero.Deshabilitado = true;
+            this.configBotonActualizar.Mostrar = false;
+            this.configBotonRegistrar.Mostrar = true;
+            this.configBotonCancelar.Mostrar = true;
+            this.configBotonBuscar.Mostrar = false;
+        };
         CpteFiltrosEmpleados.prototype.llenarFormulario = function (empleado) {
             try {
                 this.configInputNumero.Deshabilitado = true;
@@ -1014,6 +1150,7 @@ define('modulos/empleados/cpte-filtros-empleados',["require", "exports", "aureli
                 this.configBotonActualizar.Mostrar = true;
                 this.configBotonCancelar.Mostrar = true;
                 this.configBotonBuscar.Mostrar = false;
+                this.configBotonRegistrar.Mostrar = false;
                 this.configComboPuestos.Seleccionado;
                 var element = document.querySelector("div.input-field select");
                 console.log(element);
@@ -1036,6 +1173,7 @@ define('modulos/empleados/cpte-filtros-empleados',["require", "exports", "aureli
         CpteFiltrosEmpleados.prototype.inicializarControles = function () {
             this.consultarPuestos();
             this.consultarTiposEmpleados();
+            this.consultarJornadas();
             this.configInputNumero = {
                 ID: '',
                 Nombre: '',
@@ -1108,6 +1246,15 @@ define('modulos/empleados/cpte-filtros-empleados',["require", "exports", "aureli
                 Opciones: this.opcionesTiposEmpleados,
                 Seleccionado: null
             };
+            this.opcionesJornadas = [];
+            this.configRadioJornadas = {
+                Nombre: 'tipoEmpleado',
+                Label: '',
+                Grupo: 'tiposJornadas',
+                Obligatorio: false,
+                Opciones: this.opcionesJornadas,
+                Seleccionado: null
+            };
             this.configBotonBuscar = {
                 ID: '',
                 Icono: new icono_1.Icono(enum_iconos_1.EnumIconos.Buscar, enum_colores_1.EnumColores.SinColor, enum_posiciones_1.EnumPosiciones.izquierda),
@@ -1141,13 +1288,13 @@ define('modulos/empleados/cpte-filtros-empleados',["require", "exports", "aureli
                 Nombre: '',
                 Texto: 'Registrar',
                 Deshabilitado: false,
-                Mostrar: false,
+                Mostrar: true,
                 Funcion: 'registrar'
             };
         };
         CpteFiltrosEmpleados = __decorate([
             aurelia_framework_1.autoinject,
-            __metadata("design:paramtypes", [aurelia_event_aggregator_1.EventAggregator, api_puestos_1.ApiPuestos, api_empleados_1.ApiEmpleados])
+            __metadata("design:paramtypes", [aurelia_event_aggregator_1.EventAggregator, api_puestos_1.ApiPuestos, api_empleados_1.ApiEmpleados, api_jornadas_1.ApiJornadas])
         ], CpteFiltrosEmpleados);
         return CpteFiltrosEmpleados;
     }());
@@ -1156,7 +1303,7 @@ define('modulos/empleados/cpte-filtros-empleados',["require", "exports", "aureli
 
 
 
-define('text!modulos/empleados/cpte-filtros-empleados.html',[],function(){return "<template><div class=\"row\"><div class=\"col s12 m6\"><ctrl-input config-input.bind=\"configInputNumero\"></ctrl-input></div><div class=\"col s12 offset-m3 m1\"><ctrl-boton config-boton.bind=\"configBotonNuevo\"></ctrl-boton></div><div class=\"col s12 m2\"><ctrl-boton config-boton.bind=\"configBotonBuscar\"></ctrl-boton></div><div class=\"col s12 offset-m3 m1\"><ctrl-boton config-boton.bind=\"configBotonCancelar\"></ctrl-boton></div><div class=\"col s12 m2\"><ctrl-boton config-boton.bind=\"configBotonActualizar\"></ctrl-boton></div></div><div class=\"row\"><div class=\"col s12 m4\"><ctrl-input config-input.bind=\"configInputNombre\"></ctrl-input></div><div class=\"col s12 m4\"><ctrl-input config-input.bind=\"configInputPaterno\"></ctrl-input></div><div class=\"col s12 m4\"><ctrl-input config-input.bind=\"configInputMaterno\"></ctrl-input></div></div><div class=\"row\"><div class=\"col s12 m6\"><ctrl-combo config-combo.bind=\"configComboPuestos\"></ctrl-combo></div><div class=\"col s12 m6\"><ctrl-radio-vertical config-radio.bind=\"configRadioTiposEmpleados\"></ctrl-radio-vertical></div></div></template>";});
+define('text!modulos/empleados/cpte-filtros-empleados.html',[],function(){return "<template><div class=\"row\"><div class=\"col s12 m6\"><ctrl-input config-input.bind=\"configInputNumero\"></ctrl-input></div><div if.bind=\"configBotonRegistrar.Mostrar\" class=\"col s12 offset-m3 m1\"><ctrl-boton config-boton.bind=\"configBotonRegistrar\"></ctrl-boton></div><div if.bind=\"configBotonCancelar.Mostrar\" class=\"col s12 offset-m3 m1\"><ctrl-boton config-boton.bind=\"configBotonCancelar\"></ctrl-boton></div><div if.bind=\"configBotonBuscar.Mostrar\" class=\"col s12 m2\"><ctrl-boton config-boton.bind=\"configBotonBuscar\"></ctrl-boton></div><div if.bind=\"configBotonActualizar.Mostrar\" class=\"col s12 m2\"><ctrl-boton config-boton.bind=\"configBotonActualizar\"></ctrl-boton></div></div><div class=\"row\"><div class=\"col s12 m4\"><ctrl-input config-input.bind=\"configInputNombre\"></ctrl-input></div><div class=\"col s12 m4\"><ctrl-input config-input.bind=\"configInputPaterno\"></ctrl-input></div><div class=\"col s12 m4\"><ctrl-input config-input.bind=\"configInputMaterno\"></ctrl-input></div></div><div class=\"row\"><div class=\"col s12 m6\"><ctrl-combo config-combo.bind=\"configComboPuestos\"></ctrl-combo></div><div class=\"col s12 m3\"><ctrl-radio-vertical config-radio.bind=\"configRadioTiposEmpleados\"></ctrl-radio-vertical></div><div class=\"col s12 m3\"><ctrl-radio-vertical config-radio.bind=\"configRadioJornadas\"></ctrl-radio-vertical></div></div></template>";});
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1200,6 +1347,9 @@ define('modulos/empleados/cpte-lista-empleados',["require", "exports", "aurelia-
                 var self = _this;
                 switch (msg.funcion) {
                     case 'nuevoEmpleado':
+                        self.registrarEmpleado();
+                        break;
+                    case 'regresar':
                         self.regresarFiltrosEmpleados();
                         break;
                 }
@@ -1254,11 +1404,10 @@ define('modulos/empleados/cpte-lista-empleados',["require", "exports", "aurelia-
             }
         };
         CpteListaEmpleados.prototype.editarEmpleado = function () {
-            var _this = this;
             var self = this;
             this.ea.publish(new eventosEmpleados.CambiarVistasEmpleados(enum_vistas_1.EnumVistas.vistaEditarEmpleados));
             setTimeout(function () {
-                _this.ea.publish(new eventosEmpleados.EditarEmpleado(self.empleado.ID.Valor));
+                self.ea.publish(new eventosEmpleados.EditarEmpleado(self.empleado.ID.Valor));
             }, 100);
         };
         CpteListaEmpleados.prototype.eliminarEmpleado = function () {
@@ -1285,10 +1434,26 @@ define('modulos/empleados/cpte-lista-empleados',["require", "exports", "aurelia-
                 new ctrl_alerta_1.CtrlAlerta(enum_mensajes_1.EnumMensajes.ErrorAPI);
             });
         };
+        CpteListaEmpleados.prototype.registrarEmpleado = function () {
+            var self = this;
+            this.ea.publish(new eventosEmpleados.CambiarVistasEmpleados(enum_vistas_1.EnumVistas.vistaNuevosEmpleados));
+            setTimeout(function () {
+                self.ea.publish(new eventosEmpleados.RegistrarEmpleado());
+            }, 100);
+        };
         CpteListaEmpleados.prototype.regresarFiltrosEmpleados = function () {
             this.ea.publish(new eventosEmpleados.CambiarVistasEmpleados(enum_vistas_1.EnumVistas.vistaFiltrosEmpleados));
         };
         CpteListaEmpleados.prototype.inicializarControles = function () {
+            this.configBotonRegresar = {
+                ID: '',
+                Icono: new icono_1.Icono(),
+                Nombre: '',
+                Texto: 'Regresar',
+                Deshabilitado: false,
+                Mostrar: true,
+                Funcion: 'regresar'
+            };
             this.configBotonNuevoEmpleado = {
                 ID: '',
                 Icono: new icono_1.Icono(enum_iconos_1.EnumIconos.Guardar, enum_colores_1.EnumColores.SinColor, enum_posiciones_1.EnumPosiciones.izquierda),
@@ -1315,7 +1480,7 @@ define('modulos/empleados/cpte-lista-empleados',["require", "exports", "aurelia-
 
 
 
-define('text!modulos/empleados/cpte-lista-empleados.html',[],function(){return "<template><div class=\"row\"><div class=\"col offset-s5 s7 offset-m10 m2\"><ctrl-boton config-boton.bind=\"configBotonNuevoEmpleado\"></ctrl-boton></div></div><div class=\"row\"><div class=\"col s12\"><ctrl-tabla config-tabla.bind=\"configTablaEmpleados\"></ctrl-tabla></div></div><ctrl-alerta-confirmacion config-alerta-confirmacion.bind=\"configAlertaEmpleados\"></ctrl-alerta-confirmacion></template>";});
+define('text!modulos/empleados/cpte-lista-empleados.html',[],function(){return "<template><div class=\"row\"><div class=\"col s6 offset-m9 m1\"><ctrl-boton config-boton.bind=\"configBotonRegresar\"></ctrl-boton></div><div class=\"col s6 m2\"><ctrl-boton config-boton.bind=\"configBotonNuevoEmpleado\"></ctrl-boton></div></div><div class=\"row\"><div class=\"col s12\"><ctrl-tabla config-tabla.bind=\"configTablaEmpleados\"></ctrl-tabla></div></div><ctrl-alerta-confirmacion config-alerta-confirmacion.bind=\"configAlertaEmpleados\"></ctrl-alerta-confirmacion></template>";});
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1361,6 +1526,11 @@ define('modulos/empleados/mod-empleados',["require", "exports", "aurelia-framewo
                     this.VistasEmpleados = enum_vistas_1.EnumVistas.vistaEditarEmpleados["vista"];
                     this.VistasModelosEmpleados = enum_vistas_1.EnumVistas.vistaEditarEmpleados["modelo"];
                     break;
+                case enum_vistas_1.EnumVistas.vistaNuevosEmpleados:
+                    this.migas = ["Empleados", "Registrar Empleado"];
+                    this.VistasEmpleados = enum_vistas_1.EnumVistas.vistaNuevosEmpleados["vista"];
+                    this.VistasModelosEmpleados = enum_vistas_1.EnumVistas.vistaNuevosEmpleados["modelo"];
+                    break;
             }
         };
         ModEmpleados = __decorate([
@@ -1390,6 +1560,106 @@ define('modulos/menu/menu-principal',["require", "exports"], function (require, 
 
 
 define('text!modulos/menu/menu-principal.html',[],function(){return "<template><nav></nav><ul id=\"slide-out\" class=\"sidenav\"><li><div class=\"user-view\"><div class=\"background\"><img src=\"images/office.jpg\"></div><a href=\"#user\"><img class=\"circle\" src=\"images/yuna.jpg\"></a><a href=\"#name\"><span class=\"white-text name\">John Doe</span></a> <a href=\"#email\"><span class=\"white-text email\">jdandturk@gmail.com</span></a></div></li><li><a href=\"#!\"><i class=\"material-icons\">cloud</i>First Link With Icon</a></li><li><a href=\"#!\">Second Link</a></li><li><div class=\"divider\"></div></li><li><a class=\"subheader\">Subheader</a></li><li><a class=\"waves-effect\" href=\"#!\">Third Link With Waves</a></li></ul><a href=\"#\" data-target=\"slide-out\" class=\"sidenav-trigger\"><i class=\"material-icons\">menu</i></a></template>";});
+define('modulos/movimientos/cpte-registro-movimientos',["require", "exports"], function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    var CpteRegistroMovimientos = (function () {
+        function CpteRegistroMovimientos() {
+        }
+        return CpteRegistroMovimientos;
+    }());
+    exports.CpteRegistroMovimientos = CpteRegistroMovimientos;
+});
+
+
+
+define('text!modulos/movimientos/cpte-registro-movimientos.html',[],function(){return "<template></template>";});
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+define('modulos/movimientos/mod-movimientos',["require", "exports", "aurelia-framework", "aurelia-event-aggregator", "../../enumeradores/enum-vistas"], function (require, exports, aurelia_framework_1, aurelia_event_aggregator_1, enum_vistas_1) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    var ModMovimientos = (function () {
+        function ModMovimientos(ea) {
+            this.ea = ea;
+            this.tituloMovimientos = 'Movimientos';
+            this.migas = ["Movimientos"];
+            this.cambiarVistaMovimientos(enum_vistas_1.EnumVistas.vistaRegistroMovimientos);
+        }
+        ModMovimientos.prototype.attached = function () {
+            var self = this;
+        };
+        ModMovimientos.prototype.detached = function () {
+            this.subscribeCambiarVistasMovimientos.dispose();
+        };
+        ModMovimientos.prototype.cambiarVistaMovimientos = function (vista) {
+            switch (vista) {
+                case enum_vistas_1.EnumVistas.vistaRegistroMovimientos:
+                    this.migas = ["Movimientos", "Registro Movimientos"];
+                    this.VistasMovimientos = enum_vistas_1.EnumVistas.vistaRegistroMovimientos["vista"];
+                    this.VistasModelosMovimientos = enum_vistas_1.EnumVistas.vistaRegistroMovimientos["modelo"];
+                    break;
+            }
+        };
+        ModMovimientos = __decorate([
+            aurelia_framework_1.autoinject,
+            __metadata("design:paramtypes", [aurelia_event_aggregator_1.EventAggregator])
+        ], ModMovimientos);
+        return ModMovimientos;
+    }());
+    exports.ModMovimientos = ModMovimientos;
+});
+
+
+
+define('text!modulos/movimientos/mod-movimientos.html',[],function(){return "<template><div class=\"row\"><div class=\"col s12\"><ctrl-migas migas.bind=\"migas\"></ctrl-migas></div></div><div class=\"row\"><div class=\"col s12\"><ctrl-titulo titulo.bind=\"tituloMovimientos\"></ctrl-titulo></div></div><div class=\"row\"><div class=\"col s12\"></div><compose view.bind=\"VistasMovimientos\" view-model.bind=\"VistasModelosMovimientos\"></compose></div></template>";});
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+define('modulos/nominas/mod-nominas',["require", "exports", "aurelia-framework", "aurelia-event-aggregator"], function (require, exports, aurelia_framework_1, aurelia_event_aggregator_1) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    var ModNominas = (function () {
+        function ModNominas(ea) {
+            this.ea = ea;
+            this.tituloEmpleados = 'Nominas';
+            this.migas = ["Nominas"];
+        }
+        ModNominas.prototype.attached = function () {
+            var self = this;
+        };
+        ModNominas.prototype.detached = function () {
+            this.subscribeCambiarVistasNominas.dispose();
+        };
+        ModNominas.prototype.cambiarVistaNominas = function (vista) {
+            switch (vista) {
+            }
+        };
+        ModNominas = __decorate([
+            aurelia_framework_1.autoinject,
+            __metadata("design:paramtypes", [aurelia_event_aggregator_1.EventAggregator])
+        ], ModNominas);
+        return ModNominas;
+    }());
+    exports.ModNominas = ModNominas;
+});
+
+
+
+define('text!modulos/nominas/mod-nominas.html',[],function(){return "<template><div class=\"row\"><div class=\"col s12\"><ctrl-migas migas.bind=\"migas\"></ctrl-migas></div></div><div class=\"row\"><div class=\"col s12\"><ctrl-titulo titulo.bind=\"tituloNominas\"></ctrl-titulo></div></div><div class=\"row\"><div class=\"col s12\"></div><compose view.bind=\"VistasNominas\" view-model.bind=\"VistasModelosNominas\"></compose></div></template>";});
 define('resources/index',["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -1440,6 +1710,9 @@ define('servicios/web-api/api-empleados',["require", "exports", "aurelia-framewo
         ApiEmpleadosMetodos.prototype.nuevoEmpleado = function () {
             return this.apiBase["format"]("nuevo");
         };
+        ApiEmpleadosMetodos.prototype.actualizarEmpleado = function () {
+            return this.apiBase["format"]("actualizar");
+        };
         ApiEmpleadosMetodos.prototype.eliminarEmpleado = function () {
             return this.apiBase["format"]("eliminar");
         };
@@ -1465,7 +1738,7 @@ define('servicios/web-api/api-empleados',["require", "exports", "aurelia-framewo
                 });
             });
         };
-        ApiEmpleados.prototype.consultarEmpleados = function (ID, Nombre, ApellidoPaterno, ApellidoMaterno, PuestoID, TipoEmpleadoID, Activo) {
+        ApiEmpleados.prototype.consultarEmpleados = function (ID, Nombre, ApellidoPaterno, ApellidoMaterno, PuestoID, TipoEmpleadoID, JornadaID, Activo) {
             var _this = this;
             var filtros = {
                 "ID": ID,
@@ -1474,6 +1747,7 @@ define('servicios/web-api/api-empleados',["require", "exports", "aurelia-framewo
                 "ApellidoMaterno": ApellidoMaterno,
                 "TipoEmpleadoID": TipoEmpleadoID,
                 "PuestoID": PuestoID,
+                "JornadaID": JornadaID,
                 "Activo": Activo
             };
             var self = this;
@@ -1488,14 +1762,41 @@ define('servicios/web-api/api-empleados',["require", "exports", "aurelia-framewo
                 });
             });
         };
-        ApiEmpleados.prototype.nuevoEmpleado = function (Nombre, ApellidoPaterno, ApellidoMaterno, PuestoID, TipoEmpleadoID) {
+        ApiEmpleados.prototype.actualizarEmpleado = function (ID, Nombre, ApellidoPaterno, ApellidoMaterno, PuestoID, TipoEmpleadoID, JornadaID, Activo) {
             var _this = this;
             var empleado = {
+                "ID": ID,
                 "Nombre": Nombre,
                 "ApellidoPaterno": ApellidoPaterno,
                 "ApellidoMaterno": ApellidoMaterno,
                 "TipoEmpleadoID": TipoEmpleadoID,
-                "PuestoID": PuestoID
+                "PuestoID": PuestoID,
+                "JornadaID": JornadaID,
+                "Activo": Activo
+            };
+            var self = this;
+            var resultado = [];
+            return new Promise(function (result) {
+                _this.api.post(self.apis.actualizarEmpleado(), empleado)
+                    .then(function (respuesta) {
+                    return result(self.procesarRespuesta.ProcesarResultado(respuesta, resultado));
+                })
+                    .catch(function (error) {
+                    return result(self.procesarRespuesta.ProcesarError(error, resultado));
+                });
+            });
+        };
+        ApiEmpleados.prototype.nuevoEmpleado = function (ID, Nombre, ApellidoPaterno, ApellidoMaterno, PuestoID, TipoEmpleadoID, JornadaID, Activo) {
+            var _this = this;
+            var empleado = {
+                "ID": ID,
+                "Nombre": Nombre,
+                "ApellidoPaterno": ApellidoPaterno,
+                "ApellidoMaterno": ApellidoMaterno,
+                "TipoEmpleadoID": TipoEmpleadoID,
+                "PuestoID": PuestoID,
+                "JornadaID": JornadaID,
+                "Activo": Activo
             };
             var self = this;
             var resultado = [];
@@ -1530,6 +1831,61 @@ define('servicios/web-api/api-empleados',["require", "exports", "aurelia-framewo
         return ApiEmpleados;
     }());
     exports.ApiEmpleados = ApiEmpleados;
+});
+
+
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+define('servicios/web-api/api-jornadas',["require", "exports", "aurelia-framework", "../../environment", "./api-solicitud", "./api-procesar-respuesta"], function (require, exports, aurelia_framework_1, environment_1, api_solicitud_1, api_procesar_respuesta_1) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    var ApiJornadasMetodos = (function () {
+        function ApiJornadasMetodos(apiBase) {
+            this.apiBase = apiBase;
+            this.apiBase = this.apiBase + "{0}";
+        }
+        ;
+        ApiJornadasMetodos.prototype.consultarJornadas = function () {
+            return this.apiBase["format"]("consultar");
+        };
+        ;
+        return ApiJornadasMetodos;
+    }());
+    var ApiJornadas = (function () {
+        function ApiJornadas(api, procesarRespuesta) {
+            this.api = api;
+            this.procesarRespuesta = procesarRespuesta;
+            this.apis = new ApiJornadasMetodos(environment_1.default.apiUrl.jornadas);
+        }
+        ApiJornadas.prototype.consultarJornadas = function () {
+            var _this = this;
+            var self = this;
+            var resultado = [];
+            return new Promise(function (result) {
+                _this.api.get(self.apis.consultarJornadas())
+                    .then(function (respuesta) {
+                    return result(self.procesarRespuesta.ProcesarResultado(respuesta, resultado));
+                })
+                    .catch(function (error) {
+                    return result(self.procesarRespuesta.ProcesarError(error, resultado));
+                });
+            });
+        };
+        ApiJornadas = __decorate([
+            aurelia_framework_1.autoinject,
+            __metadata("design:paramtypes", [api_solicitud_1.ApiSolicitud, api_procesar_respuesta_1.ApiProcesarRespuesta])
+        ], ApiJornadas);
+        return ApiJornadas;
+    }());
+    exports.ApiJornadas = ApiJornadas;
 });
 
 
