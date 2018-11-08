@@ -1,1 +1,22 @@
-https://materializecss.com/sidenav.html
+<template>
+    <div class="row">
+        <div class="col s12">
+            <ul id="slide-out" class="sidenav">
+                <li>
+                    <div class="user-view" style="width:360px; height:160px;">
+                        <div class="background" style="text-align:center;">
+                            <img src="${configMenu.ImagenFondo}" height="160px;">
+                        </div>
+                    </div>
+                </li>
+                <li><div class="divider"></div></li>
+                <li><a class="subheader" style="text-align:center;">${configMenu.Titulo}</a></li>
+                <li><div class="divider"></div></li>
+                <li>
+                    <a class="waves-effect" href="#!" repeat.for="opcion of configMenu.Opciones" click.delegate="clickOpcion(opcion.Funcion)">${opcion.Nombre}</a>
+                </li>
+                <li><div class="divider"></div></li>
+            </ul>
+        </div>
+    </div>
+</template>

@@ -1,8 +1,10 @@
 <template>
   <require from="materialize-css/dist/css/materialize.css"></require>
+  <require from="./controles/ctrl-menu"></require>
   <div class="row">
     <div class="col s12">
       <compose view.bind="Vistas" view-model.bind="VistasModelos"></compose>
     </div>
   </div>
+  <ctrl-menu config-menu.bind="configMenu"></ctrl-menu>
 </template>

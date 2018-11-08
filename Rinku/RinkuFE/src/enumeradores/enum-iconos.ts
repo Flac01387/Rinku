@@ -8,5 +8,6 @@
   Buscar = 'search',
   Opciones = 'menu',
   Editar = 'mode_edit',
-  Borrar = 'delete'
+  Borrar = 'delete',
+  Actividades = 'assignment'
 }

@@ -1,3 +1,38 @@
 <template>
-    
+    <div class="row">
+        <div class="col s12 m6">
+            <ctrl-input config-input.bind="configInputNumero"></ctrl-input>
+        </div>
+        <div class="col s12 m2">
+            <ctrl-fecha config-fecha.bind="configFechaRegistro"></ctrl-input>
+        </div>
+        <div class="col s12 offset-m2 m1">
+            <ctrl-boton config-boton.bind="configBotonRegistrar"></ctrl-boton>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s12 m4">
+            <ctrl-input config-input.bind="configInputNombre"></ctrl-input>
+        </div>
+        <div class="col s12 m4">
+            <ctrl-input config-input.bind="configInputPaterno"></ctrl-input>
+        </div>
+        <div class="col s12 m4">
+            <ctrl-input config-input.bind="configInputMaterno"></ctrl-input>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s12 m3">
+            <ctrl-input config-input.bind="configInputPuesto"></ctrl-input>
+        </div>
+        <div class="col s12 m3">
+            <ctrl-input config-input.bind="configInputTipo"></ctrl-input>
+        </div>
+        <div class="col s12 m3">
+            <ctrl-input config-input.bind="configInputCantidadEntregas"></ctrl-input>
+        </div>
+        <div class="col s12 m3">
+            <ctrl-input config-input.bind="configInputCubrioPuesto"></ctrl-input>
+        </div>
+    </div>
 </template>

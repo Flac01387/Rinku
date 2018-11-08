@@ -1,5 +1,5 @@
--- USE master DROP DATABASE Rinku -- SP_WHO kill 56
-/*
+USE master DROP DATABASE Rinku -- SP_WHO kill 53
+
 CREATE DATABASE Rinku
 GO
 USE Rinku
@@ -25,7 +25,7 @@ BEGIN
 	SET @FECHA = DATEADD(DAY, 1, @FECHA)
 END
 
-CREATE TABLE ComisionesTipos
+CREATE TABLE ActividadesTipos
 (
 	ID INT NOT NULL IDENTITY(1,1),
     Nombre VARCHAR(100) NOT NULL,
@@ -39,9 +39,7 @@ CREATE TABLE Comisiones
     Nombre VARCHAR(100) NOT NULL,
     Activo BIT,
 	Monto DECIMAL(5,2) NOT NULL,
-	TipoComisionID INT NOT NULL,
-    PRIMARY KEY (ID),
-    FOREIGN KEY (TipoComisionID) REFERENCES ComisionesTipos(ID)
+    PRIMARY KEY (ID)
 )
 
 CREATE TABLE Actividades
@@ -49,9 +47,11 @@ CREATE TABLE Actividades
 	ID INT NOT NULL IDENTITY(1,1),
 	Nombre VARCHAR(250) NOT NULL,
 	ComisionID INT NOT NULL,
+	ActividadTipoID INT NOT NULL,
     Activo BIT,
     PRIMARY KEY (ID),
-    FOREIGN KEY (ComisionID) REFERENCES Comisiones(ID)
+    FOREIGN KEY (ComisionID) REFERENCES Comisiones(ID),
+    FOREIGN KEY (ActividadTipoID) REFERENCES ActividadesTipos(ID)
 )
 
 CREATE TABLE Puestos
@@ -60,20 +60,6 @@ CREATE TABLE Puestos
     Nombre VARCHAR(100) NOT NULL,
     Activo BIT,
     PRIMARY KEY (ID)
-)
-
-CREATE TABLE Sueldos
-(
-	ID INT NOT NULL IDENTITY(1,1),
-	PuestoID INT NOT NULL,
-	SdoHr INT NOT NULL,
-	SdoMediaJornada INT NOT NULL,
-	SdoJornada INT NOT NULL,
-	SdoSemana INT NOT NULL,
-	SdoQuincena INT NOT NULL,
-	SdoMes INT NOT NULL,
-	PRIMARY KEY(ID),
-	FOREIGN KEY(PuestoID) REFERENCES Puestos(ID)
 )
 
 CREATE TABLE ActividadesPuestos
@@ -106,14 +92,6 @@ CREATE TABLE EmpleadosTipos
 	Nombre VARCHAR(100) NOT NULL,
 	Activo BIT,
     PRIMARY KEY (ID)
-)
-
-CREATE TABLE Estatus
-(
-	ID INT NOT NULL IDENTITY(1,1),
-	Nombre VARCHAR(100) NOT NULL,
-	Activo BIT,
-	PRIMARY KEY (ID)
 )
 
 CREATE TABLE BonosTipos
@@ -162,12 +140,12 @@ CREATE TABLE Empleados
 	ApellidoPaterno VARCHAR(100) NOT NULL,
 	ApellidoMaterno VARCHAR(100) NOT NULL,
 	PuestoID INT NOT NULL,
-	TipoEmpleadoID INT NOT NULL,
+	EmpleadoTipoID INT NOT NULL,
 	JornadaID INT NOT NULL,
     Activo BIT,
     PRIMARY KEY (ID),
     FOREIGN KEY (PuestoID) REFERENCES Puestos(ID),
-    FOREIGN KEY (TipoEmpleadoID) REFERENCES EmpleadosTipos(ID),
+    FOREIGN KEY (EmpleadoTipoID) REFERENCES EmpleadosTipos(ID),
     FOREIGN KEY (JornadaID) REFERENCES Jornadas(ID)
 )
 
@@ -183,87 +161,78 @@ CREATE TABLE Impuestos
     PRIMARY KEY (ID)
 )
 
-CREATE TABLE Nominas
-(
+CREATE TABLE Pagos(
 	ID INT NOT NULL IDENTITY(1,1),
 	EmpleadoID INT NOT NULL,
-	SueldoBase DECIMAL(10,2) NOT NULL,
-	SueldoTotal DECIMAL(10,2) NOT NULL,
-	EstatusID INT NOT NULL,
-	Activo BIT NOT NULL,
+	TotalBruto DECIMAL(10,2) NOT NULL,
+	TotalNeto DECIMAL(10,2) NOT NULL,
     PRIMARY KEY (ID),
-	FOREIGN KEY (EmpleadoID) REFERENCES Empleados(ID),
-	FOREIGN KEY (EstatusID) REFERENCES Estatus(ID)
+	FOREIGN KEY (EmpleadoID) REFERENCES Empleados(ID)
 )
 
 CREATE TABLE MovimientosDiarios
 (
 	ID INT NOT NULL IDENTITY(1,1),
-	NominaID INT NOT NULL,
+	PagoID INT NOT NULL,
 	ActividadID INT NOT NULL,
-	Horas INT NOT NULL,
+	Cantidad INT NOT NULL,
 	Total DECIMAL(10,2) NOT NULL, 
 	FechaMovimiento DATE NOT NULL,
-	CubrioPuesto BIT NOT NULL,
-	EstatusID INT NOT NULL,
-	Activo BIT NOT NULL,
+	CubrioPuestoID INT NOT NULL,
     PRIMARY KEY (ID),
 	FOREIGN KEY (ActividadID) REFERENCES Actividades(ID),
-	FOREIGN KEY (NominaID) REFERENCES Nominas(ID),
-	FOREIGN KEY (EstatusID) REFERENCES Estatus(ID)
+	FOREIGN KEY (PagoID) REFERENCES Pagos(ID),
+	FOREIGN KEY (CubrioPuestoID) REFERENCES Puestos(ID),
+	FOREIGN KEY (FechaMovimiento) REFERENCES Fechas(Fecha)
 
 )
 
 CREATE TABLE MovimientosBonos
 (
 	ID INT NOT NULL IDENTITY(1,1),
-	NominaID INT NOT NULL,
+	PagoID INT NOT NULL,
 	BonoID INT NOT NULL,
-	Total DECIMAL(10,2) NOT NULL, 
-	EstatusID INT NOT NULL,
-	Activo BIT NOT NULL,
+	Total DECIMAL(10,2) NOT NULL
     PRIMARY KEY (ID),
 	FOREIGN KEY (BonoID) REFERENCES Bonos(ID),
-	FOREIGN KEY (EstatusID) REFERENCES Estatus(ID),
-	FOREIGN KEY (NominaID) REFERENCES Nominas(ID)
+	FOREIGN KEY (PagoID) REFERENCES Pagos(ID)
 )
 
 CREATE TABLE MovimientosImpuestos
 (
 	ID INT NOT NULL IDENTITY(1,1),
-	NominaID INT NOT NULL,
+	PagoID INT NOT NULL,
 	ImpuestoID INT NOT NULL,
-	Total DECIMAL(10,2) NOT NULL,
-	Activo BIT NOT NULL, 
+	Total DECIMAL(10,2) NOT NULL
     PRIMARY KEY (ID),
 	FOREIGN KEY (ImpuestoID) REFERENCES Impuestos(ID),
-	FOREIGN KEY (NominaID) REFERENCES Nominas(ID)
+	FOREIGN KEY (PagoID) REFERENCES Pagos(ID)
 )
 
-INSERT INTO ComisionesTipos(Nombre, Activo)
+INSERT INTO ActividadesTipos(Nombre, Activo)
 SELECT 'Hora',1
-INSERT INTO ComisionesTipos(Nombre, Activo)
+INSERT INTO ActividadesTipos(Nombre, Activo)
 SELECT 'Evento',1
-INSERT INTO Comisiones(Nombre, Activo, Monto, TipoComisionID)
-SELECT 'Comisión Base',1, 30, 1
-INSERT INTO Comisiones(Nombre, Activo, Monto, TipoComisionID)
-SELECT 'Comisión entregar paquete',1, 5, 1
-INSERT INTO Comisiones(Nombre, Activo, Monto, TipoComisionID)
-SELECT 'Comisión Hora 1',1, 5, 1
-INSERT INTO Comisiones(Nombre, Activo, Monto, TipoComisionID)
-SELECT 'Comisión Hora 2',1, 10, 1
-INSERT INTO Actividades(Nombre, ComisionID, Activo)
-SELECT 'Actividad Base Chofer', 1, 1
-INSERT INTO Actividades(Nombre, ComisionID, Activo)
-SELECT 'Actividad Base Cargador', 1, 1
-INSERT INTO Actividades(Nombre, ComisionID, Activo)
-SELECT 'Actividad Base Auxiliar', 1, 1
-INSERT INTO Actividades(Nombre, ComisionID, Activo)
-SELECT 'Entregar paquete', 2, 1
-INSERT INTO Actividades(Nombre, ComisionID, Activo)
-SELECT 'Hora cargador', 3, 1
-INSERT INTO Actividades(Nombre, ComisionID, Activo)
-SELECT 'Hora chofer', 4, 1
+INSERT INTO Comisiones(Nombre, Activo, Monto)
+SELECT 'Comisión Base',1, 30
+INSERT INTO Comisiones(Nombre, Activo, Monto)
+SELECT 'Comisión entregar paquete',1, 5
+INSERT INTO Comisiones(Nombre, Activo, Monto)
+SELECT 'Comisión Hora 1',1, 5
+INSERT INTO Comisiones(Nombre, Activo, Monto)
+SELECT 'Comisión Hora 2',1, 10
+INSERT INTO Actividades(Nombre, ComisionID, ActividadTipoID, Activo)
+SELECT 'Actividad Base Chofer', 1, 1, 1
+INSERT INTO Actividades(Nombre, ComisionID, ActividadTipoID, Activo)
+SELECT 'Actividad Base Cargador', 1, 1, 1
+INSERT INTO Actividades(Nombre, ComisionID, ActividadTipoID, Activo)
+SELECT 'Actividad Base Auxiliar', 1, 1, 1
+INSERT INTO Actividades(Nombre, ComisionID, ActividadTipoID, Activo)
+SELECT 'Entregar paquete', 2, 2, 1
+INSERT INTO Actividades(Nombre, ComisionID, ActividadTipoID, Activo)
+SELECT 'Hora cargador', 3, 1, 1
+INSERT INTO Actividades(Nombre, ComisionID, ActividadTipoID, Activo)
+SELECT 'Hora chofer', 4, 1, 1
 INSERT INTO Puestos(Nombre, Activo)
 SELECT 'Chofer',1
 INSERT INTO Puestos(Nombre, Activo)
@@ -300,12 +269,6 @@ INSERT INTO BonosTipos(Nombre, Activo)
 SELECT 'Cantidad Fija',1
 INSERT INTO Bonos(Nombre, Cantidad, TipoBonoID, Activo)
 SELECT 'Vales de despensa', 4, 1,1
-INSERT INTO Estatus(Nombre, Activo)
-SELECT 'Pendiente pagar',1
-INSERT INTO Estatus(Nombre, Activo)
-SELECT 'Pagado',2
-INSERT INTO Estatus(Nombre, Activo)
-SELECT 'Pago parcial',3
 INSERT INTO Impuestos(Nombre, Descripcion, Minimo, Maximo, Porcentaje, Activo)
 SELECT 'ISR Base', 'Impuesto para todos', 0, -1, 9, 1
 INSERT INTO Impuestos(Nombre, Descripcion, Minimo, Maximo, Porcentaje, Activo)
@@ -317,128 +280,35 @@ SELECT 'Turno Completo', 1
 INSERT INTO JornadasDetalles(JornadaID, HrsDia, HrsSemana, HrsQuincena, HrsMes, Activo)
 SELECT 1, 6, 30, 60, 120, 1
 INSERT INTO JornadasDetalles(JornadaID, HrsDia, HrsSemana, HrsQuincena, HrsMes, Activo)
-SELECT 1, 8, 40, 80, 160, 1
-*/
+SELECT 2, 8, 40, 80, 160, 1
 
-/*
+
+/* //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */
+
 -- Datos de pruebas
-INSERT INTO Empleados(Nombre, ApellidoPaterno, ApellidoMaterno, PuestoID, TipoEmpleadoID, JornadaID, Activo)
+INSERT INTO Empleados(Nombre, ApellidoPaterno, ApellidoMaterno, PuestoID, EmpleadoTipoID, JornadaID, Activo)
 SELECT 'Chofer', 'Interno', 'Materno', 1, 1, 1, 1
-INSERT INTO Empleados(Nombre, ApellidoPaterno, ApellidoMaterno, PuestoID, TipoEmpleadoID, JornadaID, Activo)
-SELECT 'Chofer', 'Externo', 'Materno', 1, 2, 1, 1
-INSERT INTO Empleados(Nombre, ApellidoPaterno, ApellidoMaterno, PuestoID, TipoEmpleadoID, JornadaID, Activo)
-SELECT 'Cargador ', 'Interno', 'Materno', 2, 1, 1, 1
-INSERT INTO Empleados(Nombre, ApellidoPaterno, ApellidoMaterno, PuestoID, TipoEmpleadoID, JornadaID, Activo)
+INSERT INTO Empleados(Nombre, ApellidoPaterno, ApellidoMaterno, PuestoID, EmpleadoTipoID, JornadaID, Activo)
 SELECT 'Auxiliar ', 'Interno', 'Materno', 3, 1, 1, 1
-*/
-
-SELECT * FROM Impuestos
-
---SELECT * FROM Bonos
-SELECT * FROM Nominas
-SELECT * FROM MovimientosDiarios
-
---Al final de mes se insertan
-SELECT * FROM MovimientosBonos
-SELECT * FROM MovimientosImpuestos
+INSERT INTO Empleados(Nombre, ApellidoPaterno, ApellidoMaterno, PuestoID, EmpleadoTipoID, JornadaID, Activo)
+SELECT 'Chofer', 'Externo', 'Materno', 1, 2, 1, 1
+INSERT INTO Empleados(Nombre, ApellidoPaterno, ApellidoMaterno, PuestoID, EmpleadoTipoID, JornadaID, Activo)
+SELECT 'Cargador ', 'Interno', 'Materno', 2, 1, 1, 1
 
 /*
-INSERT INTO Nominas(EmpleadoID, SueldoBase, SueldoTotal, EstatusID,Activo)
-SELECT 1, 0, 0, 1, 1
-INSERT INTO MovimientosDiarios(NominaID, ActividadID, Horas, Total, FechaMovimiento, CubrioPuesto, EstatusID, Activo)
-SELECT 1,1, 8,240,GETDATE(),1,1,1
-INSERT INTO MovimientosBonos(NominaID,BonoID,Total,EstatusID,Activo)
-SELECT 1,1, '9.6',1,1
-INSERT INTO MovimientosImpuestos(NominaID,ImpuestoID,Total,Activo)
-SELECT 1,1, '22.464',1
-
-UPDATE Nominas SET SueldoTotal =227.14
-WHERE ID = 1
+INSERT INTO Pagos(EmpleadoID, TotalBruto, TotalNeto)
+SELECT 1, 0, 0
+INSERT INTO MovimientosDiarios(PagoID, ActividadID, Cantidad, Total, FechaMovimiento, CubrioPuestoID)
+SELECT 1,1, 8,240,GETDATE(),1
+INSERT INTO MovimientosBonos(PagoID,BonoID,Total)
+SELECT 1,1, '9.6'
+INSERT INTO MovimientosImpuestos(PagoID,ImpuestoID,Total)
+SELECT 1,1, '22.464'
 */
 
-/*
--- Comprobar sueldos
-SELECT 
-	E.ID, E.Nombre, TE.Nombre, R.Nombre, A.Nombre, C.Nombre, C.Monto, TC.Nombre
-FROM
-	Empleados E(NOLOCK)
-INNER JOIN
-	EmpleadosTipos TE(NOLOCK) ON E.TipoEmpleadoID = TE.ID
-INNER JOIN
-	Puestos R(NOLOCK) ON E.PuestoID = R.Id
-INNER JOIN 
-	Actividades A(NOLOCK) ON R.ActividadBase = A.ID
-INNER JOIN
-	Comisiones C(NOLOCK) ON A.ComisionID = C.ID
-INNER JOIN
-	ComisionesTipos TC(NOLOCK) ON C.TipoComisionID = TC.ID
+--DELETE FROM Empleados WHERE ID >2
 
-SELECT * FROM ComisionesTipos
-*/
-
-/*
--- Comprobar empleados
-SELECT 
-	E.ID, E.Nombre, TE.Nombre, R.Nombre, A.Nombre, C.Nombre, C.Monto, TC.Nombre
-FROM
-	Empleados E(NOLOCK)
-INNER JOIN
-	EmpleadosTipos TE(NOLOCK) ON E.TipoEmpleadoID = TE.ID
-INNER JOIN
-	Puestos R(NOLOCK) ON E.PuestoID = R.Id
-INNER JOIN 
-	Actividades A(NOLOCK) ON R.ActividadBase = A.ID
-INNER JOIN
-	Comisiones C(NOLOCK) ON A.ComisionID = C.ID
-INNER JOIN
-	ComisionesTipos TC(NOLOCK) ON C.TipoComisionID = TC.ID
-*/
-/*
---Comprobar las comisiones de cada Puesto
-SELECT 
-	R.Nombre, A.Nombre, C.Nombre, C.Monto, TC.Nombre
-FROM
-	Puestos R(NOLOCK)
-INNER JOIN 
-	Actividades A(NOLOCK) ON R.ActividadBase = A.ID
-INNER JOIN
-	Comisiones C(NOLOCK) ON A.ComisionID = C.ID
-INNER JOIN
-	ComisionesTipos TC(NOLOCK) ON C.TipoComisionID = TC.ID
-*/
-/*
---Comprobar los Puestos a cubrir
-SELECT 
-	RC.Nombre, R.Nombre, R2.Nombre
-FROM 
-	PuestosCubrir RC(NOLOCK)
-INNER JOIN
-	Puestos R(NOLOCK) ON RC.Puesto = R.ID
-INNER JOIN
-	Puestos R2(NOLOCK) ON RC.PuestoCubrir = R2.ID
-*/
-/*
---Comprobar bonos
-SELECT 
-	B.Nombre, B.Cantidad, TB.Nombre
-FROM 
-	Bonos B(NOLOCK)
-INNER JOIN
-	BonosTipos TB(NOLOCK) ON TB.ID = B.TipoBonoID
-*/
-/*
---Comprobar actividades de cada puesto
-SELECT 
-	* 
-FROM 
-	ActividadesPuestos AR(NOLOCK)
-INNER JOIN
-	Puestos R(NOLOCK) ON AR.PuestoID = R.ID
-INNER JOIN
-	Actividades A(NOLOCK) ON AR.ActividadID = A.ID
-*/
-
-
+SELECT * fROM Empleados
 
 
 

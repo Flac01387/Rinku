@@ -8,8 +8,8 @@
         public string ApellidoMaterno { get; set; }
         public int PuestoID { get; set; }
         public string Puesto { get; set; }
-        public int TipoEmpleadoID { get; set; }
-        public string TipoEmpleado { get; set; }
+        public int EmpleadoTipoID { get; set; }
+        public string EmpleadoTipo { get; set; }
         public int JornadaID { get; set; }
         public string Jornada { get; set; }
         public bool Activo { get; set; }

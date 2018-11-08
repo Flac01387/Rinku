@@ -20,10 +20,8 @@ import { EnumColores } from 'enumeradores/enum-colores';
 import { EnumVistas } from 'enumeradores/enum-vistas';
 
 @autoinject
-export class CpteFiltrosEmpleados {
-  
-  Padre: any = null;
-
+export class CpteFiltrosEmpleados 
+{
   //Controles utilizados en la pantalla
   configInputNumero: ConfiguracionInput;
   configInputNombre: ConfiguracionInput;
@@ -35,9 +33,9 @@ export class CpteFiltrosEmpleados {
   opcionesJornadas: OpcionRadioVertical[];
   configRadioJornadas: ConfiguracionRadioVertical;
   configBotonBuscar: ConfiguracionBoton;
-  configBotonCancelar: ConfiguracionBoton;
   configBotonActualizar: ConfiguracionBoton;
   configBotonRegistrar: ConfiguracionBoton;
+  configBotonRegresar: ConfiguracionBoton;
 
   //Subscripciones
   subscribeClickBoton: any;
@@ -86,7 +84,7 @@ export class CpteFiltrosEmpleados {
         case 'actualizar':
           self.actualizar();
           break;
-        case 'cancelar':
+        case 'regresar':
           self.inicializarControles();
           break;
         case 'registrar':
@@ -102,8 +100,8 @@ export class CpteFiltrosEmpleados {
     this.subscribeClickAccion.dispose();
   }
 
-  consultarPuestos() {
-
+  consultarPuestos()
+  {
     var self = this;
 
     this.peticionPuestos.consultarPuestos()
@@ -278,6 +276,8 @@ export class CpteFiltrosEmpleados {
       var self = this;
 
       this.configInputNumero.Valor = empleado;
+      this.configInputNumero.Deshabilitado = true;
+      this.configBotonRegresar.Mostrar = true;
 
       this.peticionEmpleados.consultarEmpleados(this.configInputNumero.Valor, "", "","",-1,-1,-1,true)
       .then(respuesta =>
@@ -299,11 +299,10 @@ export class CpteFiltrosEmpleados {
   {
       var self = this;
       
-      this.configInputNumero.Deshabilitado = true;
+      this.configInputNumero.Deshabilitado = false;
       this.configBotonActualizar.Mostrar = false;
       this.configBotonRegistrar.Mostrar = true;
-      this.configBotonCancelar.Mostrar = true;
-      this.configBotonBuscar.Mostrar = false;
+      this.configBotonBuscar.Mostrar = true;
   }
 
   llenarFormulario(empleado: any)
@@ -315,14 +314,12 @@ export class CpteFiltrosEmpleados {
       this.configInputPaterno.Valor = empleado.ApellidoPaterno;
       this.configInputMaterno.Valor = empleado.ApellidoMaterno;
       this.configBotonActualizar.Mostrar = true;
-      this.configBotonCancelar.Mostrar = true;
       this.configBotonBuscar.Mostrar = false;
       this.configBotonRegistrar.Mostrar = false;
       this.configComboPuestos.Seleccionado;
 
       //Seleccionar combo comboPuestos
       var element = document.querySelector("div.input-field select");
-      console.log(element);
       
       var combo = element as HTMLSelectElement;
 
@@ -340,6 +337,8 @@ export class CpteFiltrosEmpleados {
         if(x.value == empleado.PuestoID)
           x.checked = true;
       }
+
+      setTimeout(()=>{ M.updateTextFields(); },100)
     }
     catch(error){
       console.log(error);
@@ -351,7 +350,7 @@ export class CpteFiltrosEmpleados {
     this.consultarPuestos();
     this.consultarTiposEmpleados();
     this.consultarJornadas();
-
+    
     this.configInputNumero = {
       ID: '',
       Nombre: '',
@@ -451,16 +450,6 @@ export class CpteFiltrosEmpleados {
       Mostrar: true,
       Funcion: 'buscar'
     };
-
-    this.configBotonCancelar = {
-      ID: '',
-      Icono: new Icono(),
-      Nombre: '',
-      Texto: 'Cancelar',
-      Deshabilitado: false,
-      Mostrar: false,
-      Funcion: 'cancelar'
-    };
   
     this.configBotonActualizar = {
       ID: '',
@@ -480,6 +469,16 @@ export class CpteFiltrosEmpleados {
       Deshabilitado: false,
       Mostrar: true,
       Funcion: 'registrar'
+    };
+    
+    this.configBotonRegresar = {
+        ID: '',
+        Icono: new Icono(),
+        Nombre: '',
+        Texto: 'Regresar',
+        Deshabilitado: false,
+        Mostrar: false,
+        Funcion: 'regresar'
     };
   }
 }

@@ -56,7 +56,7 @@ export class ApiEmpleados
     });
   }
 
-  consultarEmpleados(ID: number, Nombre: string, ApellidoPaterno: string, ApellidoMaterno: string, PuestoID: number, TipoEmpleadoID: number, JornadaID: number, Activo: boolean): Promise<any>
+  consultarEmpleados(ID: number, Nombre: string, ApellidoPaterno: string, ApellidoMaterno: string, PuestoID: number, EmpleadoTipoID: number, JornadaID: number, Activo: boolean): Promise<any>
   {
 
     var filtros = {
@@ -64,7 +64,7 @@ export class ApiEmpleados
       "Nombre": Nombre,
       "ApellidoPaterno": ApellidoPaterno,
       "ApellidoMaterno": ApellidoMaterno,
-      "TipoEmpleadoID": TipoEmpleadoID,
+      "EmpleadoTipoID": EmpleadoTipoID,
       "PuestoID": PuestoID,
       "JornadaID": JornadaID,
       "Activo": Activo
@@ -83,7 +83,7 @@ export class ApiEmpleados
     });
   }
 
-  actualizarEmpleado(ID: number, Nombre: string, ApellidoPaterno: string, ApellidoMaterno: string, PuestoID: number, TipoEmpleadoID: number, JornadaID: number, Activo: boolean): Promise<any>
+  actualizarEmpleado(ID: number, Nombre: string, ApellidoPaterno: string, ApellidoMaterno: string, PuestoID: number, EmpleadoTipoID: number, JornadaID: number, Activo: boolean): Promise<any>
   {
 
     var empleado = {
@@ -91,7 +91,7 @@ export class ApiEmpleados
       "Nombre": Nombre,
       "ApellidoPaterno": ApellidoPaterno,
       "ApellidoMaterno": ApellidoMaterno,
-      "TipoEmpleadoID": TipoEmpleadoID,
+      "EmpleadoTipoID": EmpleadoTipoID,
       "PuestoID": PuestoID,
       "JornadaID": JornadaID,
       "Activo": Activo
@@ -110,14 +110,14 @@ export class ApiEmpleados
     });
   }
 
-  nuevoEmpleado(ID: number, Nombre: string, ApellidoPaterno: string, ApellidoMaterno: string, PuestoID: number, TipoEmpleadoID: number, JornadaID: number, Activo: boolean): Promise<any>
+  nuevoEmpleado(ID: number, Nombre: string, ApellidoPaterno: string, ApellidoMaterno: string, PuestoID: number, EmpleadoTipoID: number, JornadaID: number, Activo: boolean): Promise<any>
   {
     var empleado = {
       "ID": ID,
       "Nombre": Nombre,
       "ApellidoPaterno": ApellidoPaterno,
       "ApellidoMaterno": ApellidoMaterno,
-      "TipoEmpleadoID": TipoEmpleadoID,
+      "EmpleadoTipoID": EmpleadoTipoID,
       "PuestoID": PuestoID,
       "JornadaID": JornadaID,
       "Activo": Activo

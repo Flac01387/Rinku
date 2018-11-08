@@ -1,5 +1,6 @@
 import { bindable, bindingMode, autoinject } from 'aurelia-framework';
 import { EventAggregator } from 'aurelia-event-aggregator';
+import * as EventosMovimientos from '../../eventos/eventos-movimientos';
 import { EnumVistas } from '../../enumeradores/enum-vistas';
 
 @autoinject
@@ -19,9 +20,9 @@ export class ModMovimientos {
 
   attached() {
     var self = this;
-    /*this.subscribeCambiarVistasNominas = this.ea.subscribe(eventosNominas.CambiarVistasEmpleados, msg => {
-      self.cambiarVistaEmpleados(msg.vista);
-    });*/
+    this.subscribeCambiarVistasMovimientos = this.ea.subscribe(EventosMovimientos.CambiarVistasMovimientos, msg => {
+      self.cambiarVistaMovimientos(msg.vista);
+    });
   }
 
   detached() {
@@ -34,8 +35,8 @@ export class ModMovimientos {
     {
       case EnumVistas.vistaRegistroMovimientos:
         this.migas= ["Movimientos","Registro Movimientos"];
-        this.VistasMovimientos = EnumVistas.vistaRegistroMovimientos["vista"];
-        this.VistasModelosMovimientos = EnumVistas.vistaRegistroMovimientos["modelo"];
+        this.VistasMovimientos = vista["vista"];
+        this.VistasModelosMovimientos = vista["modelo"];
         break;
     }
   }

@@ -2,6 +2,8 @@ import { autoinject, bindable, bindingMode  } from 'aurelia-framework';
 import { EventAggregator } from 'aurelia-event-aggregator';
 import * as eventosEmpleados from '../../eventos/eventos-empleados';
 import * as EventosControles from '../../eventos/eventos-controles';
+import * as EventosMovimientos from '../../eventos/eventos-movimientos';
+import * as EventosMenu from '../../eventos/eventos-menu';
 import { ConfiguracionBoton } from '../../controles/ctrl-boton';
 import { ConfiguracionAlertaConfirmacion } from '../../controles/ctrl-alerta-confirmacion';
 import { ConfiguracionTabla, Encabezados, Columnas, EnumTipoColumnas } from '../../controles/ctrl-tabla';
@@ -61,6 +63,10 @@ export class CpteListaEmpleados
                     self.empleado = msg.objeto;
                     self.editarEmpleado();
                     break;
+                case 'registrarMovimiento':
+                    self.empleado = msg.objeto;
+                    self.registrarMovimiento();
+                    break;
             }
         });
 
@@ -101,6 +107,7 @@ export class CpteListaEmpleados
             var IconoPrincipal: Icono = new Icono(EnumIconos.Opciones, EnumColores.Azul, EnumPosiciones.centro, 'Opciones');
             var Opciones: ConfiguracionOpcionMenuFlotanteHorizontal[] = [];
 
+            Opciones.push(new ConfiguracionOpcionMenuFlotanteHorizontal(new Icono(EnumIconos.Actividades, EnumColores.Amarillo, EnumPosiciones.default, 'Registrar Movimiento'), 'registrarMovimiento'));
             Opciones.push(new ConfiguracionOpcionMenuFlotanteHorizontal(new Icono(EnumIconos.Editar, EnumColores.Verde, EnumPosiciones.default, 'Editar'), 'EditarEmpleado'));
             Opciones.push(new ConfiguracionOpcionMenuFlotanteHorizontal(new Icono(EnumIconos.Borrar, EnumColores.Rojo, EnumPosiciones.default, 'Eliminar'), 'EliminarEmpleado'));
         
@@ -150,6 +157,17 @@ export class CpteListaEmpleados
             self.ea.publish(new eventosEmpleados.EditarEmpleado(self.empleado.ID.Valor));
         }, 100);
     }
+    
+    registrarMovimiento()
+    {
+        var self = this;
+        
+        this.ea.publish(new EventosMenu.CambiarModulo('movimientos'));
+  
+        setTimeout(() => {
+            self.ea.publish(new EventosMovimientos.RegistrarMovimiento(self.empleado));
+        }, 100);
+    }
 
     eliminarEmpleado()
     {
@@ -160,7 +178,7 @@ export class CpteListaEmpleados
             "Nombre": "",
             "ApellidoPaterno": "",
             "ApellidoMaterno": "",
-            "TipoEmpleadoID": 0,
+            "EmpleadoTipoID": 0,
             "PuestoID": 0,
             "Activo": true
         };
