@@ -121,11 +121,10 @@ export class CpteListaEmpleados
                 "ApellidoPaterno": new Columnas(empleados[i].ApellidoPaterno, EnumTipoColumnas.Texto),
                 "ApellidoMaterno": new Columnas(empleados[i].ApellidoMaterno, EnumTipoColumnas.Texto),
                 "Puesto": new Columnas(empleados[i].Puesto, EnumTipoColumnas.Texto),
-                "TipoEmpleado": new Columnas(empleados[i].TipoEmpleado, EnumTipoColumnas.Texto),
+                "EmpleadoTipo": new Columnas(empleados[i].EmpleadoTipo, EnumTipoColumnas.Texto),
                 "Acciones": new Columnas(acciones, EnumTipoColumnas.Acciones)
                 });
             }
-        
             this.configTablaEmpleados = {
                 Encabezados: [
                 new Encabezados("ID","ID"),
@@ -133,7 +132,7 @@ export class CpteListaEmpleados
                 new Encabezados("ApellidoPaterno", "Apellido Paterno"),
                 new Encabezados("ApellidoMaterno", "Apellido Materno"),
                 new Encabezados("Puesto", "Puesto"), 
-                new Encabezados("TipoEmpleado","Tipo Empleado"),
+                new Encabezados("EmpleadoTipo","Tipo Empleado"),
                 new Encabezados("","")
                 ],
                 Clases: '',
@@ -229,7 +228,7 @@ export class CpteListaEmpleados
 
         this.configBotonNuevoEmpleado = {
             ID: '',
-            Icono: new Icono(EnumIconos.Guardar, EnumColores.SinColor, EnumPosiciones.izquierda),
+            Icono: new Icono(),
             Nombre: '',
             Texto: 'Nuevo',
             Deshabilitado: false,

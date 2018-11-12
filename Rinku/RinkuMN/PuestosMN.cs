@@ -32,5 +32,29 @@ namespace RinkuMN
                 throw new ArgumentException(error.Message, error);
             }
         }
+
+        public List<Puestos> consultarPuestosCubrir(Puestos puesto)
+        {
+            try
+            {
+                AccesoDatos da = new AccesoDatos();
+
+                List<Puestos> puestos = da.ejecutarSP<Puestos>("sp_consultarPuestosCubrir", puesto);
+
+                return puestos;
+            }
+            catch (SqlException error)
+            {
+                throw new ArgumentException(error.Message, error);
+            }
+            catch (ExcepcionNegocio error)
+            {
+                throw new ArgumentException(error.Mensaje, error);
+            }
+            catch (Exception error)
+            {
+                throw new ArgumentException(error.Message, error);
+            }
+        }
     }
 }

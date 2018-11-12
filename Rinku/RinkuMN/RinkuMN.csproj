@@ -43,6 +43,8 @@
   <ItemGroup>
     <Compile Include="EmpleadosMN.cs" />
     <Compile Include="JornadasMN.cs" />
+    <Compile Include="MovimientoMN.cs" />
+    <Compile Include="NominasMN.cs" />
     <Compile Include="PuestosMN.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -15,7 +15,7 @@ export class ModMovimientos {
   subscribeCambiarVistasMovimientos: any;
 
   constructor(private ea: EventAggregator) {
-    this.cambiarVistaMovimientos(EnumVistas.vistaRegistroMovimientos);
+    this.cambiarVistaMovimientos(EnumVistas.vistaFiltrosMovimientos);
   }
 
   attached() {
@@ -33,8 +33,18 @@ export class ModMovimientos {
   {
     switch(vista)
     {
+      case EnumVistas.vistaFiltrosMovimientos:
+        this.migas= ["Movimientos","Buscar"];
+        this.VistasMovimientos = vista["vista"];
+        this.VistasModelosMovimientos = vista["modelo"];
+        break;
       case EnumVistas.vistaRegistroMovimientos:
         this.migas= ["Movimientos","Registro Movimientos"];
+        this.VistasMovimientos = vista["vista"];
+        this.VistasModelosMovimientos = vista["modelo"];
+        break;
+      case EnumVistas.vistaListaMovimientos:
+        this.migas= ["Movimientos","Lista Movimientos"];
         this.VistasMovimientos = vista["vista"];
         this.VistasModelosMovimientos = vista["modelo"];
         break;

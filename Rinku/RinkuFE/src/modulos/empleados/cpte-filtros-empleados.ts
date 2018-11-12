@@ -3,7 +3,7 @@ import { ValidationController } from 'aurelia-validation';
 import { EventAggregator } from 'aurelia-event-aggregator';
 import * as eventosEmpleados from '../../eventos/eventos-empleados';
 import * as EventosControles from '../../eventos/eventos-controles';
-import { ConfiguracionInput } from '../../controles/ctrl-input';
+import { ConfiguracionInput, EnumTipoInputs } from '../../controles/ctrl-input';
 import { ConfiguracionCombo } from '../../controles/ctrl-combo';
 import { ConfiguracionRadioVertical, OpcionRadioVertical } from '../../controles/ctrl-radio-vertical';
 import { ConfiguracionBoton } from '../../controles/ctrl-boton';
@@ -197,7 +197,7 @@ export class CpteFiltrosEmpleados
       self.configInputNombre.Valor, 
       self.configInputPaterno.Valor,
       self.configInputMaterno.Valor,
-      self.configComboPuestos.Seleccionado,
+      self.configComboPuestos.Seleccionado.Valor,
       self.configRadioTiposEmpleados.Seleccionado == null ? 0 : self.configRadioTiposEmpleados.Seleccionado.Valor,
       self.configRadioJornadas.Seleccionado == null ? 0 : self.configRadioJornadas.Seleccionado.Valor,
       true
@@ -205,13 +205,15 @@ export class CpteFiltrosEmpleados
       .then(respuesta => {
         if (respuesta.Codigo == EnumRespuestaAPI.Aceptado) 
         {
-          self.mostrarListaEmpleados(respuesta.Respuesta);
+          if(respuesta.Respuesta[0].Id == -1)
+            new CtrlAlerta(EnumMensajes.SinDatos);
+          else
+            self.mostrarListaEmpleados(respuesta.Respuesta);
         }
         else
         new CtrlAlerta(respuesta.Mensaje);
       })
       .catch(error => {
-        console.log(EnumMensajes.ErrorAPI);
         new CtrlAlerta(EnumMensajes.ErrorAPI);
       });
   }
@@ -227,7 +229,7 @@ export class CpteFiltrosEmpleados
       self.configInputMaterno.Valor,
       self.configComboPuestos.Seleccionado.Valor,
       self.configRadioTiposEmpleados.Seleccionado == null ? 0 : self.configRadioTiposEmpleados.Seleccionado.Valor,
-      self.configRadioJornadas.Seleccionado == null ? 0 : self.configRadioTiposEmpleados.Seleccionado.Valor,
+      self.configRadioJornadas.Seleccionado == null ? 0 : self.configRadioJornadas.Seleccionado.Valor,
       true
     )
     .then(respuesta => {
@@ -309,6 +311,8 @@ export class CpteFiltrosEmpleados
   {
     try
     {
+      var self = this;
+
       this.configInputNumero.Deshabilitado = true;
       this.configInputNombre.Valor = empleado.Nombre;
       this.configInputPaterno.Valor = empleado.ApellidoPaterno;
@@ -316,29 +320,49 @@ export class CpteFiltrosEmpleados
       this.configBotonActualizar.Mostrar = true;
       this.configBotonBuscar.Mostrar = false;
       this.configBotonRegistrar.Mostrar = false;
-      this.configComboPuestos.Seleccionado;
+      this.configComboPuestos.Seleccionado = {"Valor": empleado.PuestoID};
 
       //Seleccionar combo comboPuestos
-      var element = document.querySelector("div.input-field select");
-      
-      var combo = element as HTMLSelectElement;
+      setTimeout(()=>{ 
+        var element = document.querySelector("div.input-field select");
+        var combo = element as HTMLSelectElement;
+        for(var i = 0; i< combo.length; i++)
+        {
+          if(element[i].value == empleado.PuestoID)
+            combo.selectedIndex = i;
+        }
+      }, 100);
 
-      for(var i = 0; i< combo.length; i++)
-      {
-        if(element[i].value == empleado.PuestoID)
-          combo.selectedIndex = i;
-      }
+      var opcionSeleccionada = new OpcionRadioVertical();
+      opcionSeleccionada.Valor = empleado.PuestoID;
+      self.configRadioTiposEmpleados.Seleccionado = opcionSeleccionada;
 
       //Seleccionar radio
-      var elements = document.getElementsByName(this.configRadioTiposEmpleados.Grupo);
-      for (var i=0; i<elements.length; i++)
-      {
-        var x = elements[i] as HTMLInputElement;
-        if(x.value == empleado.PuestoID)
-          x.checked = true;
-      }
+      setTimeout(()=>{ 
+        var elements = document.getElementsByName(this.configRadioTiposEmpleados.Grupo);
+        for (var i=0; i<elements.length; i++)
+        {
+          var x = elements[i] as HTMLInputElement;
+          if(x.value == empleado.PuestoID)
+            x.checked = true;
+        }
+      }, 150);
 
-      setTimeout(()=>{ M.updateTextFields(); },100)
+      var opcionSeleccionada2 = new OpcionRadioVertical();
+      opcionSeleccionada2.Valor = empleado.JornadaID;
+      self.configRadioJornadas.Seleccionado = opcionSeleccionada2;
+      //Seleccionar radio
+      setTimeout(()=>{ 
+        var elements = document.getElementsByName(this.configRadioJornadas.Grupo);
+        for (var i=0; i<elements.length; i++)
+        {
+          var x = elements[i] as HTMLInputElement;
+          if(x.value == empleado.JornadaID)
+            x.checked = true;
+        }
+      }, 200);
+
+      setTimeout(()=>{ M.updateTextFields(); },250)
     }
     catch(error){
       console.log(error);
@@ -361,7 +385,10 @@ export class CpteFiltrosEmpleados
       SoloLectura: false,
       Deshabilitado: false,
       Valor: '',
-      Clases: ''
+      Clases: '',
+      Mostrar: true,
+      Tipo: EnumTipoInputs.numerico,
+      MaxLength: 8
     };
     
     this.configInputNombre = {
@@ -374,7 +401,10 @@ export class CpteFiltrosEmpleados
       SoloLectura: false,
       Deshabilitado: false,
       Valor: '',
-      Clases: ''
+      Clases: '',
+      Mostrar: true,
+      Tipo: EnumTipoInputs.texto,
+      MaxLength: 100
     };
     
     this.configInputPaterno = {
@@ -387,7 +417,10 @@ export class CpteFiltrosEmpleados
       SoloLectura: false,
       Deshabilitado: false,
       Valor: '',
-      Clases: ''
+      Clases: '',
+      Mostrar: true,
+      Tipo: EnumTipoInputs.texto,
+      MaxLength: 100
     };
 
     this.configInputMaterno = {
@@ -400,7 +433,10 @@ export class CpteFiltrosEmpleados
       SoloLectura: false,
       Deshabilitado: false,
       Valor: '',
-      Clases: ''
+      Clases: '',
+      Mostrar: true,
+      Tipo: EnumTipoInputs.texto,
+      MaxLength: 100
     };
 
     this.configComboPuestos = {
@@ -416,13 +452,14 @@ export class CpteFiltrosEmpleados
       TextoDefault: 'Seleccione un puesto',
       ValorDefault: -1,
       Valor: null,
-      Seleccionado: null
+      Seleccionado: null,
+      Mostrar: true
     };
   
     this.opcionesTiposEmpleados = [];
   
     this.configRadioTiposEmpleados = {
-      Nombre: 'tipoEmpleado',
+      Nombre: 'EmpleadoTipo',
       Label: '',
       Grupo: 'tipo',
       Obligatorio: false,
@@ -433,7 +470,7 @@ export class CpteFiltrosEmpleados
     this.opcionesJornadas = [];
   
     this.configRadioJornadas = {
-      Nombre: 'tipoEmpleado',
+      Nombre: 'EmpleadoTipo',
       Label: '',
       Grupo: 'tiposJornadas',
       Obligatorio: false,
@@ -463,7 +500,7 @@ export class CpteFiltrosEmpleados
   
     this.configBotonRegistrar = {
       ID: '',
-      Icono: new Icono(),
+      Icono:  new Icono(),
       Nombre: '',
       Texto: 'Registrar',
       Deshabilitado: false,

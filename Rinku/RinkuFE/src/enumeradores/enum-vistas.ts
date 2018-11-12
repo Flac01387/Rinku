@@ -6,6 +6,9 @@
   vistaEditarEmpleados = <any>{ vista: 'modulos/empleados/cpte-filtros-empleados.html', modelo: 'modulos/empleados/cpte-filtros-empleados' },
   vistaListaEmpleados = <any>{ vista: 'modulos/empleados/cpte-lista-empleados.html', modelo: 'modulos/empleados/cpte-lista-empleados' },
   vistaNominas = <any>{ vista: 'modulos/nominas/mod-nominas.html', modelo: 'modulos/nominas/mod-nominas' },
+  vistaListaNominas = <any>{ vista: 'modulos/nominas/cpte-lista-nominas.html', modelo: 'modulos/nominas/cpte-lista-nominas' },
   vistaMovimientos = <any>{ vista: 'modulos/movimientos/mod-movimientos.html', modelo: 'modulos/movimientos/mod-movimientos' },
-  vistaRegistroMovimientos = <any>{ vista: 'modulos/movimientos/cpte-registro-movimientos.html', modelo: 'modulos/movimientos/cpte-registro-movimientos' },
-}
+  vistaFiltrosMovimientos = <any>{ vista: 'modulos/movimientos/cpte-filtros-movimientos.html', modelo: 'modulos/movimientos/cpte-filtros-movimientos' },
+  vistaRegistroMovimientos = <any>{ vista: 'modulos/movimientos/cpte-filtros-movimientos.html', modelo: 'modulos/movimientos/cpte-filtros-movimientos' },
+  vistaListaMovimientos = <any>{ vista: 'modulos/movimientos/cpte-lista-movimientos.html', modelo: 'modulos/movimientos/cpte-lista-movimientos' },
+ }

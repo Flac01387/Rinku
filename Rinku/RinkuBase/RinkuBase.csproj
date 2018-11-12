@@ -41,9 +41,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DTO\DTOMovimientosConsulta.cs" />
     <Compile Include="DTO\DTOEmpleados.cs" />
+    <Compile Include="DTO\DTOMovimientos.cs" />
+    <Compile Include="DTO\DTONominas.cs" />
     <Compile Include="Entidades\Empleados.cs" />
     <Compile Include="Entidades\Jornadas.cs" />
+    <Compile Include="Entidades\Pagos.cs" />
     <Compile Include="Entidades\Puestos.cs" />
     <Compile Include="Entidades\TiposEmpleados.cs" />
     <Compile Include="Enumeradores\EnumRespuesta.cs" />

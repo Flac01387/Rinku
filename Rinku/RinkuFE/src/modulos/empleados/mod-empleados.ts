@@ -35,23 +35,23 @@ export class ModEmpleados {
     {
       case EnumVistas.vistaFiltrosEmpleados:
         this.migas= ["Empleados","Buscar"];
-        this.VistasEmpleados = EnumVistas.vistaFiltrosEmpleados["vista"];
-        this.VistasModelosEmpleados = EnumVistas.vistaFiltrosEmpleados["modelo"];
+        this.VistasEmpleados = vista["vista"];
+        this.VistasModelosEmpleados = vista["modelo"];
         break;
       case EnumVistas.vistaListaEmpleados:
         this.migas= ["Empleados","Lista Empleados"];
-        this.VistasEmpleados = EnumVistas.vistaListaEmpleados["vista"];
-        this.VistasModelosEmpleados = EnumVistas.vistaListaEmpleados["modelo"];
+        this.VistasEmpleados = vista["vista"];
+        this.VistasModelosEmpleados = vista["modelo"];
         break;
       case EnumVistas.vistaEditarEmpleados:
         this.migas= ["Empleados","Editar Empleado"];
-        this.VistasEmpleados = EnumVistas.vistaEditarEmpleados["vista"];
-        this.VistasModelosEmpleados = EnumVistas.vistaEditarEmpleados["modelo"];
+        this.VistasEmpleados = vista["vista"];
+        this.VistasModelosEmpleados = vista["modelo"];
         break;
       case EnumVistas.vistaNuevosEmpleados:
         this.migas= ["Empleados","Registrar Empleado"];
-        this.VistasEmpleados = EnumVistas.vistaNuevosEmpleados["vista"];
-        this.VistasModelosEmpleados = EnumVistas.vistaNuevosEmpleados["modelo"];
+        this.VistasEmpleados = vista["vista"];
+        this.VistasModelosEmpleados = vista["modelo"];
         break;
     }
   }

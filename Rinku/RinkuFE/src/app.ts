@@ -1,10 +1,9 @@
 import { autoinject } from 'aurelia-framework';
 import { EventAggregator } from 'aurelia-event-aggregator';
 import 'materialize-css';
-import { Router } from 'aurelia-router';
-import { EnumVistas } from './enumeradores/enum-vistas';
-import { ConfiguracionMenu, ConfiguracionOpcionesMenu } from './controles/ctrl-menu';
 import * as EventosMenu from './eventos/eventos-menu';
+import { ConfiguracionMenu, ConfiguracionOpcionesMenu } from './controles/ctrl-menu';
+import { EnumVistas } from './enumeradores/enum-vistas';
 
 @autoinject
 export class App 
@@ -38,6 +37,9 @@ export class App
         case "movimientos":
           this.cambiarModulo(EnumVistas.vistaMovimientos);
           break;
+        case "nominas":
+          this.cambiarModulo(EnumVistas.vistaNominas);
+          break;
       }
     });
     
@@ -66,12 +68,21 @@ export class App
 
     this.configOpcionesMenu.push(configOpcionMenu);
 
+    var configOpcionMenu: ConfiguracionOpcionesMenu = {
+      Funcion: "nominas",
+      Icono: null,
+      Nombre: "Nomina"
+    };
+
+    this.configOpcionesMenu.push(configOpcionMenu);
+
     this.configMenu.ImagenFondo = "../imagenes/rinku-logo.jpg";
     this.configMenu.Opciones = this.configOpcionesMenu;
     this.configMenu.Titulo = "Rinku";
   }
 
-  cambiarModulo(vista: EnumVistas) {
+  cambiarModulo(vista: EnumVistas) 
+  {
     this.Vistas = vista["vista"];
     this.VistasModelos = vista["modelo"];
 

@@ -13,6 +13,11 @@ class ApiPuestosMetodos {
   consultarPuestos() {
     return this.apiBase["format"]("consultar");
   };
+
+  consultarPuestosCubrir()
+  {
+    return this.apiBase["format"]("cubrir");
+  }
 }
 
 @autoinject
@@ -38,6 +43,26 @@ export class ApiPuestos
         .catch(error => {
           return result(self.procesarRespuesta.ProcesarError(error, resultado));
         });
+    });
+  }
+
+  consultarPuestosCubrir(empleadoID: number): Promise<any>
+  {
+    var obj = {
+      "ID": empleadoID,
+      "Nombre": "",
+      "Activo": true
+    };
+    var self = this;
+    var resultado: any[] = [];
+    return new Promise<any>(result => {
+      this.api.post(self.apis.consultarPuestosCubrir(), obj)
+      .then(respuesta => {
+          return result(self.procesarRespuesta.ProcesarResultado(respuesta, resultado));
+      })
+      .catch(error => {
+          return result(self.procesarRespuesta.ProcesarError(error, resultado));
+      });
     });
   }
 }

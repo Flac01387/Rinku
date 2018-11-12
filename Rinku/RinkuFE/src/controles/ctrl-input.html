@@ -1,8 +1,8 @@
 <template>
-  <div class="row">
+  <div class="row" if.bind="configInput.Mostrar">
     <div class="col s12">
       <div class="input-field">
-        <input disabled.bind="configInput.Deshabilitado" type="text" class="validate ${configInput.Clases}" value.bind="configInput.Valor">
+        <input disabled.bind="configInput.Deshabilitado" maxlength="${configInput.MaxLength}" type="${configInput.Tipo}" class="validate ${configInput.Clases} input_text" value.bind="configInput.Valor" data-length="${configInput.MaxLength}">
         <label for="">${configInput.Label}</label>
       </div>
     </div>

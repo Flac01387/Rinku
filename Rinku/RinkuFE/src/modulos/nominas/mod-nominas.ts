@@ -1,27 +1,28 @@
 import { bindable, bindingMode, autoinject } from 'aurelia-framework';
 import { EventAggregator } from 'aurelia-event-aggregator';
+import * as EventosNominas from '../../eventos/eventos-nominas';
 import { EnumVistas } from '../../enumeradores/enum-vistas';
 
 @autoinject
 export class ModNominas {
   
-  VistasEmpleados: string;
-  VistasModelosEmpleados: string;
-  tituloEmpleados: string = 'Nominas';
-  migas: string[] = ["Nominas"];
+  VistasNominas: string;
+  VistasModelosNominas: string;
+  tituloNominas: string = 'Nomina';
+  migas: string[] = ["Nomina"];
 
   //Subscripciones
   subscribeCambiarVistasNominas: any;
 
   constructor(private ea: EventAggregator) {
-    //this.cambiarVistaEmpleados(EnumVistas.vistaFiltrosEmpleados);
+    this.cambiarVistaNominas(EnumVistas.vistaListaNominas);
   }
 
   attached() {
     var self = this;
-    /*this.subscribeCambiarVistasNominas = this.ea.subscribe(eventosNominas.CambiarVistasEmpleados, msg => {
-      self.cambiarVistaEmpleados(msg.vista);
-    });*/
+    this.subscribeCambiarVistasNominas = this.ea.subscribe(EventosNominas.CambiarVistasNominas, msg => {
+      self.cambiarVistaNominas(msg.vista);
+    });
   }
 
   detached() {
@@ -32,11 +33,11 @@ export class ModNominas {
   {
     switch(vista)
     {
-      /*case EnumVistas.vistaFiltrosEmpleados:
-        this.migas= ["Nominas","Consulta"];
-        this.VistasEmpleados = EnumVistas.vistaFiltrosEmpleados["vista"];
-        this.VistasModelosEmpleados = EnumVistas.vistaFiltrosEmpleados["modelo"];
-        break;*/
+      case EnumVistas.vistaListaNominas:
+        this.migas= ["Nomina","Consulta"];
+        this.VistasNominas = vista["vista"];
+        this.VistasModelosNominas = vista["modelo"];
+        break;
     }
   }
 }

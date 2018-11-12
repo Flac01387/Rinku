@@ -14,6 +14,7 @@ export class ConfiguracionCombo {
   ValorDefault: any = null;
   Valor: any = null;
   Seleccionado: any = null;
+  Mostrar: boolean = true;
 }
 
 @autoinject

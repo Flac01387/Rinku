@@ -55,6 +55,10 @@ export class CtrlTabla {
         case EnumTipoColumnas.Texto:
         case EnumTipoColumnas.Entero:
             return valor;
+        case EnumTipoColumnas.Moneda:
+            return "$"+valor;
+        case EnumTipoColumnas.Fecha:
+            return valor.substring(0, 10);
         case EnumTipoColumnas.Acciones:
             return;
         default:
